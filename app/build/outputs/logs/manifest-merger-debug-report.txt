@@ -54,6 +54,8 @@ MERGED from [com.google.android.gms:play-services-measurement-sdk:22.2.0] C:\Use
 MERGED from [com.google.android.gms:play-services-measurement-impl:22.2.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\14826e6c528f84d02fe63acdae5cd672\transformed\jetified-play-services-measurement-impl-22.2.0\AndroidManifest.xml:17:1-32:12
 MERGED from [com.google.android.gms:play-services-fido:20.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\725fc062ee20bdd68d4a2cf6d594ce22\transformed\jetified-play-services-fido-20.1.0\AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3a2ad56b266529467cbf90128843eb40\transformed\jetified-play-services-base-18.5.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.play:app-update:2.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f0a757561d9e06b18861032540b76468\transformed\jetified-app-update-2.1.0\AndroidManifest.xml:2:1-14:12
+MERGED from [com.google.android.play:review:2.0.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f3fce3c550e6e441e21948438d916e45\transformed\jetified-review-2.0.1\AndroidManifest.xml:2:1-14:12
 MERGED from [com.google.firebase:firebase-crashlytics:19.4.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\897f4d897ed3c0caf2964f742e9fa02e\transformed\jetified-firebase-crashlytics-19.4.0\AndroidManifest.xml:2:1-24:12
 MERGED from [com.google.android.gms:play-services-measurement-api:22.2.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\00fef682245f6ad0e1db29946a9d7e66\transformed\jetified-play-services-measurement-api-22.2.0\AndroidManifest.xml:17:1-39:12
 MERGED from [com.google.firebase:firebase-sessions:2.0.8] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\2e584c451d6492587922b0dae0291886\transformed\jetified-firebase-sessions-2.0.8\AndroidManifest.xml:15:1-35:12
@@ -143,10 +145,10 @@ MERGED from [androidx.print:print:1.0.0] C:\Users\m_a_2\.gradle\caches\8.11.1\tr
 MERGED from [androidx.core:core-viewtree:1.0.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\688544f100767f13bf30407f0f018810\transformed\jetified-core-viewtree-1.0.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5bf1dd2805176a22559114c54d9f3f42\transformed\jetified-annotation-experimental-1.4.1\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.libraries.identity.googleid:googleid:1.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\274dfe9313d7538ec34d8b165886731b\transformed\jetified-googleid-1.1.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:2:1-21:12
 MERGED from [org.tensorflow:tensorflow-lite-support-api:0.4.4] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\353b7ce44fc4ba489d8231315dc650dc\transformed\jetified-tensorflow-lite-support-api-0.4.4\AndroidManifest.xml:2:1-5:12
 MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5a05108933f78b82a39033c539691461\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\cb32f466b9f6b148ac61cba0bdbe1da8\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:2:1-9:12
-MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:2:1-21:12
 	package
 		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
 	android:versionName
@@ -330,6 +332,10 @@ MERGED from [com.google.android.gms:play-services-fido:20.1.0] C:\Users\m_a_2\.g
 MERGED from [com.google.android.gms:play-services-fido:20.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\725fc062ee20bdd68d4a2cf6d594ce22\transformed\jetified-play-services-fido-20.1.0\AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3a2ad56b266529467cbf90128843eb40\transformed\jetified-play-services-base-18.5.0\AndroidManifest.xml:4:5-6:19
 MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3a2ad56b266529467cbf90128843eb40\transformed\jetified-play-services-base-18.5.0\AndroidManifest.xml:4:5-6:19
+MERGED from [com.google.android.play:app-update:2.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f0a757561d9e06b18861032540b76468\transformed\jetified-app-update-2.1.0\AndroidManifest.xml:11:5-12:19
+MERGED from [com.google.android.play:app-update:2.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f0a757561d9e06b18861032540b76468\transformed\jetified-app-update-2.1.0\AndroidManifest.xml:11:5-12:19
+MERGED from [com.google.android.play:review:2.0.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f3fce3c550e6e441e21948438d916e45\transformed\jetified-review-2.0.1\AndroidManifest.xml:11:5-12:19
+MERGED from [com.google.android.play:review:2.0.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f3fce3c550e6e441e21948438d916e45\transformed\jetified-review-2.0.1\AndroidManifest.xml:11:5-12:19
 MERGED from [com.google.firebase:firebase-crashlytics:19.4.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\897f4d897ed3c0caf2964f742e9fa02e\transformed\jetified-firebase-crashlytics-19.4.0\AndroidManifest.xml:11:5-22:19
 MERGED from [com.google.firebase:firebase-crashlytics:19.4.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\897f4d897ed3c0caf2964f742e9fa02e\transformed\jetified-firebase-crashlytics-19.4.0\AndroidManifest.xml:11:5-22:19
 MERGED from [com.google.android.gms:play-services-measurement-api:22.2.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\00fef682245f6ad0e1db29946a9d7e66\transformed\jetified-play-services-measurement-api-22.2.0\AndroidManifest.xml:29:5-37:19
@@ -392,12 +398,12 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\m_a_2\.gradle\cach
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\ead6f1a63f7800c85a6251df5e338d10\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\379bc5fa5ee507818b6915d169ad61ea\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\379bc5fa5ee507818b6915d169ad61ea\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:11:5-19:19
+MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:11:5-19:19
 MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5a05108933f78b82a39033c539691461\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:9:5-20
 MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5a05108933f78b82a39033c539691461\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:9:5-20
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\cb32f466b9f6b148ac61cba0bdbe1da8\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\cb32f466b9f6b148ac61cba0bdbe1da8\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:7:5-20
-MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:11:5-19:19
-MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:11:5-19:19
 	android:extractNativeLibs
 		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
 	android:appComponentFactory
@@ -741,6 +747,10 @@ MERGED from [com.google.android.gms:play-services-fido:20.1.0] C:\Users\m_a_2\.g
 MERGED from [com.google.android.gms:play-services-fido:20.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\725fc062ee20bdd68d4a2cf6d594ce22\transformed\jetified-play-services-fido-20.1.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3a2ad56b266529467cbf90128843eb40\transformed\jetified-play-services-base-18.5.0\AndroidManifest.xml:3:5-44
 MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3a2ad56b266529467cbf90128843eb40\transformed\jetified-play-services-base-18.5.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.play:app-update:2.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f0a757561d9e06b18861032540b76468\transformed\jetified-app-update-2.1.0\AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.play:app-update:2.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f0a757561d9e06b18861032540b76468\transformed\jetified-app-update-2.1.0\AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.play:review:2.0.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f3fce3c550e6e441e21948438d916e45\transformed\jetified-review-2.0.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.play:review:2.0.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f3fce3c550e6e441e21948438d916e45\transformed\jetified-review-2.0.1\AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.firebase:firebase-crashlytics:19.4.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\897f4d897ed3c0caf2964f742e9fa02e\transformed\jetified-firebase-crashlytics-19.4.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-crashlytics:19.4.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\897f4d897ed3c0caf2964f742e9fa02e\transformed\jetified-firebase-crashlytics-19.4.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-measurement-api:22.2.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\00fef682245f6ad0e1db29946a9d7e66\transformed\jetified-play-services-measurement-api-22.2.0\AndroidManifest.xml:20:5-44
@@ -919,14 +929,14 @@ MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\m_a_2\.
 MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5bf1dd2805176a22559114c54d9f3f42\transformed\jetified-annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.libraries.identity.googleid:googleid:1.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\274dfe9313d7538ec34d8b165886731b\transformed\jetified-googleid-1.1.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.libraries.identity.googleid:googleid:1.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\274dfe9313d7538ec34d8b165886731b\transformed\jetified-googleid-1.1.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:7:5-9:41
 MERGED from [org.tensorflow:tensorflow-lite-support-api:0.4.4] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\353b7ce44fc4ba489d8231315dc650dc\transformed\jetified-tensorflow-lite-support-api-0.4.4\AndroidManifest.xml:4:3-71
 MERGED from [org.tensorflow:tensorflow-lite-support-api:0.4.4] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\353b7ce44fc4ba489d8231315dc650dc\transformed\jetified-tensorflow-lite-support-api-0.4.4\AndroidManifest.xml:4:3-71
 MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5a05108933f78b82a39033c539691461\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:6:5-7:38
 MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5a05108933f78b82a39033c539691461\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:6:5-7:38
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\cb32f466b9f6b148ac61cba0bdbe1da8\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\cb32f466b9f6b148ac61cba0bdbe1da8\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:5:5-44
-MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:7:5-9:41
-MERGED from [com.google.android.play:core-common:2.0.3] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:7:5-9:41
 	tools:overrideLibrary
 		ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:23:9-148
 	android:targetSdkVersion

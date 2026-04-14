@@ -1,51 +1,148 @@
 {
   "rules": {
+
     "reports": {
       ".read": "auth != null",
-      ".indexOn": ["status", "timestamp", "reporterId", "approved"],
+      ".indexOn": ["status", "timestamp", "reporterId", "approved", "location", "personAge"],
       "$reportId": {
-        ".write": "auth != null && (!data.exists() || data.child('reporterId').val() === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')"
+        ".write": "auth != null && (\n          !data.exists() ||\n          data.child('reporterId').val() === auth.uid ||\n          root.child('users').child(auth.uid).child('role').val() === 'admin' ||\n          root.child('users').child(auth.uid).child('role').val() === 'manager'\n        )",
+        ".validate": "newData.hasChildren(['personName','reporterId','timestamp'])"
       }
     },
+
     "found_persons": {
       ".read": "auth != null",
-      ".indexOn": ["status", "timestamp", "reporterId"],
-      "$reportId": {
-        ".write": "auth != null && (!data.exists() || data.child('reporterId').val() === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin')"
+      ".indexOn": ["status", "timestamp", "reporterId", "location"],
+      "$foundId": {
+        ".write": "auth != null && (\n          !data.exists() ||\n          data.child('reporterId').val() === auth.uid ||\n          root.child('users').child(auth.uid).child('role').val() === 'admin'\n        )",
+        ".validate": "newData.hasChildren(['reporterId','timestamp'])"
       }
     },
-    "matches": {
-      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
-      ".write": "auth != null"
-    },
+
     "users": {
       ".read": "auth != null",
+      ".indexOn": ["role", "governorate", "fcmToken"],
       "$uid": {
-        ".write": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')"
+        ".read": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
+        ".write": "auth != null && (\n          $uid === auth.uid ||\n          root.child('users').child(auth.uid).child('role').val() === 'admin' ||\n          root.child('users').child(auth.uid).child('role').val() === 'manager'\n        )"
       }
     },
+
     "chats": {
       "$chatId": {
         ".read": "auth != null && ($chatId.contains(auth.uid) || root.child('users').child(auth.uid).child('role').val() === 'admin')",
-        ".write": "auth != null && $chatId.contains(auth.uid)"
+        ".write": "auth != null && $chatId.contains(auth.uid)",
+        "messages": {
+          "$msgId": {
+            ".validate": "newData.hasChildren(['senderId','text','timestamp']) && newData.child('text').val().length <= 2000"
+          }
+        },
+        "typing": {
+          "$uid": {
+            ".write": "auth != null && $uid === auth.uid"
+          }
+        }
       }
     },
+
     "notifications": {
       "$uid": {
         ".read": "auth != null && $uid === auth.uid",
         ".write": "auth != null"
       }
     },
+
     "unread_counts": {
       "$uid": {
         ".read": "auth != null && $uid === auth.uid",
         ".write": "auth != null"
       }
     },
+
     "abuse_reports": {
       ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
       ".write": "auth != null",
-      ".indexOn": ["timestamp", "status"]
+      ".indexOn": ["timestamp", "status", "targetId"]
+    },
+
+    "ratings": {
+      "$targetUid": {
+        ".read": "auth != null",
+        "$raterUid": {
+          ".write": "auth != null && $raterUid === auth.uid && $raterUid !== $targetUid"
+        }
+      }
+    },
+
+    "matches": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
+      ".write": "auth != null"
+    },
+
+    "match_candidates": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
+      ".write": "auth != null"
+    },
+
+    "amber_alerts": {
+      ".read": "auth != null",
+      ".indexOn": ["timestamp", "active"],
+      "$governorate": {
+        "$alertId": {
+          ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')"
+        }
+      }
+    },
+
+    "success_stories": {
+      ".read": "auth != null",
+      ".indexOn": ["resolvedAt", "approved", "reportId"],
+      "$storyId": {
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')"
+      }
+    },
+
+    "admin_notifications": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
+      ".write": "auth != null",
+      ".indexOn": ["createdAt", "type"]
+    },
+
+    "stats": {
+      ".read": "auth != null",
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')"
+    },
+
+    "comments": {
+      "$reportId": {
+        ".read": "auth != null",
+        "$commentId": {
+          ".write": "auth != null && (\n            !data.exists() ||\n            data.child('authorUid').val() === auth.uid ||\n            root.child('users').child(auth.uid).child('role').val() === 'admin'\n          )",
+          ".validate": "newData.hasChildren(['authorUid','text','timestamp']) && newData.child('text').val().length <= 500"
+        }
+      }
+    },
+
+    "sightings": {
+      ".read": "auth != null",
+      ".indexOn": ["reportId", "timestamp"],
+      "$sightingId": {
+        ".write": "auth != null",
+        ".validate": "newData.hasChildren(['reportId','reporterId','timestamp'])"
+      }
+    },
+
+    "leaderboard": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      ".indexOn": ["points"]
+    },
+
+    "bookmarks": {
+      "$uid": {
+        ".read": "auth != null && $uid === auth.uid",
+        ".write": "auth != null && $uid === auth.uid"
+      }
     }
   }
 }

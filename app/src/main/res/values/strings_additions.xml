@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_additions.xml — إضافات المرحلتين 6 و7
+
+    ملاحظة للمطور:
+    ────────────────
+    أضف هذه الـ strings داخل ملف values/strings.xml الموجود.
+    تجنب التكرار — تحقق أولاً أن المفتاح غير موجود.
+    الجذر <resources> موجود بالفعل في strings.xml الأصلي.
+-->
+<resources>
+
+    <!-- ════════════════════════════════════════════════
+         المرحلة 6.1 — Amber Alert
+         ════════════════════════════════════════════════ -->
+    <string name="amber_alert_title">🚨 تنبيه طفل مفقود!</string>
+    <string name="amber_alert_body">الطفل %1$s (عمر %2$d سنة) مفقود في %3$s</string>
+    <string name="amber_alert_help">ساعد في إيجاده — اضغط للتفاصيل</string>
+    <string name="amber_alert_channel_name">تنبيهات الأطفال المفقودين</string>
+    <string name="amber_alert_channel_desc">تنبيهات عاجلة عند اختفاء أطفال في منطقتك</string>
+    <string name="amber_alert_deactivated">✅ تم إيقاف تنبيه الطفل %1$s</string>
+
+    <!-- ════════════════════════════════════════════════
+         المرحلة 6.2 — Success Stories تلقائية
+         ════════════════════════════════════════════════ -->
+    <string name="success_story_auto_title">🎉 قصة نجاح جديدة!</string>
+    <string name="success_story_auto_body">تم العثور على %1$s — قصة نجاح تنتظر مراجعتك</string>
+    <string name="success_story_pending_review">قيد مراجعة الإدارة</string>
+    <string name="success_story_approved">✅ منشورة</string>
+    <string name="success_story_share">شارك قصة النجاح هذه</string>
+    <string name="success_story_empty">لا توجد قصص نجاح بعد\nكن أول من يساعد في إيجاد مفقود!</string>
+
+    <!-- ════════════════════════════════════════════════
+         المرحلة 6.3 — Multi-language (hardcoded strings)
+         ════════════════════════════════════════════════ -->
+    <!-- CommentManager -->
+    <string name="comment_login_required">🔒 سجّل دخولك لإضافة تعليق</string>
+    <string name="comment_empty_error">التعليق فارغ</string>
+    <string name="comment_too_long">التعليق طويل جداً</string>
+    <string name="comment_posted">✅ تم نشر تعليقك</string>
+    <string name="comment_post_failed">❌ فشل النشر</string>
+    <string name="comment_deleted">تم حذف تعليقك</string>
+    <string name="comment_report_title">⚠️ إبلاغ عن تعليق</string>
+    <string name="comment_report_sent">✅ تم إرسال البلاغ للمشرفين</string>
+    <string name="comment_count_format">💬 %1$d تعليق</string>
+
+    <!-- AbuseReportHelper -->
+    <string name="abuse_report_title">🚨 إبلاغ عن سوء استخدام</string>
+    <string name="abuse_report_subtitle">سيصل تقريرك مباشرةً للإدارة للمراجعة والاتخاذ اللازم.</string>
+    <string name="abuse_report_sent">✅ تم إرسال البلاغ للإدارة. شكراً لمساعدتك!</string>
+    <string name="abuse_report_failed">❌ فشل إرسال البلاغ، تحقق من الإنترنت</string>
+
+    <!-- RatingManager -->
+    <string name="rating_login_required">🔒 سجّل دخولك لتقييم المستخدمين</string>
+    <string name="rating_self_error">لا يمكنك تقييم نفسك</string>
+    <string name="rating_play_failed">تعذّر فتح Google Play</string>
+    <string name="rating_dialog_title_new">⭐ تقييم المستخدم</string>
+    <string name="rating_dialog_title_edit">⭐ تعديل تقييمك</string>
+    <string name="rating_dialog_message">قيّم تجربتك مع %1$s</string>
+    <string name="rating_submitted">✅ تم إرسال تقييمك (%1$d ⭐)</string>
+
+    <!-- Widget -->
+    <string name="widget_unknown_name">مجهول</string>
+    <string name="widget_no_reports">لا توجد بلاغات حالياً</string>
+
+    <!-- FaceSelectionDialog -->
+    <string name="face_select_title">👥 اختر الوجه الصحيح (%1$d وجوه)</string>
+    <string name="face_select_message">اضغط على الوجه المطلوب:</string>
+    <string name="face_label">الوجه %1$d</string>
+
+    <!-- MapActivity -->
+    <string name="map_pick_mode_title">📍 اختر الموقع</string>
+    <string name="map_view_mode_title">🗺️ خريطة المفقودين</string>
+    <string name="map_person_unknown">مجهول</string>
+
+    <!-- LeaderboardActivity -->
+    <string name="leaderboard_empty">لا توجد بيانات بعد — كن أول المساهمين!</string>
+    <string name="leaderboard_my_rank_format">نقاطي: %1$s  •  %2$s</string>
+
+    <!-- ════════════════════════════════════════════════
+         المرحلة 6.4 — Share Button
+         ════════════════════════════════════════════════ -->
+    <string name="share_case_button_desc">شارك البلاغ</string>
+    <string name="share_case_title">شارك: %1$s</string>
+    <string name="share_via">شارك عبر</string>
+
+    <!-- ════════════════════════════════════════════════
+         المرحلة 7.1 — Performance
+         ════════════════════════════════════════════════ -->
+    <string name="update_available_title">✅ تحديث جاهز</string>
+    <string name="update_available_message">أعد التشغيل لتطبيق التحديث الجديد</string>
+    <string name="update_restart_action">إعادة التشغيل</string>
+    <string name="update_flexible_toast">جاري تنزيل التحديث في الخلفية…</string>
+    <string name="update_failed">⚠️ فشل التحديث، حاول لاحقاً</string>
+
+    <!-- ════════════════════════════════════════════════
+         المرحلة 7.4 — Play Store
+         ════════════════════════════════════════════════ -->
+    <string name="rate_app_dialog_title">هل تحب التطبيق؟ ⭐</string>
+    <string name="rate_app_dialog_message">قيّمنا على Google Play وساعدنا في الوصول لعائلات أكثر</string>
+    <string name="rate_app_positive">قيّم الآن</string>
+    <string name="rate_app_later">ربما لاحقاً</string>
+    <string name="rate_app_never">لا، شكراً</string>
+    <string name="privacy_policy_url">https://sanad-app.web.app/privacy</string>
+    <string name="terms_url">https://sanad-app.web.app/terms</string>
+    <string name="app_short_description">منصة مجانية للبحث عن المفقودين وإعادة لمّ شملهم</string>
+
+    <!-- ════════════════════════════════════════════════
+         المرحلة 7.2 — Accessibility
+         ════════════════════════════════════════════════ -->
+    <string name="cd_case_photo">صورة %1$s، عمره %2$d سنة، من %3$s</string>
+    <string name="cd_case_photo_no_age">صورة %1$s، من %2$s</string>
+    <string name="cd_case_photo_unknown">صورة شخص مجهول</string>
+    <string name="cd_share_button">شارك بلاغ %1$s</string>
+    <string name="cd_abuse_button">أبلغ عن سوء استخدام في بلاغ %1$s</string>
+    <string name="cd_bookmark_button">احفظ بلاغ %1$s</string>
+    <string name="cd_nav_home">الصفحة الرئيسية</string>
+    <string name="cd_nav_browse">تصفح الحالات</string>
+    <string name="cd_nav_search">بحث</string>
+    <string name="cd_nav_profile">الملف الشخصي</string>
+    <string name="cd_widget_case">بلاغ: %1$s، من %2$s، بتاريخ %3$s. اضغط للتفاصيل.</string>
+    <string name="cd_loading">جاري التحميل…</string>
+    <string name="cd_empty_list">لا توجد بيانات</string>
+    <string name="talkback_list_loaded">تم تحميل %1$d %2$s</string>
+    <string name="talkback_search_results">وُجد %1$d نتيجة لـ %2$s</string>
+    <string name="talkback_no_results">لا توجد نتائج لـ %1$s</string>
+    <string name="talkback_report_submitted">✅ تم إرسال بلاغك للمراجعة</string>
+
+    <!-- Match Confidence (للقارئ) -->
+    <string name="cd_match_confidence">نسبة التطابق: %1$d%%</string>
+    <string name="cd_match_high">تطابق عالي: %1$d%%</string>
+    <string name="cd_match_medium">تطابق متوسط: %1$d%%</string>
+    <string name="cd_match_low">تطابق منخفض: %1$d%%</string>
+
+</resources>

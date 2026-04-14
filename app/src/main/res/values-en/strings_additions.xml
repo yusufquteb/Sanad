@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_additions.xml (English) — Phase 6 & 7
+
+    Merge into values-en/strings.xml
+-->
+<resources>
+
+    <!-- ════ Phase 6.1 — Amber Alert ════ -->
+    <string name="amber_alert_title">🚨 Missing Child Alert!</string>
+    <string name="amber_alert_body">Child %1$s (age %2$d) is missing in %3$s</string>
+    <string name="amber_alert_help">Help find them — tap for details</string>
+    <string name="amber_alert_channel_name">Missing Child Alerts</string>
+    <string name="amber_alert_channel_desc">Urgent alerts when children go missing in your area</string>
+    <string name="amber_alert_deactivated">✅ Alert deactivated for %1$s</string>
+
+    <!-- ════ Phase 6.2 — Success Stories ════ -->
+    <string name="success_story_auto_title">🎉 New Success Story!</string>
+    <string name="success_story_auto_body">%1$s has been found — story awaiting your review</string>
+    <string name="success_story_pending_review">Pending admin review</string>
+    <string name="success_story_approved">✅ Published</string>
+    <string name="success_story_share">Share this success story</string>
+    <string name="success_story_empty">No success stories yet\nBe the first to help find someone!</string>
+
+    <!-- ════ Phase 6.3 — Multi-language hardcoded strings ════ -->
+    <string name="comment_login_required">🔒 Sign in to add a comment</string>
+    <string name="comment_empty_error">Comment is empty</string>
+    <string name="comment_too_long">Comment is too long</string>
+    <string name="comment_posted">✅ Comment published</string>
+    <string name="comment_post_failed">❌ Failed to publish</string>
+    <string name="comment_deleted">Comment deleted</string>
+    <string name="comment_report_title">⚠️ Report Comment</string>
+    <string name="comment_report_sent">✅ Report sent to moderators</string>
+    <string name="comment_count_format">💬 %1$d comments</string>
+
+    <string name="abuse_report_title">🚨 Report Abuse</string>
+    <string name="abuse_report_subtitle">Your report will be sent directly to admins for review.</string>
+    <string name="abuse_report_sent">✅ Report sent to admins. Thank you!</string>
+    <string name="abuse_report_failed">❌ Failed to send. Check your internet connection.</string>
+
+    <string name="rating_login_required">🔒 Sign in to rate users</string>
+    <string name="rating_self_error">You can\'t rate yourself</string>
+    <string name="rating_play_failed">Couldn\'t open Google Play</string>
+    <string name="rating_dialog_title_new">⭐ Rate User</string>
+    <string name="rating_dialog_title_edit">⭐ Edit Your Rating</string>
+    <string name="rating_dialog_message">Rate your experience with %1$s</string>
+    <string name="rating_submitted">✅ Rating submitted (%1$d ⭐)</string>
+
+    <string name="widget_unknown_name">Unknown</string>
+    <string name="widget_no_reports">No reports currently</string>
+
+    <string name="face_select_title">👥 Select the correct face (%1$d faces)</string>
+    <string name="face_select_message">Tap the face you want:</string>
+    <string name="face_label">Face %1$d</string>
+
+    <string name="map_pick_mode_title">📍 Pick Location</string>
+    <string name="map_view_mode_title">🗺️ Missing Persons Map</string>
+    <string name="map_person_unknown">Unknown</string>
+
+    <string name="leaderboard_empty">No data yet — be the first contributor!</string>
+    <string name="leaderboard_my_rank_format">My points: %1$s  •  %2$s</string>
+
+    <!-- ════ Phase 6.4 — Share ════ -->
+    <string name="share_case_button_desc">Share report</string>
+    <string name="share_case_title">Share: %1$s</string>
+    <string name="share_via">Share via</string>
+
+    <!-- ════ Phase 7.1 — Performance / Updates ════ -->
+    <string name="update_available_title">✅ Update Ready</string>
+    <string name="update_available_message">Restart to apply the new update</string>
+    <string name="update_restart_action">Restart</string>
+    <string name="update_flexible_toast">Downloading update in the background…</string>
+    <string name="update_failed">⚠️ Update failed, try again later</string>
+
+    <!-- ════ Phase 7.4 — Play Store ════ -->
+    <string name="rate_app_dialog_title">Enjoying the app? ⭐</string>
+    <string name="rate_app_dialog_message">Rate us on Google Play and help us reach more families</string>
+    <string name="rate_app_positive">Rate Now</string>
+    <string name="rate_app_later">Maybe Later</string>
+    <string name="rate_app_never">No Thanks</string>
+    <string name="privacy_policy_url">https://sanad-app.web.app/privacy</string>
+    <string name="terms_url">https://sanad-app.web.app/terms</string>
+    <string name="app_short_description">Free platform to find missing persons and reunite families</string>
+
+    <!-- ════ Phase 7.2 — Accessibility ════ -->
+    <string name="cd_case_photo">Photo of %1$s, age %2$d, from %3$s</string>
+    <string name="cd_case_photo_no_age">Photo of %1$s, from %2$s</string>
+    <string name="cd_case_photo_unknown">Photo of unknown person</string>
+    <string name="cd_share_button">Share %1$s\'s report</string>
+    <string name="cd_abuse_button">Report abuse in %1$s\'s case</string>
+    <string name="cd_bookmark_button">Save %1$s\'s report</string>
+    <string name="cd_nav_home">Home</string>
+    <string name="cd_nav_browse">Browse cases</string>
+    <string name="cd_nav_search">Search</string>
+    <string name="cd_nav_profile">Profile</string>
+    <string name="cd_widget_case">Report: %1$s, from %2$s, on %3$s. Tap for details.</string>
+    <string name="cd_loading">Loading…</string>
+    <string name="cd_empty_list">No data available</string>
+    <string name="talkback_list_loaded">Loaded %1$d %2$s</string>
+    <string name="talkback_search_results">Found %1$d results for %2$s</string>
+    <string name="talkback_no_results">No results for %1$s</string>
+    <string name="talkback_report_submitted">✅ Your report has been submitted for review</string>
+
+    <string name="cd_match_confidence">Match confidence: %1$d%%</string>
+    <string name="cd_match_high">High confidence match: %1$d%%</string>
+    <string name="cd_match_medium">Medium confidence match: %1$d%%</string>
+    <string name="cd_match_low">Low confidence match: %1$d%%</string>
+
+</resources>

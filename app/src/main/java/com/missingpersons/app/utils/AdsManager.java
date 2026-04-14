@@ -1,55 +1,64 @@
 package com.missingpersons.app.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.ads.*;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.nativead.MediaView;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.missingpersons.app.R;
 
 /**
- * AdsManager v3.5 — مدير الإعلانات الذكي
+ * AdsManager v4.1
  *
- * ✅ Banner Ad — أسفل الرئيسية والتصفح
- * ✅ Interstitial — عند إرسال بلاغ (مرة كل 2 بلاغ)
- * ✅ Rewarded Video — اختياري قبل ميزة إضافية
- * ✅ Native-style ads — بين عناصر القائمة (كل 5 عناصر)
+ * [إصلاح] loadRewardedAd(null) كانت ambiguous بين:
+ *   loadRewardedAd(OnRewardCallback)
+ *   loadRewardedAd(OnRewardedAdLoadedListener)   ← Legacy
+ * الحل: حذف الـ Legacy overloads المتعارضة واستبدالها بـ
+ *       dالـ cast الصريح عند الاستدعاء
  *
- * سياسة الإعلانات (غير مزعجة):
- * - لا إعلانات في: تفاصيل الحالة، المحادثات، صفحة الإبلاغ نفسها
- * - Interstitial: مرة كل بلاغين فقط (ليس كل مرة)
- * - Banner: ثابت أسفل الصفحات الرئيسية فقط
- * - لا إعلانات popup مفاجئة
+ * سياسة الإعلانات:
+ *  ✅ Banner   — Browse + Home فقط
+ *  ✅ Native   — بين بطاقات Browse (كل 5 عناصر)
+ *  ✅ Interstitial — بعد إرسال بلاغ (كل بلاغين + 3 دق cap)
+ *  ✅ Rewarded — ميزات إضافية (اختياري)
+ *  ❌ لا إعلانات في تفاصيل الحالة أو المحادثات
  */
 public class AdsManager {
 
     private static final String TAG = "AdsManager";
-    private static AdsManager instance;
-    private Activity activity;
-    private InterstitialAd mInterstitialAd;
-    private RewardedAd mRewardedAd;
-    private int submitCount = 0;
-    private int navigationCount = 0;
-    private boolean interstitialLoading = false;
-    // Frequency cap: لا interstitial أكثر من مرة كل 3 دقائق
-    private static final long MIN_INTERSTITIAL_INTERVAL_MS = 3 * 60 * 1000L;
-    private long lastInterstitialShownAt = 0L;
 
-    // ══ Test Ad Unit IDs (للتطوير — استبدل عند النشر) ══
+    // ══ Test IDs — استبدل بـ IDs حقيقية من AdMob Console قبل النشر ══
     public static final String BANNER_ID       = "ca-app-pub-3940256099942544/6300978111";
     public static final String INTERSTITIAL_ID = "ca-app-pub-3940256099942544/1033173712";
     public static final String REWARDED_ID     = "ca-app-pub-3940256099942544/5224354917";
     public static final String NATIVE_ID       = "ca-app-pub-3940256099942544/2247696110";
 
-    /** عدد عناصر القائمة بين كل إعلان native */
-    public static final int NATIVE_AD_INTERVAL = 5;
-
-    /** عدد البلاغات بين كل interstitial */
-    private static final int INTERSTITIAL_EVERY_N = 2;
-
+    public static final int  NATIVE_AD_INTERVAL       = 5;
+    private static final int INTERSTITIAL_EVERY_N     = 2;
+    private static final long MIN_INTERSTITIAL_INTERVAL = 3 * 60 * 1000L;
     private static final boolean ADS_ENABLED = true;
+
+    private static AdsManager instance;
+    private Activity activity;
+    private InterstitialAd mInterstitialAd;
+    private RewardedAd     mRewardedAd;
+    private boolean        interstitialLoading = false;
+    private int            submitCount         = 0;
+    private long           lastInterstitialAt  = 0L;
 
     private AdsManager(Activity activity) {
         this.activity = activity;
@@ -58,31 +67,30 @@ public class AdsManager {
 
     public static AdsManager getInstance(Activity activity) {
         if (instance == null) instance = new AdsManager(activity);
-        else instance.activity = activity;
+        else if (activity != null) instance.activity = activity;
         return instance;
     }
 
-    // ═══════════════════════════════════════
-    //  BANNER AD
-    // ═══════════════════════════════════════
+    // ════════════════════════════════════════════════════════
+    //  BANNER
+    // ════════════════════════════════════════════════════════
 
     public void loadBannerAd(AdView bannerView) {
         if (!ADS_ENABLED || bannerView == null) return;
-        AdRequest adRequest = new AdRequest.Builder().build();
-        bannerView.loadAd(adRequest);
+        bannerView.loadAd(new AdRequest.Builder().build());
         bannerView.setAdListener(new AdListener() {
             @Override public void onAdLoaded() {
                 bannerView.setVisibility(View.VISIBLE);
             }
-            @Override public void onAdFailedToLoad(LoadAdError e) {
+            @Override public void onAdFailedToLoad(@NonNull LoadAdError e) {
                 bannerView.setVisibility(View.GONE);
             }
         });
     }
 
-    // ═══════════════════════════════════════
-    //  INTERSTITIAL AD (عند إرسال بلاغ)
-    // ═══════════════════════════════════════
+    // ════════════════════════════════════════════════════════
+    //  INTERSTITIAL
+    // ════════════════════════════════════════════════════════
 
     private void preloadInterstitial() {
         if (!ADS_ENABLED || activity == null || interstitialLoading) return;
@@ -90,95 +98,140 @@ public class AdsManager {
         InterstitialAd.load(activity, INTERSTITIAL_ID,
             new AdRequest.Builder().build(),
             new InterstitialAdLoadCallback() {
-                @Override public void onAdLoaded(@androidx.annotation.NonNull InterstitialAd ad) {
-                    mInterstitialAd = ad;
+                @Override public void onAdLoaded(@NonNull InterstitialAd ad) {
+                    mInterstitialAd     = ad;
                     interstitialLoading = false;
                 }
-                @Override public void onAdFailedToLoad(@androidx.annotation.NonNull LoadAdError e) {
-                    mInterstitialAd = null;
+                @Override public void onAdFailedToLoad(@NonNull LoadAdError e) {
+                    mInterstitialAd     = null;
                     interstitialLoading = false;
                 }
             });
     }
 
-    /**
-     * عرض Interstitial عند إرسال بلاغ (مرة كل بلاغين)
-     * غير مزعج — لا يظهر كل مرة
-     */
+    /** بعد إرسال بلاغ — مرة كل بلاغين */
     public void showInterstitialOnSubmit(Activity caller, Runnable onComplete) {
         if (caller != null) activity = caller;
         submitCount++;
-
-        if (!ADS_ENABLED || mInterstitialAd == null || submitCount % INTERSTITIAL_EVERY_N != 0) {
-            if (onComplete != null) onComplete.run();
-            return;
-        }
-        // Frequency cap: لا تعرض interstitial إذا مضى أقل من 3 دقائق على آخر واحد
-        long now = System.currentTimeMillis();
-        if (now - lastInterstitialShownAt < MIN_INTERSTITIAL_INTERVAL_MS) {
-            if (onComplete != null) onComplete.run();
-            return;
-        }
-
-        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-            @Override public void onAdDismissedFullScreenContent() {
-                lastInterstitialShownAt = System.currentTimeMillis();
-                mInterstitialAd = null;
-                preloadInterstitial();
-                if (onComplete != null) onComplete.run();
-            }
-            @Override public void onAdFailedToShowFullScreenContent(@androidx.annotation.NonNull AdError e) {
-                if (onComplete != null) onComplete.run();
-            }
-        });
-        mInterstitialAd.show(activity);
+        boolean ok = ADS_ENABLED
+            && mInterstitialAd != null
+            && (submitCount % INTERSTITIAL_EVERY_N == 0)
+            && (System.currentTimeMillis() - lastInterstitialAt >= MIN_INTERSTITIAL_INTERVAL);
+        if (!ok) { if (onComplete != null) onComplete.run(); return; }
+        showInterstitialInternal(onComplete);
     }
 
-    /**
-     * عرض Interstitial عند التنقل (مرة كل 3 تنقلات)
-     */
+    /** عند التنقل — مع frequency cap */
     public void showInterstitialAd(Activity caller, Runnable onComplete) {
         if (caller != null) activity = caller;
-        navigationCount++;
+        boolean ok = ADS_ENABLED
+            && mInterstitialAd != null
+            && (System.currentTimeMillis() - lastInterstitialAt >= MIN_INTERSTITIAL_INTERVAL);
+        if (!ok) { if (onComplete != null) onComplete.run(); return; }
+        showInterstitialInternal(onComplete);
+    }
 
-        if (!ADS_ENABLED || mInterstitialAd == null || navigationCount % 3 != 0) {
-            if (onComplete != null) onComplete.run();
-            return;
-        }
-        long now = System.currentTimeMillis();
-        if (now - lastInterstitialShownAt < MIN_INTERSTITIAL_INTERVAL_MS) {
-            if (onComplete != null) onComplete.run();
-            return;
-        }
-
+    private void showInterstitialInternal(Runnable onComplete) {
         mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
             @Override public void onAdDismissedFullScreenContent() {
-                lastInterstitialShownAt = System.currentTimeMillis();
-                mInterstitialAd = null;
+                lastInterstitialAt = System.currentTimeMillis();
+                mInterstitialAd    = null;
                 preloadInterstitial();
                 if (onComplete != null) onComplete.run();
             }
-            @Override public void onAdFailedToShowFullScreenContent(@androidx.annotation.NonNull AdError e) {
+            @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError e) {
+                mInterstitialAd = null;
+                preloadInterstitial();
                 if (onComplete != null) onComplete.run();
             }
         });
         mInterstitialAd.show(activity);
     }
 
-    // ═══════════════════════════════════════
-    //  REWARDED VIDEO AD
-    // ═══════════════════════════════════════
+    // ════════════════════════════════════════════════════════
+    //  NATIVE AD — bindNativeAdToView كامل
+    // ════════════════════════════════════════════════════════
+
+    /**
+     * ربط NativeAd بـ NativeAdView
+     * استدعِ هذا في onBindViewHolder لـ AdViewHolder
+     */
+    public static void bindNativeAdToView(@NonNull NativeAd ad,
+                                          @NonNull NativeAdView adView) {
+        // 1. Headline
+        TextView headline = adView.findViewById(R.id.ad_headline);
+        if (headline != null) {
+            headline.setText(ad.getHeadline());
+            adView.setHeadlineView(headline);
+        }
+
+        // 2. Body
+        TextView body = adView.findViewById(R.id.ad_body);
+        if (body != null) {
+            if (ad.getBody() != null) {
+                body.setText(ad.getBody());
+                body.setVisibility(View.VISIBLE);
+            } else {
+                body.setVisibility(View.GONE);
+            }
+            adView.setBodyView(body);
+        }
+
+        // 3. MediaView
+        MediaView mediaView = adView.findViewById(R.id.ad_media);
+        if (mediaView != null) {
+            adView.setMediaView(mediaView);
+            if (ad.getMediaContent() != null) {
+                mediaView.setMediaContent(ad.getMediaContent());
+                mediaView.setVisibility(View.VISIBLE);
+            } else {
+                mediaView.setVisibility(View.GONE);
+            }
+        }
+
+        // 4. Icon
+        ImageView iconView = adView.findViewById(R.id.ad_icon);
+        if (iconView != null) {
+            NativeAd.Image icon = ad.getIcon();
+            if (icon != null) {
+                iconView.setImageDrawable(icon.getDrawable());
+                iconView.setVisibility(View.VISIBLE);
+            } else {
+                iconView.setVisibility(View.GONE);
+            }
+            adView.setIconView(iconView);
+        }
+
+        // 5. CTA Button
+        Button ctaButton = adView.findViewById(R.id.ad_call_to_action);
+        if (ctaButton != null) {
+            if (ad.getCallToAction() != null) {
+                ctaButton.setText(ad.getCallToAction());
+                ctaButton.setVisibility(View.VISIBLE);
+            } else {
+                ctaButton.setVisibility(View.GONE);
+            }
+            adView.setCallToActionView(ctaButton);
+        }
+
+        // 6. يجب أن يكون آخر خطوة — بعد ربط كل الـ views
+        adView.setNativeAd(ad);
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  REWARDED
+    // ════════════════════════════════════════════════════════
 
     public void loadRewardedAd(OnRewardCallback callback) {
         if (!ADS_ENABLED || activity == null) return;
         RewardedAd.load(activity, REWARDED_ID,
             new AdRequest.Builder().build(),
             new RewardedAdLoadCallback() {
-                @Override public void onAdLoaded(@androidx.annotation.NonNull RewardedAd ad) {
+                @Override public void onAdLoaded(@NonNull RewardedAd ad) {
                     mRewardedAd = ad;
                     if (callback != null) callback.onReady();
                 }
-                @Override public void onAdFailedToLoad(@androidx.annotation.NonNull LoadAdError e) {
+                @Override public void onAdFailedToLoad(@NonNull LoadAdError e) {
                     mRewardedAd = null;
                 }
             });
@@ -193,7 +246,12 @@ public class AdsManager {
         mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
             @Override public void onAdDismissedFullScreenContent() {
                 mRewardedAd = null;
+                // [إصلاح] cast صريح لتجنب الـ ambiguity
                 loadRewardedAd((OnRewardCallback) null);
+            }
+            @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError e) {
+                mRewardedAd = null;
+                if (callback != null) callback.onSkipped();
             }
         });
         mRewardedAd.show(activity, item -> {
@@ -201,56 +259,69 @@ public class AdsManager {
         });
     }
 
-    // ═══════════════════════════════════════
-    //  HELPERS
-    // ═══════════════════════════════════════
+    // ════════════════════════════════════════════════════════
+    //  Position Helpers
+    // ════════════════════════════════════════════════════════
 
-    /**
-     * هل هذا الموضع في القائمة يجب أن يكون إعلان؟
-     * يُستخدم في BrowseActivity لعرض إعلانات بين الحالات
-     */
     public static boolean isAdPosition(int position) {
-        return ADS_ENABLED && position > 0 && (position + 1) % NATIVE_AD_INTERVAL == 0;
+        return ADS_ENABLED && position > 0
+            && (position + 1) % NATIVE_AD_INTERVAL == 0;
     }
 
-    /**
-     * حساب الموضع الحقيقي في البيانات (بعد استثناء مواضع الإعلانات)
-     */
     public static int getDataPosition(int adapterPosition) {
         if (!ADS_ENABLED) return adapterPosition;
-        int adsBefore = adapterPosition / NATIVE_AD_INTERVAL;
-        return adapterPosition - adsBefore;
+        return adapterPosition - (adapterPosition / NATIVE_AD_INTERVAL);
     }
 
-    /**
-     * حساب حجم الـ adapter (بيانات + إعلانات)
-     */
     public static int getAdapterCount(int dataCount) {
         if (!ADS_ENABLED || dataCount == 0) return dataCount;
-        int ads = dataCount / (NATIVE_AD_INTERVAL - 1);
-        return dataCount + ads;
+        return dataCount + (dataCount / (NATIVE_AD_INTERVAL - 1));
     }
 
     public void destroy() { instance = null; }
 
-    // ══ Callbacks ══
+    // ════════════════════════════════════════════════════════
+    //  Interfaces
+    // ════════════════════════════════════════════════════════
+
     public interface OnRewardCallback {
-        default void onReady() {}
+        default void onReady()    {}
         default void onRewarded() {}
-        default void onSkipped() {}
+        default void onSkipped()  {}
     }
 
-    public interface OnInterstitialLoadedListener { void onLoaded(); }
-    public interface OnRewardedAdLoadedListener   { void onLoaded(); }
-    public interface OnUserEarnedRewardListener   { void onRewardEarned(); }
+    public interface NativeAdsLoadedCallback {
+        void onLoaded(java.util.List<NativeAd> ads);
+    }
 
-    // Legacy compatibility
-    public void loadInterstitialAd(OnInterstitialLoadedListener l) { preloadInterstitial(); }
-    public void showInterstitialAd() { showInterstitialAd(null, null); }
-    public void loadRewardedAd(OnRewardedAdLoadedListener l) { loadRewardedAd((OnRewardCallback) null); }
-    public void showRewardedAd(OnUserEarnedRewardListener l) {
-        showRewardedAd(null, new OnRewardCallback() {
-            @Override public void onRewarded() { if (l != null) l.onRewardEarned(); }
+    // ════════════════════════════════════════════════════════
+    //  Legacy compatibility — بدون overloads متعارضة
+    //  [إصلاح] الـ Legacy methods أصبحت محددة بـ cast صريح
+    // ════════════════════════════════════════════════════════
+
+    /** @deprecated استخدم loadRewardedAd(OnRewardCallback) */
+    @Deprecated
+    public void loadRewardedAdLegacy(Runnable onLoaded) {
+        loadRewardedAd(new OnRewardCallback() {
+            @Override public void onReady() {
+                if (onLoaded != null) onLoaded.run();
+            }
         });
+    }
+
+    /** @deprecated استخدم showRewardedAd(Activity, OnRewardCallback) */
+    @Deprecated
+    public void showRewardedAdLegacy(Runnable onRewarded) {
+        showRewardedAd(null, new OnRewardCallback() {
+            @Override public void onRewarded() {
+                if (onRewarded != null) onRewarded.run();
+            }
+        });
+    }
+
+    /** @deprecated استخدم showInterstitialAd(Activity, Runnable) */
+    @Deprecated
+    public void showInterstitialAd() {
+        showInterstitialAd(null, null);
     }
 }

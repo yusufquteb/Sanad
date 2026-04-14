@@ -15,8 +15,8 @@ android {
         applicationId "com.missingpersons.app"
         minSdk 24
         targetSdk 35
-        versionCode 9
-        versionName "1.7.9"
+        versionCode 10       // [7.4] رقع الإصدار لـ Play Store
+        versionName "2.0.0"  // [7.4] إصدار المرحلة 6 و7
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
@@ -24,21 +24,30 @@ android {
             }
         }
         vectorDrawables.useSupportLibrary = true
-        
     }
-    
-    
 
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // [7.4] Firebase Crashlytics في release فقط
+            firebaseCrashlytics {
+                mappingFileUploadEnabled true
+            }
         }
-        debug { debuggable true }
+        debug {
+            debuggable true
+            // Crashlytics disabled in debug لتسريع البناء
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
+        }
     }
 
-    buildFeatures { viewBinding true }
+    buildFeatures {
+        viewBinding true
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -55,6 +64,19 @@ android {
 
     // TFLite
     androidResources { noCompress 'tflite' }
+
+    // [7.4] Bundle optimization لـ Play Store
+    bundle {
+        language {
+            enableSplit = true   // حزمة منفصلة لكل لغة
+        }
+        density {
+            enableSplit = true   // حزمة منفصلة لكل كثافة شاشة
+        }
+        abi {
+            enableSplit = true   // حزمة منفصلة لكل ABI
+        }
+    }
 }
 
 dependencies {
@@ -69,8 +91,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata:2.8.7'
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
 
-    // ─── Material 3 (1.12.0 = أحدث إصدار stable) ───────────────
-    // يدعم جميع shape tokens: Corner.ExtraSmall/Large/Full
+    // Material 3
     implementation 'com.google.android.material:material:1.12.0'
 
     // Firebase BOM
@@ -87,6 +108,10 @@ dependencies {
     // Google Services
     implementation 'com.google.android.gms:play-services-auth:21.3.0'
     implementation 'com.google.android.gms:play-services-location:21.3.0'
+
+    // [7.4] Play Core — In-App Update & Review
+    implementation 'com.google.android.play:app-update:2.1.0'
+    implementation 'com.google.android.play:review:2.0.1'
 
     // OSMDroid
     implementation 'org.osmdroid:osmdroid-android:6.1.20'

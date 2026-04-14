@@ -1,0 +1,124 @@
+rules_version = '2';
+
+// ══════════════════════════════════════════════════════════════
+//  Firebase Storage Rules — Sanad App
+//  [المرحلة 7] Production Security
+// ══════════════════════════════════════════════════════════════
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ── دالة مساعدة: هل هو أدمن؟ ──────────────────────────
+    // ملاحظة: Firebase Storage لا تقرأ من Realtime Database
+    // نستخدم Custom Claims عوضاً عن ذلك.
+    // في Auth Console → لكل أدمن أضف:  { "role": "admin" }
+    function isAdmin() {
+      return request.auth.token.role == 'admin'
+          || request.auth.token.role == 'manager';
+    }
+
+    function isAuthenticated() {
+      return request.auth != null && !request.auth.token.firebase.sign_in_provider.matches('anonymous');
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isVideo() {
+      return request.resource.contentType.matches('video/.*');
+    }
+
+    // ── الحد الأقصى للصور: 5 MB ─────────────────────────
+    function isValidImageSize() {
+      return request.resource.size <= 5 * 1024 * 1024;
+    }
+
+    // ── الحد الأقصى للفيديو: 50 MB ──────────────────────
+    function isValidVideoSize() {
+      return request.resource.size <= 50 * 1024 * 1024;
+    }
+
+    // ════════════════════════════════════════════════════
+    //  صور البلاغات: reports/{reportId}/{filename}
+    // ════════════════════════════════════════════════════
+    match /reports/{reportId}/{filename} {
+      // القراءة: أي مستخدم مسجل
+      allow read: if request.auth != null;
+
+      // الكتابة: المستخدم المسجل فقط، صور بحجم ≤ 5MB
+      allow write: if isAuthenticated()
+                   && isImage()
+                   && isValidImageSize();
+
+      // الحذف: الأدمن فقط
+      allow delete: if isAdmin();
+    }
+
+    // ════════════════════════════════════════════════════
+    //  صور الأشخاص الموجودين: found_persons/{foundId}/{filename}
+    // ════════════════════════════════════════════════════
+    match /found_persons/{foundId}/{filename} {
+      allow read:   if request.auth != null;
+      allow write:  if isAuthenticated()
+                    && isImage()
+                    && isValidImageSize();
+      allow delete: if isAdmin();
+    }
+
+    // ════════════════════════════════════════════════════
+    //  صور المستخدمين: users/{uid}/profile.jpg
+    // ════════════════════════════════════════════════════
+    match /users/{uid}/{filename} {
+      // المستخدم يقرأ صورته فقط، والأدمن يقرأ الكل
+      allow read: if request.auth != null
+                  && (request.auth.uid == uid || isAdmin());
+
+      // المستخدم يكتب صورته فقط
+      allow write: if isAuthenticated()
+                   && request.auth.uid == uid
+                   && isImage()
+                   && isValidImageSize();
+
+      allow delete: if request.auth.uid == uid || isAdmin();
+    }
+
+    // ════════════════════════════════════════════════════
+    //  صور قصص النجاح: success_stories/{storyId}/{filename}
+    // ════════════════════════════════════════════════════
+    match /success_stories/{storyId}/{filename} {
+      allow read:   if request.auth != null;
+      allow write:  if isAdmin() && isImage() && isValidImageSize();
+      allow delete: if isAdmin();
+    }
+
+    // ════════════════════════════════════════════════════
+    //  Chat media: chats/{chatId}/{filename}
+    // ════════════════════════════════════════════════════
+    match /chats/{chatId}/{filename} {
+      // أطراف المحادثة فقط
+      allow read:  if request.auth != null
+                   && chatId.matches('.*' + request.auth.uid + '.*');
+      allow write: if isAuthenticated()
+                   && chatId.matches('.*' + request.auth.uid + '.*')
+                   && (isImage() || isVideo())
+                   && (isValidImageSize() || isValidVideoSize());
+    }
+
+    // ════════════════════════════════════════════════════
+    //  QR & PDF exports: exports/{uid}/{filename}
+    // ════════════════════════════════════════════════════
+    match /exports/{uid}/{filename} {
+      allow read:   if request.auth != null && request.auth.uid == uid;
+      allow write:  if isAuthenticated() && request.auth.uid == uid;
+      allow delete: if request.auth.uid == uid;
+    }
+
+    // ════════════════════════════════════════════════════
+    //  كل شيء آخر: ممنوع
+    // ════════════════════════════════════════════════════
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
