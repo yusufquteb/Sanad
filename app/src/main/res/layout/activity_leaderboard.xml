@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F7FA"
+    android:layoutDirection="rtl">
+
+    <!-- Header أزرق -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_home_header"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_leaderboard"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="🏆 لوحة المتصدرين"
+            app:titleTextColor="#FFFFFF"
+            app:navigationIconTint="#FFFFFF"/>
+
+        <!-- بادج مرتبتي -->
+        <TextView
+            android:id="@+id/tv_my_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="مرتبتك: —"
+            android:textSize="12sp"
+            android:textColor="#CCFFFFFF"
+            android:layout_marginBottom="12dp"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- LOADING -->
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progress_leaderboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="24dp"
+                android:visibility="gone"
+                app:indicatorColor="#1565C0"
+                app:trackColor="#E8EAFF"
+                app:indicatorSize="40dp"/>
+
+            <!-- ══ PODIUM ══ -->
+            <LinearLayout
+                android:id="@+id/ll_top3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="220dp"
+                android:orientation="horizontal"
+                android:gravity="bottom|center_horizontal"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="0dp"
+                android:background="@drawable/bg_home_header">
+
+                <!-- المركز الثاني -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView android:id="@+id/tv_top2_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:textStyle="bold" android:textColor="#1B2A6B" android:gravity="center" android:maxLines="1" android:layout_marginBottom="4dp"/>
+                    <de.hdodenhof.circleimageview.CircleImageView android:id="@+id/iv_top2" android:layout_width="44dp" android:layout_height="44dp" app:civ_border_width="2dp" app:civ_border_color="#9E9E9E" android:src="@drawable/ic_person"/>
+                    <TextView android:id="@+id/tv_top2_pts" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="#888888" android:layout_marginTop="4dp"/>
+                    <LinearLayout android:layout_width="72dp" android:layout_height="64dp" android:gravity="center" android:background="@drawable/bg_podium_silver" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🥈" android:textSize="22sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- المركز الأول -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView android:id="@+id/tv_top1_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textStyle="bold" android:textColor="#F57F17" android:gravity="center" android:maxLines="1" android:layout_marginBottom="4dp"/>
+                    <de.hdodenhof.circleimageview.CircleImageView android:id="@+id/iv_top1" android:layout_width="54dp" android:layout_height="54dp" app:civ_border_width="3dp" app:civ_border_color="#FFD600" android:src="@drawable/ic_person"/>
+                    <TextView android:id="@+id/tv_top1_pts" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:textColor="#F57F17" android:textStyle="bold" android:layout_marginTop="4dp"/>
+                    <LinearLayout android:layout_width="80dp" android:layout_height="84dp" android:gravity="center" android:background="@drawable/bg_podium_gold" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🥇" android:textSize="28sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- المركز الثالث -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView android:id="@+id/tv_top3_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="11sp" android:textStyle="bold" android:textColor="#1B2A6B" android:gravity="center" android:maxLines="1" android:layout_marginBottom="4dp"/>
+                    <de.hdodenhof.circleimageview.CircleImageView android:id="@+id/iv_top3" android:layout_width="38dp" android:layout_height="38dp" app:civ_border_width="2dp" app:civ_border_color="#CD7F32" android:src="@drawable/ic_person"/>
+                    <TextView android:id="@+id/tv_top3_pts" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:textColor="#888888" android:layout_marginTop="4dp"/>
+                    <LinearLayout android:layout_width="64dp" android:layout_height="50dp" android:gravity="center" android:background="@drawable/bg_podium_bronze" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🥉" android:textSize="18sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ══ LIST ══ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_leaderboard_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:id="@+id/layout_leaderboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

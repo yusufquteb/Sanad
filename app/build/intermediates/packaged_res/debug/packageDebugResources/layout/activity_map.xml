@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- OSMDroid Map -->
+    <org.osmdroid.views.MapView
+        android:id="@+id/osm_map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!-- Proximity alert -->
+    <TextView
+        android:id="@+id/tv_nearby_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="#CC1565C0"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_gravity="top"/>
+
+    <!-- Pin pick instructions -->
+    <TextView
+        android:id="@+id/tv_pick_instruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="14dp"
+        android:background="#CC004D40"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_gravity="top"/>
+
+    <!-- Filter chips — floating panel -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_filter_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="72dp"
+        android:padding="8dp"
+        android:background="#F0FFFFFF"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="الكل"
+            android:checked="true"
+            style="@style/Widget.Material3.Chip.Filter"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_missing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="مفقود"
+            style="@style/Widget.Material3.Chip.Filter"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="معثور عليه"
+            style="@style/Widget.Material3.Chip.Filter"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ذكر"
+            style="@style/Widget.Material3.Chip.Filter"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="أنثى"
+            style="@style/Widget.Material3.Chip.Filter"/>
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- Confirm pin button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_confirm_pin"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="80dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="تأكيد الموقع المحدد"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:cornerRadius="12dp"
+        android:backgroundTint="#FF1B5E20"/>
+
+    <!-- FABs -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_gov_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="88dp"
+        android:src="@android:drawable/ic_menu_mapmode"
+        app:tint="@color/white"
+        app:backgroundTint="@color/md_primary"
+        android:contentDescription="فلتر المحافظة"/>
+
+    <!-- خريطة حرارية -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_heatmap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="160dp"
+        android:src="@android:drawable/ic_dialog_map"
+        app:tint="@color/white"
+        app:backgroundTint="#E65100"
+        android:contentDescription="خريطة حرارية"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_menu_mylocation"
+        app:tint="@color/white"
+        app:backgroundTint="@color/md_primary"/>
+
+    <!-- ══ Bottom Sheet ══ -->
+    <LinearLayout
+        android:id="@+id/bottom_sheet_case"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/md_surface"
+        android:paddingTop="8dp"
+        android:paddingBottom="28dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp">
+
+        <!-- Drag handle -->
+        <View
+            android:layout_width="36dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="14dp"
+            android:background="@color/md_outline_variant"/>
+
+        <!-- Name -->
+        <TextView
+            android:id="@+id/bs_tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/md_on_surface"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- Address -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_map"
+                app:tint="@color/md_on_surface_variant"
+                android:contentDescription="@null"
+                android:layout_marginEnd="6dp"/>
+            <TextView
+                android:id="@+id/bs_tv_addr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/md_on_surface_variant"/>
+        </LinearLayout>
+
+        <!-- Action buttons — 3 equal columns -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bs_btn_details"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:text="التفاصيل"
+                android:textSize="13sp"
+                style="@style/Widget.Material3.Button.TonalButton"
+                app:backgroundTint="@color/md_primary_container"
+                android:textColor="@color/md_on_primary_container"
+                app:cornerRadius="12dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bs_btn_navigate"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="5dp"
+                android:text="الملاحة"
+                android:textSize="13sp"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                app:strokeColor="@color/md_outline_variant"
+                app:cornerRadius="12dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bs_btn_whatsapp"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:text="واتساب"
+                android:textSize="13sp"
+                android:backgroundTint="@color/whatsapp_green"
+                android:textColor="@color/white"
+                app:cornerRadius="12dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

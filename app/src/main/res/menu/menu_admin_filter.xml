@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  menu_admin_filter.xml
+  مطلوب بواسطة activity_admin.xml → app:menu="@menu/menu_admin_filter"
+  يحتوي على: أيقونة Filter + أيقونة Refresh
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_filter"
+        android:title="تصفية"
+        android:icon="@drawable/ic_result"
+        android:contentDescription="فلترة البلاغات"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_refresh"
+        android:title="تحديث"
+        android:icon="@drawable/ic_refresh"
+        android:contentDescription="تحديث القائمة"
+        app:showAsAction="ifRoom"/>
+
+</menu>

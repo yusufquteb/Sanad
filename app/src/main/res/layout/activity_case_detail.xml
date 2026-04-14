@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_background">
+
+    <!-- ══ CollapsingToolbar with hero image ══ -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/md_surface"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="@color/md_surface"
+            app:expandedTitleTextAppearance="@android:style/TextAppearance.DeviceDefault.Large">
+
+            <!-- Hero image -->
+            <ImageView
+                android:id="@+id/iv_detail_main"
+                android:contentDescription="صورة الشخص المفقود"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@color/md_surface_variant"
+                app:layout_collapseMode="parallax"/>
+
+            <!-- Dark gradient over image bottom -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/gradient_bottom"
+                app:layout_collapseMode="parallax"/>
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar_case_detail"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="تفاصيل الحالة"
+                app:titleTextColor="@color/white"
+                app:navigationIconTint="@color/white"
+                android:background="#00000000"
+                app:layout_collapseMode="pin"/>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- ══ Main scrollable content ══ -->
+    <androidx.core.widget.NestedScrollView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/md_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:paddingBottom="32dp">
+
+            <!-- ── Additional photos strip ── -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginBottom="10dp">
+                <LinearLayout
+                    android:id="@+id/ll_detail_photos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"/>
+            </HorizontalScrollView>
+
+            <!-- ── Name + basic info card ── -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/md_surface"
+                app:strokeColor="@color/md_outline_variant"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_detail_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/md_on_surface"
+                        android:layout_marginBottom="6dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_map"
+                            app:tint="@color/md_on_surface_variant"
+                            android:contentDescription="@null"
+                            android:layout_marginEnd="6dp"/>
+                        <TextView
+                            android:id="@+id/tv_detail_addr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="@color/md_on_surface_variant"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="6dp">
+                        <TextView
+                            android:id="@+id/tv_detail_age"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="14sp"
+                            android:textColor="@color/md_on_surface_variant"/>
+                        <TextView
+                            android:id="@+id/tv_detail_gender"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="14sp"
+                            android:textColor="@color/md_on_surface_variant"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_detail_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@color/md_outline"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_detail_found_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/color_found"
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── Chat button ── -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_chat"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="تحدث مع صاحب البلاغ"
+                android:visibility="gone"
+                app:cornerRadius="12dp"
+                android:layout_marginBottom="4dp"
+                style="@style/Widget.Material3.Button"/>
+
+            <!-- ── زر إضافة تحديث — لصاحب البلاغ فقط ── -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_update"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="📝 إضافة تحديث للبلاغ"
+                android:visibility="gone"
+                app:cornerRadius="12dp"
+                android:layout_marginBottom="4dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+            <TextView
+                android:id="@+id/tv_chat_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/md_outline"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- ── Share buttons ── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="6dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_share_report"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="مشاركة"
+                    android:textSize="13sp"
+                    android:layout_marginEnd="6dp"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    app:cornerRadius="12dp"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_export_pdf"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="تصدير PDF"
+                    android:textSize="13sp"
+                    android:layout_marginStart="6dp"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    app:cornerRadius="12dp"/>
+            </LinearLayout>
+
+            <!-- ── Bookmark ── -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_bookmark"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="🔖 حفظ"
+                android:textSize="13sp"
+                android:layout_marginBottom="6dp"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                app:cornerRadius="12dp"/>
+
+            <!-- ── WhatsApp ── -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_whatsapp_share"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="مشاركة على واتساب"
+                android:textSize="14sp"
+                android:backgroundTint="@color/whatsapp_green"
+                android:textColor="@color/white"
+                android:layout_marginBottom="12dp"
+                app:icon="@drawable/ic_whatsapp"
+                app:iconGravity="textStart"
+                app:iconTint="@color/white"
+                app:cornerRadius="12dp"
+                android:contentDescription="مشاركة البلاغ على واتساب"/>
+
+            <!-- ══════════════════════════════════════════════════════ -->
+            <!-- [مرحلة 2.2] Match Confidence Container                -->
+            <!-- يُملأ بواسطة MatchConfidenceHelper — لصاحب البلاغ    -->
+            <!-- والمدير فقط، يظهر فارغاً للمستخدمين العاديين         -->
+            <!-- ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_match_confidence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/md_surface"
+                app:strokeColor="@color/md_outline_variant"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_match_confidence_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══ Timeline card ══ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/md_surface"
+                app:strokeColor="@color/md_outline_variant"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="سجل البلاغ"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/md_primary"
+                        android:layout_marginBottom="12dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_timeline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══ QR Code ══ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/md_surface"
+                app:strokeColor="@color/md_outline_variant"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="QR Code للبلاغ"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/md_on_surface"
+                        android:layout_marginBottom="6dp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_qr_code"
+                        android:importantForAccessibility="no"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_marginBottom="6dp"
+                        android:contentDescription="@null"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="امسح للوصول للتفاصيل"
+                        android:textSize="11sp"
+                        android:textColor="@color/md_outline"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══ Safety warning ══ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/md_tertiary_container"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tv_safety_warning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:textColor="@color/md_on_tertiary_container"
+                    android:textSize="12sp"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══ أدوات الأدمن ══ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp"
+                app:cardBackgroundColor="#FFF3E0">
+
+                <LinearLayout
+                    android:id="@+id/layout_admin_actions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⚙️ أدوات الأدمن"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#E65100"
+                        android:layout_marginBottom="10dp"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══ تقييم المُبلِّغ ══ -->
+            <TextView
+                android:id="@+id/btn_rate_reporter"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="⭐ قيّم المُبلِّغ"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#1565C0"
+                android:gravity="center"
+                android:background="@drawable/bg_chip_inactive"
+                android:layout_marginHorizontal="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <!-- ══ قسم التعليقات ══ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/tv_comments_count"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💬 التعليقات"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface"/>
+
+                        <TextView
+                            android:id="@+id/btn_add_comment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="✏️ أضف تعليقاً"
+                            android:textSize="12sp"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold"
+                            android:clickable="true"
+                            android:focusable="true"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?attr/colorOutlineVariant"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"/>
+
+                    <TextView
+                        android:id="@+id/tv_comments_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="لا توجد تعليقات بعد — كن أول من يعلّق"
+                        android:textSize="13sp"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:gravity="center"
+                        android:padding="20dp"
+                        android:visibility="visible"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

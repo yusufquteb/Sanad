@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <!-- ─── AppBar ─── -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:liftOnScroll="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_admin_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="لوحة التحكم"
+            app:navigationIconTint="?attr/colorOnSurface"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- ─── Scroll Content ─── -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/dash_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="96dp">
+
+            <!-- ─── Loading Indicator ─── -->
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"/>
+
+            <!-- ══════════════════════════════ -->
+            <!-- SECTION 1: Hero Header          -->
+            <!-- ══════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="0dp"
+                android:layout_marginBottom="0dp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/md_primary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_header_gradient"
+                    android:paddingHorizontal="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="28dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_dash_greeting"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="مرحباً 👋"
+                                android:textSize="14sp"
+                                android:textColor="#CCFFFFFF"
+                                android:fontFamily="@font/cairo"/>
+
+                            <TextView
+                                android:id="@+id/tv_dash_admin_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="المسؤول"
+                                android:textSize="22sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/cairo"/>
+
+                            <TextView
+                                android:id="@+id/tv_dash_role_badge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="12sp"
+                                android:textColor="#CCFFFFFF"
+                                android:fontFamily="@font/cairo"
+                                android:visibility="gone"/>
+
+                            <TextView
+                                android:id="@+id/tv_dash_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#AAFFFFFF"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/cairo"/>
+                        </LinearLayout>
+
+                        <!-- Badge إشعارات جديدة -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_new_notif"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="#33FFFFFF"
+                            android:visibility="gone">
+                            <TextView
+                                android:id="@+id/tv_new_notif_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="6dp"
+                                android:text="0 جديد"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/cairo"/>
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══════════════════════════════ -->
+            <!-- SECTION 2: KPI Cards           -->
+            <!-- ══════════════════════════════ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp">
+
+                <!-- Hero Card — إجمالي البلاغات (Full Width) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="@color/md_primary_container"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        android:gravity="center_vertical">
+
+                        <!-- icon circle -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            app:cardCornerRadius="28dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="@color/md_primary"
+                            android:layout_marginEnd="16dp">
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_search_person"
+                                app:tint="@color/white"
+                                android:contentDescription="@null"/>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:text="إجمالي البلاغات"
+                                android:textSize="13sp"
+                                android:textColor="@color/md_on_primary_container"
+                                android:alpha="0.8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/tv_dash_total"
+                                android:text="—"
+                                android:textSize="36sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/md_on_primary_container"
+                                android:fontFamily="@font/cairo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_arrow_forward"
+                            app:tint="@color/md_on_primary_container"
+                            android:alpha="0.5"
+                            android:contentDescription="@null"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- 3 Small KPI Cards Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- معلقة -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_dash_pending"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="1dp"
+                        app:cardBackgroundColor="@color/md_tertiary_container"
+                        android:foreground="?attr/selectableItemBackground">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_notification"
+                                app:tint="@color/md_on_tertiary_container"
+                                android:contentDescription="@null"
+                                android:layout_marginBottom="6dp"/>
+                            <TextView
+                                android:id="@+id/tv_dash_pending"
+                                android:text="—"
+                                android:textSize="28sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/md_on_tertiary_container"
+                                android:fontFamily="@font/cairo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:text="معلقة"
+                                android:textSize="11sp"
+                                android:textColor="@color/md_on_tertiary_container"
+                                android:alpha="0.75"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- معتمدة -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="3dp"
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="1dp"
+                        app:cardBackgroundColor="@color/md_secondary_container"
+                        android:foreground="?attr/selectableItemBackground">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_found"
+                                app:tint="@color/md_on_secondary_container"
+                                android:contentDescription="@null"
+                                android:layout_marginBottom="6dp"/>
+                            <TextView
+                                android:id="@+id/tv_dash_approved"
+                                android:text="—"
+                                android:textSize="28sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/md_on_secondary_container"
+                                android:fontFamily="@font/cairo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:text="معتمدة"
+                                android:textSize="11sp"
+                                android:textColor="@color/md_on_secondary_container"
+                                android:alpha="0.75"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- محلولة -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_dash_stories"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        app:cardCornerRadius="18dp"
+                        app:cardElevation="1dp"
+                        app:cardBackgroundColor="?attr/colorSurfaceVariant"
+                        app:strokeColor="?attr/colorOutlineVariant"
+                        app:strokeWidth="1dp"
+                        android:foreground="?attr/selectableItemBackground">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_result"
+                                app:tint="?attr/colorPrimary"
+                                android:contentDescription="@null"
+                                android:layout_marginBottom="6dp"/>
+                            <TextView
+                                android:id="@+id/tv_dash_resolved"
+                                android:text="—"
+                                android:textSize="28sp"
+                                android:textStyle="bold"
+                                android:textColor="?attr/colorPrimary"
+                                android:fontFamily="@font/cairo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:text="محلولة"
+                                android:textSize="11sp"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <!-- وجدوا شخصاً — wide card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="?attr/colorSurfaceVariant">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_check_circle_green"
+                            android:contentDescription="@null"
+                            android:layout_marginEnd="14dp"/>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:text="وجدوا شخصاً"
+                                android:textSize="12sp"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/tv_dash_found"
+                                android:text="—"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/success_color"
+                                android:fontFamily="@font/cairo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <TextView
+                            android:text="تم الإيجاد ✅"
+                            android:textSize="11sp"
+                            android:textColor="@color/success_color"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ══════════════════════════════ -->
+                <!-- SECTION 3: Progress Bars       -->
+                <!-- ══════════════════════════════ -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:text="توزيع البلاغات"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:fontFamily="@font/cairo"/>
+
+                        <!-- معلقة -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="14dp">
+                            <TextView
+                                android:text="معلقة"
+                                android:textSize="12sp"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:minWidth="64dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <com.google.android.material.progressindicator.LinearProgressIndicator
+                                android:id="@+id/pb_pending"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginHorizontal="10dp"
+                                app:trackCornerRadius="4dp"
+                                app:indicatorColor="@color/md_tertiary"
+                                app:trackColor="@color/md_tertiary_container"/>
+                            <TextView
+                                android:id="@+id/tv_pending_pct"
+                                android:text="0%"
+                                android:textSize="11sp"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:minWidth="44dp"
+                                android:gravity="end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <!-- معتمدة -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="14dp">
+                            <TextView
+                                android:text="معتمدة"
+                                android:textSize="12sp"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:minWidth="64dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <com.google.android.material.progressindicator.LinearProgressIndicator
+                                android:id="@+id/pb_approved"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginHorizontal="10dp"
+                                app:trackCornerRadius="4dp"
+                                app:indicatorColor="@color/md_secondary"
+                                app:trackColor="@color/md_secondary_container"/>
+                            <TextView
+                                android:id="@+id/tv_approved_pct"
+                                android:text="0%"
+                                android:textSize="11sp"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:minWidth="44dp"
+                                android:gravity="end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <!-- محلولة -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+                            <TextView
+                                android:text="محلولة"
+                                android:textSize="12sp"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:minWidth="64dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <com.google.android.material.progressindicator.LinearProgressIndicator
+                                android:id="@+id/pb_resolved"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginHorizontal="10dp"
+                                app:trackCornerRadius="4dp"
+                                app:indicatorColor="@color/md_primary"
+                                app:trackColor="@color/md_primary_container"/>
+                            <TextView
+                                android:id="@+id/tv_resolved_pct"
+                                android:text="0%"
+                                android:textSize="11sp"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:minWidth="44dp"
+                                android:gravity="end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ══════════════════════════════ -->
+                <!-- SECTION 4: Quick Actions 2×2   -->
+                <!-- ══════════════════════════════ -->
+                <TextView
+                    android:text="إجراءات سريعة"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/cairo"/>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- البلاغات المعلقة -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_dash_pending_action"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        android:foreground="?attr/selectableItemBackground">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="12dp">
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_notification"
+                                app:tint="?attr/colorPrimary"
+                                android:contentDescription="@null"/>
+                            <TextView
+                                android:text="البلاغات المعلقة"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textColor="?attr/colorOnSurface"
+                                android:gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/cairo"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- الأعضاء -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_dash_members"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        android:foreground="?attr/selectableItemBackground">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="12dp">
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_person"
+                                app:tint="?attr/colorPrimary"
+                                android:contentDescription="@null"/>
+                            <TextView
+                                android:text="الأعضاء"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textColor="?attr/colorOnSurface"
+                                android:gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/cairo"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- المديرون -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_dash_managers"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:visibility="gone">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="12dp">
+                            <TextView
+                                android:text="المديرون"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textColor="?attr/colorOnSurface"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/cairo"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- الإحصائيات -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_dash_stats"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        android:foreground="?attr/selectableItemBackground">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="12dp">
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_result"
+                                app:tint="?attr/colorPrimary"
+                                android:contentDescription="@null"/>
+                            <TextView
+                                android:text="الإحصائيات"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textColor="?attr/colorOnSurface"
+                                android:gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/cairo"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- قصص النجاح -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_dash_stories_action"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp"
+                        android:foreground="?attr/selectableItemBackground">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="12dp">
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_trophy"
+                                app:tint="?attr/colorPrimary"
+                                android:contentDescription="@null"/>
+                            <TextView
+                                android:text="قصص النجاح"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textColor="?attr/colorOnSurface"
+                                android:gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/cairo"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </GridLayout>
+
+                <!-- ══════════════════════════════ -->
+                <!-- SECTION 5: Recent Reports RV   -->
+                <!-- ══════════════════════════════ -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+                            <TextView
+                                android:text="آخر البلاغات"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:textColor="?attr/colorOnSurface"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/cairo"/>
+                            <TextView
+                                android:id="@+id/tv_see_all_reports"
+                                android:text="عرض الكل ←"
+                                android:textSize="12sp"
+                                android:textColor="?attr/colorPrimary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <!-- Real-time badge -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_realtime_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="@color/color_found_container"
+                            android:visibility="gone">
+                            <TextView
+                                android:id="@+id/tv_realtime_badge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="5dp"
+                                android:text="🔴 مباشر"
+                                android:textSize="11sp"
+                                android:textColor="@color/success_color"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/cairo"/>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_recent_reports"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"/>
+
+                        <TextView
+                            android:id="@+id/tv_no_reports"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="لا توجد بلاغات بعد"
+                            android:textSize="13sp"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:visibility="gone"
+                            android:fontFamily="@font/cairo"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ══════════════════════════════ -->
+                <!-- SECTION 6: Admin Controls      -->
+                <!-- ══════════════════════════════ -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="⚙️ أدوات التحكم"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="14dp"
+                            android:fontFamily="@font/cairo"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_set_daily_limit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="📊 تعديل الحد اليومي للبلاغات"
+                            android:layout_marginBottom="8dp"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_broadcast"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="📢 إرسال إشعار جماعي"
+                            android:layout_marginBottom="8dp"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_disable_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="🚫 تعطيل حساب عضو"
+                            android:layout_marginBottom="8dp"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_chat_ttl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="💬 مدة احتفاظ رسائل الشات"
+                            android:layout_marginBottom="8dp"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                        <LinearLayout
+                            android:id="@+id/layout_admin_controls"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.chip.ChipGroup
+                                android:id="@+id/chip_group_perms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

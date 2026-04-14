@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <attr format="reference" name="shapeAppearanceOverride"/>
+    <color name="background">#F7F9FC</color>
+    <color name="black">#000000</color>
+    <color name="chip_bg_disabled">#F0F4F8</color>
+    <color name="color_admin">#B71C1C</color>
+    <color name="color_admin_container">#FDECEA</color>
+    <color name="color_found">#1B5E20</color>
+    <color name="color_found_container">#E8F5E9</color>
+    <color name="color_login_bg">#0A1628</color>
+    <color name="color_login_caption">#64B5F6</color>
+    <color name="color_login_hint">#90CAF9</color>
+    <color name="color_login_surface">#0D2144</color>
+    <color name="color_search">#1565C0</color>
+    <color name="color_warning">#E65100</color>
+    <color name="green_dark">#1B5E20</color>
+    <color name="green_light">#E8F5E9</color>
+    <color name="md_background">#F7F9FC</color>
+    <color name="md_error">#C62828</color>
+    <color name="md_error_container">#FDECEA</color>
+    <color name="md_on_error">#FFFFFF</color>
+    <color name="md_on_error_container">#7F0000</color>
+    <color name="md_on_outline">#1A1C1E</color>
+    <color name="md_on_primary">#FFFFFF</color>
+    <color name="md_on_primary_container">#0D3B8A</color>
+    <color name="md_on_secondary">#FFFFFF</color>
+    <color name="md_on_secondary_container">#1E3A7A</color>
+    <color name="md_on_surface">#1A1A2E</color>
+    <color name="md_on_surfaceVariant">@color/md_on_surface_variant</color>
+    <color name="md_on_surface_variant">#64748B</color>
+    <color name="md_on_tertiary">#FFFFFF</color>
+    <color name="md_on_tertiary_container">#1A3A7A</color>
+    <color name="md_outline">#94A3B8</color>
+    <color name="md_outline_variant">#E2E8F0</color>
+    <color name="md_primary">#1565C0</color>
+    <color name="md_primary_container">#E8F0FE</color>
+    <color name="md_secondary">#3E5FA3</color>
+    <color name="md_secondary_container">#EEF2FF</color>
+    <color name="md_surface">#FFFFFF</color>
+    <color name="md_surfaceContainerLow">@color/md_surface_container_low</color>
+    <color name="md_surfaceVariant">@color/md_surface_variant</color>
+    <color name="md_surface_container">#F0F4F8</color>
+    <color name="md_surface_container_high">#E8EDF4</color>
+    <color name="md_surface_container_highest">#E1E8F0</color>
+    <color name="md_surface_container_low">#F7F9FC</color>
+    <color name="md_surface_container_lowest">#FFFFFF</color>
+    <color name="md_surface_variant">#F0F4F8</color>
+    <color name="md_tertiary">#4F6EBC</color>
+    <color name="md_tertiary_container">#F0F4FF</color>
+    <color name="md_theme_light_background">#F7F9FC</color>
+    <color name="md_theme_light_error">#C62828</color>
+    <color name="md_theme_light_errorContainer">#FDECEA</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_onPrimaryContainer">#0D3B8A</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#1A1A2E</color>
+    <color name="md_theme_light_onSurfaceVariant">#64748B</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_outline">#94A3B8</color>
+    <color name="md_theme_light_primary">#1565C0</color>
+    <color name="md_theme_light_primaryContainer">#E8F0FE</color>
+    <color name="md_theme_light_secondary">#3E5FA3</color>
+    <color name="md_theme_light_secondaryContainer">#EEF2FF</color>
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_surfaceVariant">#F0F4F8</color>
+    <color name="md_theme_light_tertiary">#4F6EBC</color>
+    <color name="md_theme_light_tertiaryContainer">#F0F4FF</color>
+    <color name="primary">#1565C0</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="search_color">#1565C0</color>
+    <color name="skeleton_color">#E0E4EA</color>
+    <color name="splash_bg">#1565C0</color>
+    <color name="status_emergency">#C62828</color>
+    <color name="status_emergency_container">#FDECEA</color>
+    <color name="status_emergency_on_container">#7F0000</color>
+    <color name="status_found">#2E7D32</color>
+    <color name="status_found_container">#E8F5E9</color>
+    <color name="status_found_on_container">#1B5E20</color>
+    <color name="status_matched">#F57F17</color>
+    <color name="status_matched_container">#FFF8E1</color>
+    <color name="status_matched_on_container">#E65100</color>
+    <color name="status_missing">#1565C0</color>
+    <color name="status_missing_container">#E8F0FE</color>
+    <color name="status_missing_on_container">#0D3B8A</color>
+    <color name="status_pending">#E65100</color>
+    <color name="status_pending_container">#FBE9E7</color>
+    <color name="status_pending_on_container">#BF360C</color>
+    <color name="status_resolved">#4A148C</color>
+    <color name="status_resolved_container">#EDE7F6</color>
+    <color name="status_resolved_on_container">#311B92</color>
+    <color name="status_sighting">#6A1B9A</color>
+    <color name="status_sighting_container">#F3E5F5</color>
+    <color name="status_sighting_on_container">#4A148C</color>
+    <color name="success_color">#2E7D32</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="whatsapp_green">#25D366</color>
+    <color name="white">#FFFFFF</color>
+    <dimen name="avatar_large">80dp</dimen>
+    <dimen name="avatar_medium">56dp</dimen>
+    <dimen name="avatar_small">40dp</dimen>
+    <dimen name="avatar_xl">96dp</dimen>
+    <dimen name="avatar_xxl">120dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_height_large">56dp</dimen>
+    <dimen name="button_height_small">36dp</dimen>
+    <dimen name="card_elevation">0dp</dimen>
+    <dimen name="card_image_height">88dp</dimen>
+    <dimen name="card_image_large">200dp</dimen>
+    <dimen name="card_image_width">80dp</dimen>
+    <dimen name="card_margin">8dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="content_padding_horizontal">16dp</dimen>
+    <dimen name="content_padding_vertical">16dp</dimen>
+    <dimen name="corner_extra_large">24dp</dimen>
+    <dimen name="corner_extra_small">4dp</dimen>
+    <dimen name="corner_full">100dp</dimen>
+    <dimen name="corner_large">16dp</dimen>
+    <dimen name="corner_medium">12dp</dimen>
+    <dimen name="corner_small">8dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="elevation_level0">0dp</dimen>
+    <dimen name="elevation_level1">1dp</dimen>
+    <dimen name="elevation_level2">3dp</dimen>
+    <dimen name="elevation_level3">6dp</dimen>
+    <dimen name="elevation_level4">8dp</dimen>
+    <dimen name="elevation_level5">12dp</dimen>
+    <dimen name="fab_bottom_margin">80dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="icon_size_large">32dp</dimen>
+    <dimen name="icon_size_medium">24dp</dimen>
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_xl">48dp</dimen>
+    <dimen name="list_item_padding">16dp</dimen>
+    <dimen name="match_progress_corner">3dp</dimen>
+    <dimen name="match_progress_height">6dp</dimen>
+    <dimen name="section_spacing">24dp</dimen>
+    <dimen name="spacing_1">4dp</dimen>
+    <dimen name="spacing_10">40dp</dimen>
+    <dimen name="spacing_12">48dp</dimen>
+    <dimen name="spacing_16">64dp</dimen>
+    <dimen name="spacing_2">8dp</dimen>
+    <dimen name="spacing_3">12dp</dimen>
+    <dimen name="spacing_4">16dp</dimen>
+    <dimen name="spacing_5">20dp</dimen>
+    <dimen name="spacing_6">24dp</dimen>
+    <dimen name="spacing_8">32dp</dimen>
+    <dimen name="stat_card_min_width">100dp</dimen>
+    <dimen name="stat_icon_size">40dp</dimen>
+    <dimen name="text_body_large">16sp</dimen>
+    <dimen name="text_body_medium">14sp</dimen>
+    <dimen name="text_body_small">12sp</dimen>
+    <dimen name="text_display_large">57sp</dimen>
+    <dimen name="text_display_medium">45sp</dimen>
+    <dimen name="text_display_small">36sp</dimen>
+    <dimen name="text_headline_large">32sp</dimen>
+    <dimen name="text_headline_medium">28sp</dimen>
+    <dimen name="text_headline_small">24sp</dimen>
+    <dimen name="text_label_large">14sp</dimen>
+    <dimen name="text_label_medium">12sp</dimen>
+    <dimen name="text_label_small">11sp</dimen>
+    <dimen name="text_title_large">22sp</dimen>
+    <dimen name="text_title_medium">16sp</dimen>
+    <dimen name="text_title_small">14sp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+    <string name="age_cat_adult">بالغ</string>
+    <string name="age_cat_adult_range">من 18 إلى 60 سنة</string>
+    <string name="age_cat_child">طفل</string>
+    <string name="age_cat_child_range">أقل من 18 سنة</string>
+    <string name="age_cat_elder">مسن</string>
+    <string name="age_cat_elder_range">أكثر من 60 سنة</string>
+    <string name="all">الكل</string>
+    <string name="all_governorates">كل المحافظات</string>
+    <string name="app_name">سند | Sanad</string>
+    <string name="app_version_name">1.7.9</string>
+    <string name="btn_advanced_search">بحث متقدم بالاسم والفلاتر</string>
+    <string name="btn_browse_cases">تصفح الحالات</string>
+    <string name="btn_face_search">بحث بالوجه</string>
+    <string name="btn_found_person">وجدت شخصاً</string>
+    <string name="btn_leaderboard">لوحة الأوائل</string>
+    <string name="btn_map">خريطة المفقودين</string>
+    <string name="btn_my_chats">محادثاتي</string>
+    <string name="btn_my_profile">حسابي والإعدادات</string>
+    <string name="btn_report_missing">إبلاغ عن مفقود</string>
+    <string name="btn_sighting">شُفت شخصاً</string>
+    <string name="btn_statistics">إحصائيات</string>
+    <string name="btn_success_stories">قصص النجاح</string>
+    <string name="cancel">إلغاء</string>
+    <string name="cd_case_card">بطاقة مفقود، اضغط للتفاصيل</string>
+    <string name="cd_person_photo">صورة الشخص المفقود</string>
+    <string name="com.google.firebase.crashlytics.mapping_file_id" ns1:ignore="UnusedResources,TypographyDashes" translatable="false">00000000000000000000000000000000</string>
+    <string name="confirm">تأكيد</string>
+    <string name="default_web_client_id" translatable="false">891319690324-9c2a8lnnr0pkbtjbn2lvcjtnetun9nlj.apps.googleusercontent.com</string>
+    <string name="delete">حذف</string>
+    <string name="empty_browse_default">لا توجد بلاغات بعد\nكن أول من يساهم!</string>
+    <string name="empty_browse_filter">🔍 لا توجد نتائج للفلاتر المحددة\nجرّب تغيير الفلاتر أو إعادة ضبطها</string>
+    <string name="empty_browse_offline">📵 أنت غير متصل بالإنترنت\nتعرض آخر البيانات المحفوظة</string>
+    <string name="empty_leaderboard">كن أول من يسجل في لوحة الشرف!\nارفع بلاغات وساعد في إيجاد المفقودين</string>
+    <string name="empty_my_reports">لم ترفع أي بلاغ بعد\nاضغط ＋ لرفع أول بلاغ وساعد في إيجاد مفقود</string>
+    <string name="empty_notifications">لا إشعارات جديدة\nستصلك إشعارات عند وجود تطابق</string>
+    <string name="error">خطأ</string>
+    <string name="export_pdf">تصدير PDF</string>
+    <string name="female">أنثى</string>
+    <string name="filter_governorate">فلتر المحافظة</string>
+    <string name="firebase_database_url" translatable="false">https://running-f6c2f-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">891319690324</string>
+    <string name="google_api_key" translatable="false">AIzaSyATjJ0wWScKZSFU97omUkefXV8Aos8yz6s</string>
+    <string name="google_app_id" translatable="false">1:891319690324:android:2041c7f2ea6783f372f9c1</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyATjJ0wWScKZSFU97omUkefXV8Aos8yz6s</string>
+    <string name="google_storage_bucket" translatable="false">running-f6c2f.firebasestorage.app</string>
+    <string name="guest_banner">أنت تتصفح كزائر — اضغط هنا للتسجيل</string>
+    <string name="home_subtitle">ساعد في إيجاد المفقودين وإعادة لمّ شملهم</string>
+    <string name="home_title">المفقودون</string>
+    <string name="home_what_to_do">ماذا تريد أن تفعل؟</string>
+    <string name="leaderboard_title">لوحة الأوائل</string>
+    <string name="loading">جارٍ التحميل…</string>
+    <string name="login_as_guest">تصفح كزائر (بدون تسجيل)</string>
+    <string name="login_disclaimer_link">📋 الحقوق وإخلاء المسؤولية</string>
+    <string name="login_google">تسجيل الدخول بـ Google</string>
+    <string name="login_guest">تصفح كزائر (بدون تسجيل)</string>
+    <string name="login_privacy_note">🔒 بالاستخدام توافق على شروط الخدمة وسياسة الخصوصية</string>
+    <string name="login_tagline">نساعدك في إيجاد من تبحث عنه</string>
+    <string name="login_with_google">تسجيل الدخول بـ Google</string>
+    <string name="male">ذكر</string>
+    <string name="map_allow">السماح</string>
+    <string name="map_later">لاحقاً</string>
+    <string name="map_permission_msg">يحتاج التطبيق لموقعك لعرض الحالات القريبة منك</string>
+    <string name="map_permission_title">إذن الموقع مطلوب</string>
+    <string name="map_pick_title">اختر الموقع على الخريطة</string>
+    <string name="map_title">خريطة المفقودين</string>
+    <string name="my_reports">بلاغاتي</string>
+    <string name="my_reports_empty">لم ترفع أي بلاغ بعد</string>
+    <string name="onboard_desc_1">منصة مجانية تساعدك في البحث عن الأشخاص المفقودين\nوالتواصل مع أسرهم بأمان</string>
+    <string name="onboard_desc_2">التقط صورة أو اختر من المعرض\nوسيبحث الذكاء الاصطناعي في قاعدة البيانات تلقائياً</string>
+    <string name="onboard_desc_3">أبلغ عن مفقود أو وجدت شخصاً مجهولاً\nكل بلاغ يمكن أن يغيّر حياة أسرة كاملة</string>
+    <string name="onboard_desc_4">عند رفع بلاغ، يحلل النظام تلقائياً ملامح الوجه\nويقارنها مع آلاف البلاغات الأخرى\nلإيجاد أي تطابق محتمل في ثوانٍ</string>
+    <string name="onboard_title_1">ابحث عن المفقودين</string>
+    <string name="onboard_title_2">البحث الذكي بالوجه</string>
+    <string name="onboard_title_3">شارك وساعد</string>
+    <string name="onboard_title_4">كيف يعمل الذكاء الاصطناعي</string>
+    <string name="points_title">نقاطي</string>
+    <string name="profile_about">عن التطبيق</string>
+    <string name="profile_admin">لوحة الإدارة</string>
+    <string name="profile_disclaimer">الحقوق والشروط</string>
+    <string name="profile_language">اللغة</string>
+    <string name="profile_logout">تسجيل الخروج</string>
+    <string name="profile_my_chats">محادثاتي</string>
+    <string name="profile_my_reports">بلاغاتي</string>
+    <string name="profile_notifications">الإشعارات</string>
+    <string name="profile_title">حسابي</string>
+    <string name="project_id" translatable="false">running-f6c2f</string>
+    <string name="report_address">اكتب العنوان التفصيلي</string>
+    <string name="report_camera">كاميرا</string>
+    <string name="report_category">نوع الحالة</string>
+    <string name="report_chat_closed">الشات مغلق</string>
+    <string name="report_chat_open">الشات مفتوح للتواصل</string>
+    <string name="report_city">المدينة / المركز</string>
+    <string name="report_detail_address">العنوان التفصيلي</string>
+    <string name="report_district">الحي / القرية</string>
+    <string name="report_gallery">معرض</string>
+    <string name="report_governorate">المحافظة</string>
+    <string name="report_pending_note">لن يظهر إلا بعد موافقة الإدارة</string>
+    <string name="report_person_age">العمر التقريبي</string>
+    <string name="report_person_name">وصف الشخص</string>
+    <string name="report_photos_hint">الصور (حتى 3 صور، يجب أن تحتوي على وجه)</string>
+    <string name="report_pick_map">اختر الموقع من الخريطة</string>
+    <string name="report_submit">إرسال للمراجعة</string>
+    <string name="report_title">إضافة بلاغ جديد</string>
+    <string name="save">حفظ</string>
+    <string name="search">بحث</string>
+    <string name="share">مشاركة</string>
+    <string name="share_to_whatsapp">مشاركة على واتساب</string>
+    <string name="sighting_desc_hint">وصف الشخص (الملابس، المكان، الحالة...)</string>
+    <string name="sighting_location_hint">الموقع التفصيلي</string>
+    <string name="sighting_submit">إرسال البلاغ</string>
+    <string name="sighting_title">شُفت شخصاً مجهولاً</string>
+    <string name="similar_report_found">يوجد بلاغ مشابه بنسبة %1$s%%\nرقم البلاغ: %2$s\nهل تريد المتابعة؟</string>
+    <string name="splash_tagline">مش لوحدك</string>
+    <string name="stats_title">إحصائيات التطبيق</string>
+    <string name="status_approved">تمت الموافقة</string>
+    <string name="status_closed">مُغلَق</string>
+    <string name="status_edited">تم التعديل</string>
+    <string name="status_pending">قيد المراجعة</string>
+    <string name="step_age_category_subtitle">اختر فئة الشخص المفقود — ستساعدنا في تخصيص الاستمارة</string>
+    <string name="step_age_category_title">الخطوة 1 — الفئة العمرية</string>
+    <string name="stories_title">قصص النجاح</string>
+    <string name="unknown">غير محدد</string>
+    <string name="version">الإصدار 1.7.9</string>
+    <string name="version_disclaimer">الإصدار 1.7.9 — غير ربحي | بدون إعلانات مدفوعة</string>
+    <string name="version_full">الإصدار: 1.7.9 | جميع الحقوق محفوظة © 2025</string>
+    <string name="widget_description">يعرض آخر 3 حالات مفقودين</string>
+    <style name="RoundedImageView" parent="">
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="Shape.M3.ExtraLarge" parent="ShapeAppearance.Material3.Corner.ExtraLarge"/>
+    <style name="Shape.M3.ExtraSmall" parent="ShapeAppearance.Material3.Corner.ExtraSmall"/>
+    <style name="Shape.M3.Full" parent="ShapeAppearance.Material3.Corner.Full"/>
+    <style name="Shape.M3.Large" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="Shape.M3.Medium" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerSize">12dp</item>
+    </style>
+    <style name="Shape.M3.Small" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">8dp</item>
+    </style>
+    <style name="TextAppearance.App.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/md_on_surface</item>
+    </style>
+    <style name="TextAppearance.App.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+    <style name="TextAppearance.App.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+    <style name="TextAppearance.App.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">57sp</item>
+        <item name="android:letterSpacing">-0.025</item>
+    </style>
+    <style name="TextAppearance.App.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">45sp</item>
+    </style>
+    <style name="TextAppearance.App.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+    <style name="TextAppearance.App.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.App.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.App.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.App.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.App.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="TextAppearance.App.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+    <style name="TextAppearance.App.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/md_on_surface</item>
+    </style>
+    <style name="TextAppearance.App.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/md_on_surface</item>
+    </style>
+    <style name="TextAppearance.App.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/md_on_surface</item>
+    </style>
+    <style name="Theme.MissingPersons" parent="Theme.Material3.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="colorOnPrimary">@color/md_on_primary</item>
+        <item name="colorPrimaryContainer">@color/md_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/md_on_primary_container</item>
+
+        <item name="colorSecondary">@color/md_secondary</item>
+        <item name="colorOnSecondary">@color/md_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/md_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/md_on_secondary_container</item>
+
+        <item name="colorTertiary">@color/md_tertiary</item>
+        <item name="colorOnTertiary">@color/md_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/md_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/md_on_tertiary_container</item>
+
+        <item name="colorError">@color/md_error</item>
+        <item name="colorOnError">@color/md_on_error</item>
+        <item name="colorErrorContainer">@color/md_error_container</item>
+        <item name="colorOnErrorContainer">@color/md_on_error_container</item>
+
+        <item name="android:colorBackground">@color/md_background</item>
+        <item name="colorSurface">@color/md_surface</item>
+        <item name="colorOnSurface">@color/md_on_surface</item>
+        <item name="colorSurfaceVariant">@color/md_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/md_on_surface_variant</item>
+        <item name="colorOutline">@color/md_outline</item>
+        <item name="colorOutlineVariant">@color/md_outline_variant</item>
+
+        <item name="android:fontFamily">@font/cairo</item>
+
+        
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.App.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.App.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.App.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.App.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.App.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.App.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.App.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.App.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.App.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.App.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.App.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.App.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.App.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.App.LabelSmall</item>
+
+        <item name="shapeAppearanceSmallComponent">@style/Shape.M3.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/Shape.M3.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/Shape.M3.Large</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#1B2F7A</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <item name="android:layoutDirection">rtl</item>
+        <item name="elevationOverlayEnabled">false</item>
+
+        <item name="materialButtonStyle">@style/Widget.App.Button.Primary</item>
+        <item name="chipStyle">@style/Widget.App.Chip</item>
+        <item name="cardViewStyle">@style/Widget.App.Card</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+    </style>
+    <style name="Theme.MissingPersons.Splash" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">@color/splash_bg</item>
+        <item name="android:statusBarColor">@color/splash_bg</item>
+        <item name="android:navigationBarColor">@color/splash_bg</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+    <style name="Theme.MissingPersons.WithActionBar" parent="Theme.Material3.Light">
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="android:layoutDirection">rtl</item>
+    </style>
+    <style name="Widget.App.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+    <style name="Widget.App.Button.Primary" parent="Widget.Material3.Button">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+    <style name="Widget.App.Button.Small" parent="Widget.Material3.Button.TonalButton">
+        <item name="cornerRadius">8dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+    <style name="Widget.App.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+    <style name="Widget.App.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+    <style name="Widget.App.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/md_outline_variant</item>
+        <item name="cardBackgroundColor">@color/md_surface</item>
+    </style>
+    <style name="Widget.App.Card.Elevated" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardBackgroundColor">@color/md_surface</item>
+    </style>
+    <style name="Widget.App.Card.Outlined" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/md_surface</item>
+    </style>
+    <style name="Widget.App.Card.Stat" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/md_surface_container_low</item>
+    </style>
+    <style name="Widget.App.Chip" parent="Widget.Material3.Chip.Assist">
+        <item name="chipCornerRadius">8dp</item>
+        <item name="chipMinTouchTargetSize">0dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+    <style name="Widget.App.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipCornerRadius">8dp</item>
+        <item name="chipMinTouchTargetSize">0dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+    <style name="Widget.App.MatchBadge.High" parent="">
+        <item name="android:background">@color/success_color</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+    <style name="Widget.App.Skeleton" parent="">
+        <item name="android:background">@drawable/bg_skeleton_rounded</item>
+    </style>
+    <style name="Widget.App.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+    </style>
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/md_surface</item>
+        <item name="titleTextColor">@color/md_on_surface</item>
+    </style>
+</resources>

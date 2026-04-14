@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    layout_empty_state.xml
+    [إصلاح 5.4] Empty State موحّد — يُستخدم في BrowseActivity وغيرها
+    الاستخدام: include في أي layout يحتوي RecyclerView
+    
+    مثال:
+      <include layout="@layout/layout_empty_state"
+               android:id="@+id/empty_state"
+               android:visibility="gone"/>
+    
+    في الكود:
+      View emptyState = findViewById(R.id.empty_state);
+      emptyState.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
+      recyclerView.setVisibility(list.isEmpty() ? View.GONE : View.VISIBLE);
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingHorizontal="32dp"
+    android:paddingVertical="64dp">
+
+    <!-- أيقونة -->
+    <ImageView
+        android:id="@+id/iv_empty_icon"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/ic_search_person"
+        app:tint="?attr/colorPrimary"
+        android:alpha="0.25"
+        android:contentDescription="@null"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- العنوان -->
+    <TextView
+        android:id="@+id/tv_empty_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="لا توجد نتائج"
+        style="?attr/textAppearanceTitleMedium"
+        android:textColor="?attr/colorOnSurface"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- الوصف -->
+    <TextView
+        android:id="@+id/tv_empty_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="لم يتم العثور على بلاغات مطابقة\nجرّب تغيير الفلاتر أو البحث بكلمات مختلفة"
+        style="?attr/textAppearanceBodyMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.4"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- زر إجراء اختياري -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_empty_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="إضافة بلاغ جديد"
+        android:visibility="gone"
+        style="@style/Widget.Material3.Button.TonalButton"
+        app:cornerRadius="24dp"/>
+
+</LinearLayout>

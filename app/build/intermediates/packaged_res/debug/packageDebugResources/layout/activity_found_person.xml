@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_background">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_found_person"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="وجدت شخصاً"
+            app:navigationIconTint="@color/md_on_surface"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+<androidx.core.widget.NestedScrollView
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+            android:paddingBottom="120dp">
+
+        <!-- Header -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/md_secondary_container"
+            android:layout_marginBottom="16dp">
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📸 وجدت شخصاً مجهولاً؟"
+                    android:textSize="20sp" android:textStyle="bold"
+                    android:textColor="@color/md_on_secondary_container" />
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="التقط صورته وسنبحث في قاعدة البيانات تلقائياً.\nإذا وُجد تطابق سيتم إشعار أسرة المفقود فوراً."
+            android:textSize="13sp" 
+                    android:textColor="@color/md_on_secondary_container"
+                    android:alpha="0.85"
+                    android:layout_marginTop="6dp"
+                    android:lineSpacingExtra="3dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- الصورة -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            app:cardCornerRadius="16dp"
+            android:layout_marginBottom="12dp">
+            <ImageView
+                android:id="@+id/iv_found_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_face_placeholder" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- حالة المعالجة -->
+        <TextView
+            android:id="@+id/tv_found_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📷 التقط صورة للبدء"
+            android:gravity="center"
+            android:textSize="13sp" 
+            android:textColor="@color/md_on_surface_variant"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- زر الصورة -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_pick_found_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📷 التقط / اختر صورة الشخص"
+            android:layout_marginBottom="12dp"
+            app:cornerRadius="16dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+
+        <!-- الاسم المنادى به (اختياري) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="👤 الاسم المنادى به أو المعروف به (اختياري)"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_found_called_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- وصف الشخص -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="👤 وصف الشخص (رجل / امرأة / طفل...)"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_found_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- موقع العثور -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="📍 مكان العثور على الشخص"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_found_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- زر الخريطة -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_pick_map_found"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:text="🗺️ اختر الموقع من الخريطة"
+            android:textSize="13sp" 
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:strokeColor="@color/md_theme_light_primary"
+            app:cornerRadius="16dp" />
+            
+            
+            
+
+        <!-- ملاحظات -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="📝 ملاحظات إضافية (اختياري)"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="16dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_found_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="2" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- ─── الحالة الصحية ─── -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🏥 الحالة الصحية للشخص"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="@color/md_on_surface"
+            android:layout_marginBottom="6dp"/>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_health"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_health_stable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✅ مستقرة"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:checked="true"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_health_critical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⚠️ حرجة"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_health_unconscious"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🔴 فاقد الوعي"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- تحذير الأولوية عند اختيار حرجة/فاقد وعي -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_health_alert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="#FFEBEE"
+            app:cardElevation="0dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="🚨 حالة عاجلة — سيتم رفع البلاغ بأولوية قصوى للإدارة فوراً"
+                android:textColor="#C62828"
+                android:textSize="13sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Progress -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_found"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            android:indeterminate="true"
+            app:indicatorColor="@color/md_theme_light_secondary" />
+
+        <!-- زر الإرسال -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_submit_found"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="📤 إرسال البلاغ للمراجعة"
+            android:textSize="16sp" 
+            android:enabled="false"
+            android:layout_marginBottom="16dp"
+            app:cornerRadius="16dp"
+            app:backgroundTint="@color/md_theme_light_secondary" />
+
+        <!-- ─── نتائج المطابقة ─── -->
+        <LinearLayout
+            android:id="@+id/layout_found_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_found_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/md_theme_light_primary"
+                android:gravity="center"
+                android:padding="12dp" />
+
+            <LinearLayout
+                android:id="@+id/layout_matches"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

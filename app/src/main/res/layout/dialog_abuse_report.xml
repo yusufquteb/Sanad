@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- تحذير -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="⚠️ يُرجى تقديم بلاغات حقيقية فقط. البلاغات الكيدية تُعرّض صاحبها للحظر."
+            android:textSize="12sp"
+            android:textColor="#C62828"
+            android:background="#FFEBEE"
+            android:padding="10dp"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- أسباب الإبلاغ -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="سبب الإبلاغ:"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/rg_abuse_reasons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton android:id="@+id/rb_reason1"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="📵 طلب مبالغ مالية أو ابتزاز"
+                android:checked="true"/>
+
+            <RadioButton android:id="@+id/rb_reason2"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="🚫 محتوى مزيف أو مضلل"/>
+
+            <RadioButton android:id="@+id/rb_reason3"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="⚠️ محتوى مسيء أو غير لائق"/>
+
+            <RadioButton android:id="@+id/rb_reason4"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="🔞 محتوى يمس الخصوصية"/>
+
+            <RadioButton android:id="@+id/rb_reason5"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="📋 سبب آخر"/>
+        </RadioGroup>
+
+        <!-- تفاصيل إضافية -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="تفاصيل إضافية (اختياري):"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="6dp"/>
+
+        <EditText
+            android:id="@+id/et_abuse_details"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="اكتب تفاصيل إضافية هنا..."
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"/>
+
+    </LinearLayout>
+</ScrollView>

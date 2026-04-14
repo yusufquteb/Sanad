@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_disclaimer"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="إخلاء المسؤولية"
+            app:navigationIconTint="?attr/colorOnSurface"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+<androidx.core.widget.NestedScrollView
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- هوية التطبيق -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="?attr/colorPrimary"
+            android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:gravity="center">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="🔍" android:textSize="48sp" android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="تطبيق المفقودين"
+                    android:textColor="?attr/colorSurface" android:textSize="24sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="منصة خدمية مجانية للبحث عن المفقودين"
+                    android:textColor="?attr/colorOnPrimary" style="?attr/textAppearanceBodyMedium" 
+                    android:gravity="center" android:layout_marginTop="4dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/version_disclaimer"
+                    android:textColor="?attr/colorOnPrimary" android:textSize="11sp"
+                    android:gravity="center" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- التعريف بالبرنامج -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="ℹ️ عن التطبيق"
+                    style="?attr/textAppearanceTitleMedium"  android:textStyle="bold" android:textColor="?attr/colorPrimary"
+                    android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="تطبيق المفقودين هو منصة خدمية مجتمعية مجانية تهدف إلى مساعدة الأسر في إيجاد ذويهم المفقودين عبر:\n\n• نشر صور وبيانات المفقودين بشكل آمن\n• البحث الذكي بالصورة باستخدام تقنية الذكاء الاصطناعي\n• التواصل المباشر مع أسر المفقودين\n• عرض المواقع الجغرافية لبلاغات الاختفاء\n\nالتطبيق لا يهدف إلى الربح ولا يتقاضى أي رسوم مقابل خدماته."
+                    style="?attr/textAppearanceBodyMedium"  android:textColor="?attr/colorOnSurface" android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- إخلاء المسؤولية القانونية -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/md_tertiary_container"
+            android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="⚖️ إخلاء المسؤولية القانونية"
+                    style="?attr/textAppearanceTitleMedium"  android:textStyle="bold" android:textColor="@color/md_tertiary"
+                    android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="يُقر مطور التطبيق ويُصرّح صراحةً بما يلي:\n\n1. التطبيق منصة وسيطة فقط: نحن لسنا طرفاً في أي تواصل أو لقاء بين المستخدمين، ولا نتحمل أي مسؤولية قانونية عن نتائج هذا التواصل.\n\n2. صحة المعلومات: التطبيق لا يتحقق من صحة البيانات المنشورة، ومسؤولية دقة المعلومات تقع على عاتق الناشر.\n\n3. سوء الاستخدام: في حال إساءة استخدام التطبيق لأغراض غير مشروعة، تقع المسؤولية الكاملة على المستخدم المسيء دون أي مسؤولية على المطور.\n\n4. الخصوصية: بنشر صورة أو بيانات أي شخص، يُقر الناشر بحصوله على موافقة صاحب الصورة أو بصلته القانونية به.\n\n5. البيانات المفقودة: التطبيق لا يضمن استرداد البيانات أو استمرارية الخدمة."
+                    style="?attr/textAppearanceBodyMedium"  android:textColor="?attr/colorOnSurface" android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- تحذيرات السلامة الشخصية -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/md_error_container"
+            android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="🚨 تحذيرات السلامة"
+                    style="?attr/textAppearanceTitleMedium"  android:textStyle="bold" android:textColor="?attr/colorError"
+                    android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="للحماية من عمليات الاحتيال والتلاعب، يُرجى الالتزام بما يلي:\n\n🚫 لا تلتقِ بأشخاص مجهولين في أماكن منعزلة\n🚫 لا تدفع أي مبالغ مالية مقابل معلومات عن مفقود\n🚫 لا تشارك بياناتك المصرفية أو الشخصية الحساسة\n🚫 لا تثق بأي طلب للمال تحت أي مسمى (رسوم بحث، رسوم إدارية، إلخ)\n\n✅ أبلغ الشرطة فوراً عن أي محاولة ابتزاز أو نصب\n✅ تواصل مع ذويك قبل أي لقاء مع شخص غريب\n✅ اطلب دعم الجهات الرسمية (شرطة، أمن مدني) عند الحاجة"
+                    style="?attr/textAppearanceBodyMedium"  android:textColor="?attr/colorOnSurface" android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- منع دفع المال -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
+            android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="💰 التطبيق مجاني بالكامل"
+                    style="?attr/textAppearanceTitleMedium"  android:textStyle="bold" android:textColor="?attr/colorPrimary"
+                    android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="جميع خدمات التطبيق مجانية تماماً بدون استثناء:\n\n✓ نشر بلاغات البحث: مجاني\n✓ البحث بالصورة (الذكاء الاصطناعي): مجاني\n✓ التواصل مع أسر المفقودين: مجاني\n✓ عرض الخريطة والمواقع: مجاني\n\nأي شخص يطلب منك دفع مبالغ مالية بأي حجة مرتبطة بهذا التطبيق هو محتال — أبلغ عنه فوراً."
+                    style="?attr/textAppearanceBodyMedium"  android:textColor="?attr/colorOnSurface" android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- الإبلاغ للشرطة -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/md_secondary_container"
+            android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="👮 إبلاغ الشرطة أولاً"
+                    style="?attr/textAppearanceTitleMedium"  android:textStyle="bold" android:textColor="@color/md_secondary"
+                    android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="هذا التطبيق لا يُغني عن الإبلاغ الرسمي عن المفقود. ننصح بشدة بـ:\n\n• الإبلاغ للشرطة أو النيابة العامة فور الاختفاء\n• الحصول على رقم البلاغ الرسمي\n• مشاركة رقم البلاغ في منشور التطبيق\n• التنسيق مع السلطات المختصة طوال فترة البحث\n\nالتطبيق أداة مساندة للجهود الرسمية وليس بديلاً عنها."
+                    style="?attr/textAppearanceBodyMedium"  android:textColor="?attr/colorOnSurface" android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- حقوق الملكية -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="©️ حقوق الملكية الفكرية"
+                    style="?attr/textAppearanceTitleMedium"  android:textStyle="bold" android:textColor="?attr/colorPrimary"
+                    android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="جميع حقوق التطبيق وتصميمه محفوظة. يُحظر:\n\n• نسخ أو إعادة توزيع التطبيق دون إذن خطي\n• انتحال هوية التطبيق أو إنشاء نسخ مزورة\n• استخدام البيانات المنشورة لأغراض تجارية\n• كشط أو استخراج البيانات بشكل آلي\n\nللتواصل مع فريق التطوير: albaramost@gmail.com"
+                    style="?attr/textAppearanceBodyMedium"  android:textColor="?attr/colorOnSurface" android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- زر الإبلاغ عن سوء استخدام -->
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_report_abuse"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:text="📧 إبلاغ عن سوء استخدام"
+    android:textAppearance="?attr/textAppearanceBodyMedium" 
+    android:layout_marginBottom="8dp"
+    app:backgroundTint="?attr/colorError"
+    style="@style/Widget.MaterialComponents.Button"/>
+
+
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="آخر تحديث: يناير 2025 — بنشر هذا التطبيق أو استخدامه، أنت توافق ضمنياً على جميع الشروط الواردة أعلاه."
+            android:textSize="11sp" android:textColor="?attr/colorOnSurfaceVariant"
+            android:gravity="center" android:layout_marginBottom="24dp"/>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

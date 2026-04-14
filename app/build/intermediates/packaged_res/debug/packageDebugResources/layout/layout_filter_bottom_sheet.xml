@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="32dp"
+    android:layoutDirection="rtl">
+
+    <!-- Handle indicator -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@color/md_outline_variant"
+        android:backgroundTint="@color/md_outline"/>
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="الفلاتر"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/md_on_surface"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- ══ الحالة ══ -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="📋 الحالة"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/md_on_surface"
+        android:layout_marginBottom="10dp"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cg_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:chipSpacingHorizontal="6dp"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_status_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="الكل"
+            android:checked="true"
+            style="@style/Widget.Material3.Chip.Filter"
+            app:chipMinTouchTargetSize="0dp"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_status_active"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔍 نشط"
+            style="@style/Widget.Material3.Chip.Filter"
+            app:chipMinTouchTargetSize="0dp"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_status_resolved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✅ تم الإيجاد"
+            style="@style/Widget.Material3.Chip.Filter"
+            app:chipMinTouchTargetSize="0dp"/>
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- ══ المحافظة ══ -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="📍 المحافظة"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/md_on_surface"
+        android:layout_marginBottom="10dp"/>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginBottom="20dp">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cg_gov"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:chipSpacingHorizontal="6dp"/>
+
+    </HorizontalScrollView>
+
+    <!-- ══ الترتيب ══ -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🔀 الترتيب"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/md_on_surface"
+        android:layout_marginBottom="10dp"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cg_sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:chipSpacingHorizontal="6dp"
+        android:layout_marginBottom="28dp"/>
+
+    <!-- Buttons row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter_reset"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="إعادة ضبط"
+            android:layout_marginEnd="10dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="12dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter_apply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="تطبيق"
+            style="@style/Widget.Material3.Button"
+            app:cornerRadius="12dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

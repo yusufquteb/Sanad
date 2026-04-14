@@ -1,0 +1,149 @@
+{
+  "rules": {
+
+    // ════════════════════════════════════════════════════════
+    //  REPORTS — قراءة للجميع المسجّلين، كتابة للصاحب/الأدمن
+    // ════════════════════════════════════════════════════════
+    "reports": {
+      ".read": "auth != null",
+      "$reportId": {
+        ".write": "auth != null && (
+          !data.exists() ||
+          data.child('reporterId').val() === auth.uid ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+          root.child('users').child(auth.uid).child('role').val() === 'manager'
+        )",
+        ".validate": "newData.hasChildren(['personName', 'reporterId', 'timestamp', 'type'])"
+      }
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  FOUND PERSONS
+    // ════════════════════════════════════════════════════════
+    "found_persons": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && (
+          !data.exists() ||
+          data.child('reporterId').val() === auth.uid ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin'
+        )"
+      }
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  USERS — كل مستخدم يقرأ/يكتب ملفه فقط، الأدمن يقرأ الكل
+    // ════════════════════════════════════════════════════════
+    "users": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin')",
+        ".write": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin')"
+      }
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  NOTIFICATIONS — المستخدم يقرأ إشعاراته فقط
+    // ════════════════════════════════════════════════════════
+    "notifications": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin')"
+      }
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  ADMIN NOTIFICATIONS — الأدمن فقط
+    // ════════════════════════════════════════════════════════
+    "admin_notifications": {
+      ".read": "root.child('users').child(auth.uid).child('role').val() === 'admin'",
+      ".write": "auth != null"
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  CHATS — المشاركون فقط
+    // ════════════════════════════════════════════════════════
+    "chats": {
+      "$chatId": {
+        ".read": "auth != null && (
+          data.child('user1').val() === auth.uid ||
+          data.child('user2').val() === auth.uid ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin'
+        )",
+        ".write": "auth != null && (
+          data.child('user1').val() === auth.uid ||
+          data.child('user2').val() === auth.uid ||
+          !data.exists()
+        )"
+      }
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  MESSAGES — المشاركون في الـ chat
+    // ════════════════════════════════════════════════════════
+    "messages": {
+      "$chatId": {
+        ".read": "auth != null && (
+          root.child('chats').child($chatId).child('user1').val() === auth.uid ||
+          root.child('chats').child($chatId).child('user2').val() === auth.uid
+        )",
+        "$msgId": {
+          ".write": "auth != null && (
+            root.child('chats').child($chatId).child('user1').val() === auth.uid ||
+            root.child('chats').child($chatId).child('user2').val() === auth.uid
+          )"
+        }
+      }
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  SETTINGS — قراءة للجميع، كتابة للأدمن فقط
+    // ════════════════════════════════════════════════════════
+    "settings": {
+      ".read": "auth != null",
+      ".write": "root.child('users').child(auth.uid).child('role').val() === 'admin'"
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  LEADERBOARD — قراءة للجميع، كتابة للنظام فقط
+    // ════════════════════════════════════════════════════════
+    "leaderboard": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  SUCCESS STORIES — قراءة للجميع، كتابة للأدمن
+    // ════════════════════════════════════════════════════════
+    "success_stories": {
+      ".read": "auth != null",
+      ".write": "root.child('users').child(auth.uid).child('role').val() === 'admin'"
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  ABUSE REPORTS
+    // ════════════════════════════════════════════════════════
+    "abuse_reports": {
+      ".read": "root.child('users').child(auth.uid).child('role').val() === 'admin'",
+      ".write": "auth != null"
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  REPORT UPDATES (timeline)
+    // ════════════════════════════════════════════════════════
+    "report_updates": {
+      ".read": "auth != null",
+      ".write": "auth != null && (
+        root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+        root.child('users').child(auth.uid).child('role').val() === 'manager'
+      )"
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  AMBER ALERTS — قراءة للجميع، كتابة للأدمن
+    // ════════════════════════════════════════════════════════
+    "amber_alerts": {
+      ".read": "auth != null",
+      ".write": "root.child('users').child(auth.uid).child('role').val() === 'admin'"
+    }
+  }
+}

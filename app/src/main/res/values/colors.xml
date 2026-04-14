@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="md_theme_light_primary">#1565C0</color>
+    <color name="md_primary">#1565C0</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_on_primary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#E8F0FE</color>
+    <color name="md_primary_container">#E8F0FE</color>
+    <color name="md_theme_light_onPrimaryContainer">#0D3B8A</color>
+    <color name="md_on_primary_container">#0D3B8A</color>
+
+    <color name="md_theme_light_secondary">#3E5FA3</color>
+    <color name="md_secondary">#3E5FA3</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_on_secondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#EEF2FF</color>
+    <color name="md_secondary_container">#EEF2FF</color>
+    <color name="md_on_secondary_container">#1E3A7A</color>
+
+    <color name="md_theme_light_tertiary">#4F6EBC</color>
+    <color name="md_tertiary">#4F6EBC</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_on_tertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#F0F4FF</color>
+    <color name="md_tertiary_container">#F0F4FF</color>
+    <color name="md_on_tertiary_container">#1A3A7A</color>
+
+    <color name="md_theme_light_error">#C62828</color>
+    <color name="md_error">#C62828</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_on_error">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#FDECEA</color>
+    <color name="md_error_container">#FDECEA</color>
+    <color name="md_on_error_container">#7F0000</color>
+
+    <color name="md_theme_light_background">#F7F9FC</color>
+    <color name="md_background">#F7F9FC</color>
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#1A1A2E</color>
+    <color name="md_on_surface">#1A1A2E</color>
+    <color name="md_theme_light_surfaceVariant">#F0F4F8</color>
+    <color name="md_surface_variant">#F0F4F8</color>
+    <color name="md_theme_light_onSurfaceVariant">#64748B</color>
+    <color name="md_on_surface_variant">#64748B</color>
+    <color name="md_theme_light_outline">#94A3B8</color>
+    <color name="md_outline">#94A3B8</color>
+    <color name="md_on_outline">#1A1C1E</color>
+    <color name="md_outline_variant">#E2E8F0</color>
+
+    <color name="md_surface_container_lowest">#FFFFFF</color>
+    <color name="md_surface_container_low">#F7F9FC</color>
+    <color name="md_surface_container">#F0F4F8</color>
+    <color name="md_surface_container_high">#E8EDF4</color>
+    <color name="md_surface_container_highest">#E1E8F0</color>
+
+    <color name="md_surfaceContainerLow">@color/md_surface_container_low</color>
+    <color name="md_surfaceVariant">@color/md_surface_variant</color>
+    <color name="md_on_surfaceVariant">@color/md_on_surface_variant</color>
+
+    <color name="color_found">#1B5E20</color>
+    <color name="color_found_container">#E8F5E9</color>
+    <color name="color_search">#1565C0</color>
+    <color name="color_admin">#B71C1C</color>
+    <color name="color_admin_container">#FDECEA</color>
+
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#64748B</color>
+
+    <color name="primary">#1565C0</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="background">#F7F9FC</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="search_color">#1565C0</color>
+    <color name="success_color">#2E7D32</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="whatsapp_green">#25D366</color>
+
+    <color name="color_login_bg">#0A1628</color>
+    <color name="color_login_surface">#0D2144</color>
+    <color name="color_login_hint">#90CAF9</color>
+    <color name="color_login_caption">#64B5F6</color>
+
+    <color name="splash_bg">#1565C0</color>
+
+    <!-- لون التحذير / sighting badge / pending status -->
+    <color name="color_warning">#E65100</color>
+
+    <!-- لون placeholder الـ Skeleton cards -->
+    <color name="skeleton_color">#E0E4EA</color>
+
+    <!-- ألوان الـ Chips والصلاحيات -->
+    <color name="green_light">#E8F5E9</color>
+    <color name="green_dark">#1B5E20</color>
+    <color name="chip_bg_disabled">#F0F4F8</color>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  [إصلاح 5.3] ألوان Semantics موحّدة لحالات البلاغات   -->
+    <!--  تُستخدم في كل الشاشات: BrowseActivity، CaseDetail،  -->
+    <!--  AdminActivity، item_case_card.xml                     -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <!-- مفقود — أزرق غامق -->
+    <color name="status_missing">#1565C0</color>
+    <color name="status_missing_container">#E8F0FE</color>
+    <color name="status_missing_on_container">#0D3B8A</color>
+
+    <!-- معثور عليه — أخضر غامق -->
+    <color name="status_found">#2E7D32</color>
+    <color name="status_found_container">#E8F5E9</color>
+    <color name="status_found_on_container">#1B5E20</color>
+
+    <!-- تم حلّه / مغلق — بنفسجي -->
+    <color name="status_resolved">#4A148C</color>
+    <color name="status_resolved_container">#EDE7F6</color>
+    <color name="status_resolved_on_container">#311B92</color>
+
+    <!-- معلق مراجعة — برتقالي -->
+    <color name="status_pending">#E65100</color>
+    <color name="status_pending_container">#FBE9E7</color>
+    <color name="status_pending_on_container">#BF360C</color>
+
+    <!-- طوارئ — أحمر -->
+    <color name="status_emergency">#C62828</color>
+    <color name="status_emergency_container">#FDECEA</color>
+    <color name="status_emergency_on_container">#7F0000</color>
+
+    <!-- رؤية / sighting — بنفسجي فاتح -->
+    <color name="status_sighting">#6A1B9A</color>
+    <color name="status_sighting_container">#F3E5F5</color>
+    <color name="status_sighting_on_container">#4A148C</color>
+
+    <!-- مطابق تم تأكيده — ذهبي/كهرماني -->
+    <color name="status_matched">#F57F17</color>
+    <color name="status_matched_container">#FFF8E1</color>
+    <color name="status_matched_on_container">#E65100</color>
+
+</resources>

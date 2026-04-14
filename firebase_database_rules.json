@@ -1,0 +1,51 @@
+{
+  "rules": {
+    "reports": {
+      ".read": "auth != null",
+      ".indexOn": ["status", "timestamp", "reporterId", "approved"],
+      "$reportId": {
+        ".write": "auth != null && (!data.exists() || data.child('reporterId').val() === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')"
+      }
+    },
+    "found_persons": {
+      ".read": "auth != null",
+      ".indexOn": ["status", "timestamp", "reporterId"],
+      "$reportId": {
+        ".write": "auth != null && (!data.exists() || data.child('reporterId').val() === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin')"
+      }
+    },
+    "matches": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
+      ".write": "auth != null"
+    },
+    "users": {
+      ".read": "auth != null",
+      "$uid": {
+        ".write": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')"
+      }
+    },
+    "chats": {
+      "$chatId": {
+        ".read": "auth != null && ($chatId.contains(auth.uid) || root.child('users').child(auth.uid).child('role').val() === 'admin')",
+        ".write": "auth != null && $chatId.contains(auth.uid)"
+      }
+    },
+    "notifications": {
+      "$uid": {
+        ".read": "auth != null && $uid === auth.uid",
+        ".write": "auth != null"
+      }
+    },
+    "unread_counts": {
+      "$uid": {
+        ".read": "auth != null && $uid === auth.uid",
+        ".write": "auth != null"
+      }
+    },
+    "abuse_reports": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
+      ".write": "auth != null",
+      ".indexOn": ["timestamp", "status"]
+    }
+  }
+}

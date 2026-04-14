@@ -1,0 +1,67 @@
+com.missingpersons.app-jetified-lifecycle-viewmodel-savedstate-2.8.7-0 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\09bc7b6cbd2e4fb468ef141183ddd2bc\transformed\jetified-lifecycle-viewmodel-savedstate-2.8.7\res
+com.missingpersons.app-fragment-1.5.7-1 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\0be5d09a6bb257ef7e05d1c9bdc99678\transformed\fragment-1.5.7\res
+com.missingpersons.app-jetified-lifecycle-service-2.8.7-2 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\0d7726246f14ab620d10c3a9b90d4692\transformed\jetified-lifecycle-service-2.8.7\res
+com.missingpersons.app-transition-1.5.0-3 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\0e8e386532c6ffa7c496cb53018b331b\transformed\transition-1.5.0\res
+com.missingpersons.app-jetified-emoji2-views-helper-1.3.0-4 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\1bcaaa60be4e9a491e89c83543bb128c\transformed\jetified-emoji2-views-helper-1.3.0\res
+com.missingpersons.app-jetified-core-ktx-1.13.0-5 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\208744ac26e3618f44d0b5b27519cf54\transformed\jetified-core-ktx-1.13.0\res
+com.missingpersons.app-cardview-1.0.0-6 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\2d116d25da63be52e9407ff59086704f\transformed\cardview-1.0.0\res
+com.missingpersons.app-appcompat-1.7.0-7 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\2e007bd38c3a0e920efc261cc77682b6\transformed\appcompat-1.7.0\res
+com.missingpersons.app-jetified-play-services-ads-lite-23.6.0-8 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\2f4250a833222eb920d8a4f1230cb25c\transformed\jetified-play-services-ads-lite-23.6.0\res
+com.missingpersons.app-jetified-ads-adservices-java-1.0.0-beta05-9 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3352c50e6d0c846996a73edad48b82c5\transformed\jetified-ads-adservices-java-1.0.0-beta05\res
+com.missingpersons.app-core-runtime-2.2.0-10 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\398f1e2ce9d0ddead135c542c3ecf51b\transformed\core-runtime-2.2.0\res
+com.missingpersons.app-jetified-play-services-base-18.5.0-11 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3a2ad56b266529467cbf90128843eb40\transformed\jetified-play-services-base-18.5.0\res
+com.missingpersons.app-jetified-appcompat-resources-1.7.0-12 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3daf806bfd2db04d5a1370b49820c8d8\transformed\jetified-appcompat-resources-1.7.0\res
+com.missingpersons.app-material-1.12.0-13 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3dc9e270e1858a682d27a41849d01dd9\transformed\material-1.12.0\res
+com.missingpersons.app-jetified-firebase-common-21.0.0-14 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\42921748b513fed36416174c01356456\transformed\jetified-firebase-common-21.0.0\res
+com.missingpersons.app-webkit-1.11.0-alpha02-15 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\470dd37dd658500d074f3a77900d2d95\transformed\webkit-1.11.0-alpha02\res
+com.missingpersons.app-jetified-play-services-basement-18.5.0-16 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\4b205a188addf82fdabb460e99a6b079\transformed\jetified-play-services-basement-18.5.0\res
+com.missingpersons.app-jetified-customview-poolingcontainer-1.0.0-17 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5981e30fde663708092a3b0c37999128\transformed\jetified-customview-poolingcontainer-1.0.0\res
+com.missingpersons.app-room-runtime-2.6.1-18 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5a1c8fb8b848102826e0297cec53a9e1\transformed\room-runtime-2.6.1\res
+com.missingpersons.app-jetified-annotation-experimental-1.4.1-19 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5bf1dd2805176a22559114c54d9f3f42\transformed\jetified-annotation-experimental-1.4.1\res
+com.missingpersons.app-jetified-lifecycle-process-2.8.7-20 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5ea590eed6a8e943ecb5f9d7af921d73\transformed\jetified-lifecycle-process-2.8.7\res
+com.missingpersons.app-jetified-datastore-preferences-1.0.0-21 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\6165f29a1373e5550f7bcf6020213cb4\transformed\jetified-datastore-preferences-1.0.0\res
+com.missingpersons.app-jetified-coil-base-2.7.0-22 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\616ffaf96b6010435847684b99e47745\transformed\jetified-coil-base-2.7.0\res
+com.missingpersons.app-sqlite-2.4.0-23 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\62b796dbfad2042b2392458251c6d005\transformed\sqlite-2.4.0\res
+com.missingpersons.app-recyclerview-1.4.0-24 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\66c41ed7dbe2602af65504ad146c112e\transformed\recyclerview-1.4.0\res
+com.missingpersons.app-jetified-core-viewtree-1.0.0-25 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\688544f100767f13bf30407f0f018810\transformed\jetified-core-viewtree-1.0.0\res
+com.missingpersons.app-jetified-lottie-6.6.2-26 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\6dd72d4bf4aa22ff43e4b58f57dc27f3\transformed\jetified-lottie-6.6.2\res
+com.missingpersons.app-jetified-savedstate-1.2.1-27 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\7157dbe6e3997c233d67b0d8f40939b2\transformed\jetified-savedstate-1.2.1\res
+com.missingpersons.app-jetified-profileinstaller-1.4.0-28 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\7430e2dae4107749c853f369889f4c60\transformed\jetified-profileinstaller-1.4.0\res
+com.missingpersons.app-jetified-credentials-1.2.0-rc01-29 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\744f06a39fafa827291d1d3a1e75b242\transformed\jetified-credentials-1.2.0-rc01\res
+com.missingpersons.app-jetified-tracing-1.2.0-30 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\75eeab11220f9d947f3cae73e339c146\transformed\jetified-tracing-1.2.0\res
+com.missingpersons.app-lifecycle-livedata-2.8.7-31 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\785afc7e0b4eb8ef198a51e5d0ea0467\transformed\lifecycle-livedata-2.8.7\res
+com.missingpersons.app-sqlite-framework-2.4.0-32 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\7d0745683b635391d00e35e6b14a83a2\transformed\sqlite-framework-2.4.0\res
+com.missingpersons.app-jetified-emoji2-1.3.0-33 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\7d7979a8aff61224b187e738a31d3321\transformed\jetified-emoji2-1.3.0\res
+com.missingpersons.app-jetified-osmdroid-android-6.1.20-34 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\7e80fa199e632fdfe9a41315aa651431\transformed\jetified-osmdroid-android-6.1.20\res
+com.missingpersons.app-jetified-firebase-crashlytics-19.4.0-35 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\897f4d897ed3c0caf2964f742e9fa02e\transformed\jetified-firebase-crashlytics-19.4.0\res
+com.missingpersons.app-work-runtime-2.10.0-36 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\8d999696bd9ad19b50217d169d3993ca\transformed\work-runtime-2.10.0\res
+com.missingpersons.app-jetified-circleimageview-3.1.0-37 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\8e0cff5d5781c72a046b91edab21bc7f\transformed\jetified-circleimageview-3.1.0\res
+com.missingpersons.app-jetified-core-common-2.0.3-38 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97801af603b2b6f1ffcfd7cba4da837f\transformed\jetified-core-common-2.0.3\res
+com.missingpersons.app-coordinatorlayout-1.1.0-39 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\a229e92042399e7d45f1c1d807590207\transformed\coordinatorlayout-1.1.0\res
+com.missingpersons.app-jetified-lifecycle-viewmodel-release-40 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\a3989d693fe9dcaefdc2f498568863f3\transformed\jetified-lifecycle-viewmodel-release\res
+com.missingpersons.app-jetified-firebase-messaging-24.1.0-41 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\ad7c6d8a19acb5e2b7573171e7b37645\transformed\jetified-firebase-messaging-24.1.0\res
+com.missingpersons.app-constraintlayout-2.2.1-42 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\b2d981e8771a9d3af3b4b79c58e0afe6\transformed\constraintlayout-2.2.1\res
+com.missingpersons.app-jetified-ads-adservices-1.0.0-beta05-43 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\b4bdfcb7310ebdd5c1307a700135ddd6\transformed\jetified-ads-adservices-1.0.0-beta05\res
+com.missingpersons.app-jetified-room-ktx-2.6.1-44 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\b671439f0a900eac8220d8d222ac2e13\transformed\jetified-room-ktx-2.6.1\res
+com.missingpersons.app-jetified-lifecycle-livedata-core-ktx-2.8.7-45 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\bceb5a75075280d0c0d6cb07a0634f12\transformed\jetified-lifecycle-livedata-core-ktx-2.8.7\res
+com.missingpersons.app-browser-1.8.0-46 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\c6b80200192a3469a5562dd7419d9384\transformed\browser-1.8.0\res
+com.missingpersons.app-drawerlayout-1.1.1-47 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\d43371b3210cb5252c0a48c86811bfea\transformed\drawerlayout-1.1.1\res
+com.missingpersons.app-jetified-credentials-play-services-auth-1.2.0-rc01-48 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\d9119e76b0845dde3cab3545578ebb3c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\res
+com.missingpersons.app-jetified-viewpager2-1.1.0-49 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\db0d155e97bb8894682debf97f539e21\transformed\jetified-viewpager2-1.1.0\res
+com.missingpersons.app-lifecycle-livedata-core-2.8.7-50 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\dd4976bc907975b35e0d0f2e94d2d2cb\transformed\lifecycle-livedata-core-2.8.7\res
+com.missingpersons.app-core-1.13.0-51 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\df849799def5dfd5ab754799291c2bdd\transformed\core-1.13.0\res
+com.missingpersons.app-jetified-activity-1.10.1-52 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\e5acc6a7f1e073c15230b3786c976050\transformed\jetified-activity-1.10.1\res
+com.missingpersons.app-jetified-lifecycle-runtime-release-53 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\e5f0bbffd7773ef5ebcf4f68a79d4899\transformed\jetified-lifecycle-runtime-release\res
+com.missingpersons.app-jetified-startup-runtime-1.1.1-54 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\ead6f1a63f7800c85a6251df5e338d10\transformed\jetified-startup-runtime-1.1.1\res
+com.missingpersons.app-jetified-datastore-1.0.0-55 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\ebdaa929bbedc1645430a7319cb20369\transformed\jetified-datastore-1.0.0\res
+com.missingpersons.app-jetified-tracing-ktx-1.2.0-56 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\efea0bc66ac25e930b2279a97b9556c5\transformed\jetified-tracing-ktx-1.2.0\res
+com.missingpersons.app-jetified-play-services-auth-21.3.0-57 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f2885ab282cf5f13c815a2c435c4186d\transformed\jetified-play-services-auth-21.3.0\res
+com.missingpersons.app-jetified-play-services-ads-23.6.0-58 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f49a405ba9085034c23777665228f8a6\transformed\jetified-play-services-ads-23.6.0\res
+com.missingpersons.app-res-59 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\generated\res\injectCrashlyticsMappingFileIdDebug
+com.missingpersons.app-res-60 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\generated\res\processDebugGoogleServices
+com.missingpersons.app-resValues-61 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\generated\res\resValues\debug
+com.missingpersons.app-packageDebugResources-62 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.missingpersons.app-packageDebugResources-63 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.missingpersons.app-debug-64 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.missingpersons.app-debug-65 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\debug\res
+com.missingpersons.app-main-66 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\res

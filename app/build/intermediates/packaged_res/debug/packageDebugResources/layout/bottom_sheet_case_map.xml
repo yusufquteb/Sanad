@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/md_surface"
+    android:paddingTop="8dp"
+    android:paddingBottom="24dp"
+    android:paddingHorizontal="20dp">
+
+    <!-- Drag handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="@color/md_outline_variant"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Name + addr row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/bs_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/md_on_surface"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/bs_tv_addr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/md_on_surface_variant"
+                android:maxLines="2"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Action buttons -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bs_btn_details"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="عرض التفاصيل الكاملة"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"
+        style="@style/Widget.Material3.Button"
+        app:cornerRadius="12dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bs_btn_whatsapp"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="واتساب"
+            android:textSize="13sp"
+            app:backgroundTint="@color/whatsapp_green"
+            android:textColor="@color/white"
+            app:cornerRadius="12dp"
+            style="@style/Widget.Material3.Button"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bs_btn_navigate"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:text="التنقل"
+            android:textSize="13sp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="12dp"/>
+    </LinearLayout>
+
+</LinearLayout>

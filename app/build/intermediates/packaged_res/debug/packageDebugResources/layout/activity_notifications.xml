@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F7FA">
+
+    <!-- ══ HEADER — Gradient أزرق ══ -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_home_header"
+        app:elevation="0dp">
+
+        <!-- Row: عنوان + "تحديد الكل" -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingEnd="8dp">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar_notif"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:title="🔔 الإشعارات"
+                app:titleTextColor="#FFFFFF"
+                app:navigationIconTint="#FFFFFF"
+                android:background="@android:color/transparent"/>
+
+            <!-- زر تحديد الكل — داخل الهيدر الأزرق -->
+            <TextView
+                android:id="@+id/btn_mark_all_read"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="تحديد الكل ✓"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#CCFFFFFF"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- ══ BODY ══ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorOutlineVariant"/>
+
+        <!-- Empty state -->
+        <TextView
+            android:id="@+id/tv_notif_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔔 لا توجد إشعارات جديدة"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:padding="48dp"
+            android:visibility="gone"/>
+
+        <!-- قائمة الإشعارات -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_notifications"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"/>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

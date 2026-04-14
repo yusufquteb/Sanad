@@ -1,0 +1,21 @@
+{
+  "project_info": {
+    "project_number": "891319690324",
+    "firebase_url": "https://running-f6c2f-default-rtdb.firebaseio.com",
+    "project_id": "running-f6c2f",
+    "storage_bucket": "running-f6c2f.firebasestorage.app"
+  },
+  "client": [{
+    "client_info": {
+      "mobilesdk_app_id": "1:891319690324:android:2041c7f2ea6783f372f9c1",
+      "android_client_info": { "package_name": "com.missingpersons.app" }
+    },
+    "oauth_client": [{
+      "client_id": "891319690324-9c2a8lnnr0pkbtjbn2lvcjtnetun9nlj.apps.googleusercontent.com",
+      "client_type": 3
+    }],
+    "api_key": [{ "current_key": "AIzaSyATjJ0wWScKZSFU97omUkefXV8Aos8yz6s" }],
+    "services": { "appinvite_service": { "other_platform_oauth_client": [{"client_id":"891319690324-9c2a8lnnr0pkbtjbn2lvcjtnetun9nlj.apps.googleusercontent.com","client_type":3}] } }
+  }],
+  "configuration_version": "1"
+}

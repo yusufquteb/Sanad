@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">سند | Sanad</string>
+    
+    <string name="default_web_client_id">891319690324-9c2a8lnnr0pkbtjbn2lvcjtnetun9nlj.apps.googleusercontent.com</string>
+
+    <!-- Onboarding -->
+    <string name="onboard_title_1">ابحث عن المفقودين</string>
+    <string name="onboard_desc_1">منصة مجانية تساعدك في البحث عن الأشخاص المفقودين\nوالتواصل مع أسرهم بأمان</string>
+    <string name="onboard_title_2">البحث الذكي بالوجه</string>
+    <string name="onboard_desc_2">التقط صورة أو اختر من المعرض\nوسيبحث الذكاء الاصطناعي في قاعدة البيانات تلقائياً</string>
+    <string name="onboard_title_3">شارك وساعد</string>
+    <string name="onboard_desc_3">أبلغ عن مفقود أو وجدت شخصاً مجهولاً\nكل بلاغ يمكن أن يغيّر حياة أسرة كاملة</string>
+
+    <!-- Home -->
+    <string name="home_title">المفقودون</string>
+    <string name="home_subtitle">ساعد في إيجاد المفقودين وإعادة لمّ شملهم</string>
+    <string name="home_what_to_do">ماذا تريد أن تفعل؟</string>
+    <string name="btn_report_missing">إبلاغ عن مفقود</string>
+    <string name="btn_browse_cases">تصفح الحالات</string>
+    <string name="btn_face_search">بحث بالوجه</string>
+    <string name="btn_found_person">وجدت شخصاً</string>
+    <string name="btn_my_chats">محادثاتي</string>
+    <string name="btn_my_profile">حسابي والإعدادات</string>
+    <string name="btn_map">خريطة المفقودين</string>
+    <string name="btn_advanced_search">بحث متقدم بالاسم والفلاتر</string>
+    <string name="guest_banner">أنت تتصفح كزائر — اضغط هنا للتسجيل</string>
+
+    <!-- أزرار إضافية -->
+    <string name="btn_sighting">شُفت شخصاً</string>
+    <string name="btn_statistics">إحصائيات</string>
+    <string name="btn_leaderboard">لوحة الأوائل</string>
+    <string name="btn_success_stories">قصص النجاح</string>
+
+    <!-- Login -->
+    <string name="login_google">تسجيل الدخول بـ Google</string>
+    <string name="login_guest">تصفح كزائر (بدون تسجيل)</string>
+    <string name="login_tagline">نساعدك في إيجاد من تبحث عنه</string>
+    <!-- مفاتيح جديدة لشاشة تسجيل الدخول -->
+    <string name="login_with_google">تسجيل الدخول بـ Google</string>
+    <string name="login_as_guest">تصفح كزائر (بدون تسجيل)</string>
+    <string name="login_disclaimer_link">📋 الحقوق وإخلاء المسؤولية</string>
+    <string name="login_privacy_note">🔒 بالاستخدام توافق على شروط الخدمة وسياسة الخصوصية</string>
+
+    <!-- Splash -->
+    <string name="splash_tagline">مش لوحدك</string>
+
+    <!-- Report -->
+    <string name="report_title">إضافة بلاغ جديد</string>
+    <string name="report_photos_hint">الصور (حتى 3 صور، يجب أن تحتوي على وجه)</string>
+    <string name="report_camera">كاميرا</string>
+    <string name="report_gallery">معرض</string>
+    <string name="report_person_name">وصف الشخص</string>
+    <string name="report_person_age">العمر التقريبي</string>
+    <string name="report_address">اكتب العنوان التفصيلي</string>
+    <string name="report_pick_map">اختر الموقع من الخريطة</string>
+    <string name="report_submit">إرسال للمراجعة</string>
+    <string name="report_pending_note">لن يظهر إلا بعد موافقة الإدارة</string>
+    <string name="report_chat_open">الشات مفتوح للتواصل</string>
+    <string name="report_chat_closed">الشات مغلق</string>
+    <string name="report_category">نوع الحالة</string>
+    <string name="report_governorate">المحافظة</string>
+    <string name="report_city">المدينة / المركز</string>
+    <string name="report_district">الحي / القرية</string>
+    <string name="report_detail_address">العنوان التفصيلي</string>
+
+    <!-- Profile -->
+    <string name="profile_title">حسابي</string>
+    <string name="profile_my_chats">محادثاتي</string>
+    <string name="profile_my_reports">بلاغاتي</string>
+    <string name="profile_notifications">الإشعارات</string>
+    <string name="profile_language">اللغة</string>
+    <string name="profile_about">عن التطبيق</string>
+    <string name="profile_disclaimer">الحقوق والشروط</string>
+    <string name="profile_logout">تسجيل الخروج</string>
+    <string name="profile_admin">لوحة الإدارة</string>
+
+    <!-- Map -->
+    <string name="map_title">خريطة المفقودين</string>
+    <string name="map_pick_title">اختر الموقع على الخريطة</string>
+    <string name="map_permission_title">إذن الموقع مطلوب</string>
+    <string name="map_permission_msg">يحتاج التطبيق لموقعك لعرض الحالات القريبة منك</string>
+    <string name="map_allow">السماح</string>
+    <string name="map_later">لاحقاً</string>
+
+    <!-- FoundSighting -->
+    <string name="sighting_title">شُفت شخصاً مجهولاً</string>
+    <string name="sighting_desc_hint">وصف الشخص (الملابس، المكان، الحالة...)</string>
+    <string name="sighting_location_hint">الموقع التفصيلي</string>
+    <string name="sighting_submit">إرسال البلاغ</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">إحصائيات التطبيق</string>
+
+    <!-- Points / Leaderboard -->
+    <string name="points_title">نقاطي</string>
+    <string name="leaderboard_title">لوحة الأوائل</string>
+    <string name="stories_title">قصص النجاح</string>
+
+    <!-- General -->
+    <string name="loading">جارٍ التحميل…</string>
+    <string name="error">خطأ</string>
+    <string name="cancel">إلغاء</string>
+    <string name="confirm">تأكيد</string>
+    <string name="save">حفظ</string>
+    <string name="delete">حذف</string>
+    <string name="share">مشاركة</string>
+    <string name="search">بحث</string>
+    <string name="all">الكل</string>
+    <string name="male">ذكر</string>
+    <string name="female">أنثى</string>
+    <string name="unknown">غير محدد</string>
+    <!-- رقم النسخة الموحد — عدّل هذا السطر فقط ليتغير في كل الصفحات -->
+    <string name="app_version_name">1.7.9</string>
+    <string name="version">الإصدار 1.7.9</string>
+    <string name="version_full">الإصدار: 1.7.9 | جميع الحقوق محفوظة © 2025</string>
+    <string name="version_disclaimer">الإصدار 1.7.9 — غير ربحي | بدون إعلانات مدفوعة</string>
+
+    <!-- ── ميزات جديدة ─────────────────────────────── -->
+    <string name="my_reports">بلاغاتي</string>
+    <string name="my_reports_empty">لم ترفع أي بلاغ بعد</string>
+    <string name="share_to_whatsapp">مشاركة على واتساب</string>
+    <string name="export_pdf">تصدير PDF</string>
+    <string name="filter_governorate">فلتر المحافظة</string>
+    <string name="all_governorates">كل المحافظات</string>
+    <string name="status_pending">قيد المراجعة</string>
+    <string name="status_approved">تمت الموافقة</string>
+    <string name="status_edited">تم التعديل</string>
+    <string name="status_closed">مُغلَق</string>
+    <string name="widget_description">يعرض آخر 3 حالات مفقودين</string>
+    <string name="cd_person_photo">صورة الشخص المفقود</string>
+    <string name="cd_case_card">بطاقة مفقود، اضغط للتفاصيل</string>
+
+    <!-- الفئة العمرية — الخطوة الجديدة -->
+    <string name="step_age_category_title">الخطوة 1 — الفئة العمرية</string>
+    <string name="step_age_category_subtitle">اختر فئة الشخص المفقود — ستساعدنا في تخصيص الاستمارة</string>
+    <string name="age_cat_child">طفل</string>
+    <string name="age_cat_child_range">أقل من 18 سنة</string>
+    <string name="age_cat_adult">بالغ</string>
+    <string name="age_cat_adult_range">من 18 إلى 60 سنة</string>
+    <string name="age_cat_elder">مسن</string>
+    <string name="age_cat_elder_range">أكثر من 60 سنة</string>
+<string name="similar_report_found">يوجد بلاغ مشابه بنسبة %1$s%%\nرقم البلاغ: %2$s\nهل تريد المتابعة؟</string>
+
+    <!-- Phase 4.4 — Onboarding slide 4: AI Matching -->
+    <string name="onboard_title_4">كيف يعمل الذكاء الاصطناعي</string>
+    <string name="onboard_desc_4">عند رفع بلاغ، يحلل النظام تلقائياً ملامح الوجه\nويقارنها مع آلاف البلاغات الأخرى\nلإيجاد أي تطابق محتمل في ثوانٍ</string>
+
+    <!-- Phase 4.3 — Contextual empty states -->
+    <string name="empty_browse_offline">📵 أنت غير متصل بالإنترنت\nتعرض آخر البيانات المحفوظة</string>
+    <string name="empty_browse_filter">🔍 لا توجد نتائج للفلاتر المحددة\nجرّب تغيير الفلاتر أو إعادة ضبطها</string>
+    <string name="empty_browse_default">لا توجد بلاغات بعد\nكن أول من يساهم!</string>
+    <string name="empty_my_reports">لم ترفع أي بلاغ بعد\nاضغط ＋ لرفع أول بلاغ وساعد في إيجاد مفقود</string>
+    <string name="empty_notifications">لا إشعارات جديدة\nستصلك إشعارات عند وجود تطابق</string>
+    <string name="empty_leaderboard">كن أول من يسجل في لوحة الشرف!\nارفع بلاغات وساعد في إيجاد المفقودين</string>
+
+</resources>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Sanad | سند</string>
+    <string name="default_web_client_id">891319690324-9c2a8lnnr0pkbtjbn2lvcjtnetun9nlj.apps.googleusercontent.com</string>
+    <string name="splash_tagline">You\'re not alone</string>
+
+    <!-- Onboarding -->
+    <string name="onboard_title_1">Find Missing Persons</string>
+    <string name="onboard_desc_1">A free platform to find missing persons\nand connect with their families safely</string>
+    <string name="onboard_title_2">Smart Face Search</string>
+    <string name="onboard_desc_2">Take a photo or choose from gallery\nAI will search the database automatically</string>
+    <string name="onboard_title_3">Share and Help</string>
+    <string name="onboard_desc_3">Report a missing person or someone you found\nEvery report can change a family\'s life</string>
+
+    <!-- Home -->
+    <string name="home_title">Missing Persons</string>
+    <string name="home_subtitle">Help find missing persons and reunite families</string>
+    <string name="home_what_to_do">What would you like to do?</string>
+    <string name="btn_report_missing">Report Missing</string>
+    <string name="btn_browse_cases">Browse Cases</string>
+    <string name="btn_face_search">Face Search</string>
+    <string name="btn_found_person">Found Someone</string>
+    <string name="btn_my_chats">My Chats</string>
+    <string name="btn_my_profile">My Profile</string>
+    <string name="btn_map">Missing Persons Map</string>
+    <string name="btn_advanced_search">Advanced Search</string>
+    <string name="guest_banner">Browsing as guest — tap to register</string>
+    <string name="btn_sighting">I Saw Someone</string>
+    <string name="btn_statistics">Statistics</string>
+    <string name="btn_leaderboard">Leaderboard</string>
+    <string name="btn_success_stories">Success Stories</string>
+
+    <!-- Login -->
+    <string name="login_google">Sign in with Google</string>
+    <string name="login_with_google">Sign in with Google</string>
+    <string name="login_as_guest">Browse as Guest (no registration)</string>
+    <string name="login_guest">Browse as Guest</string>
+    <string name="login_tagline">We help you find who you\'re looking for</string>
+    <string name="login_privacy_note">🔒 By using the app you agree to our Terms of Service and Privacy Policy</string>
+    <string name="login_disclaimer_link">📋 Rights &amp; Disclaimer</string>
+
+    <!-- Report -->
+    <string name="report_title">New Report</string>
+    <string name="report_photos_hint">Photos — at least 1 required (must show a face)</string>
+    <string name="report_camera">Camera</string>
+    <string name="report_gallery">Gallery</string>
+    <string name="report_person_name">Person Description</string>
+    <string name="report_person_age">Approximate Age</string>
+    <string name="report_address">Detailed Address</string>
+    <string name="report_pick_map">Pick on Map</string>
+    <string name="report_submit">Submit for Review</string>
+    <string name="report_pending_note">Will appear after admin approval</string>
+    <string name="report_chat_open">Chat is open</string>
+    <string name="report_chat_closed">Chat is closed</string>
+    <string name="report_category">Case Type</string>
+    <string name="report_governorate">Governorate</string>
+    <string name="report_city">City</string>
+    <string name="report_district">District</string>
+    <string name="report_detail_address">Detailed Address</string>
+
+    <!-- Step / Age category -->
+    <string name="step_age_category_title">Step 1 — Age Category</string>
+    <string name="step_age_category_subtitle">Choose the missing person\'s category — helps us customize the form</string>
+    <string name="age_cat_child">Child</string>
+    <string name="age_cat_child_range">Under 18 years</string>
+    <string name="age_cat_adult">Adult</string>
+    <string name="age_cat_adult_range">18 to 60 years</string>
+    <string name="age_cat_elder">Elderly</string>
+    <string name="age_cat_elder_range">Over 60 years</string>
+
+    <!-- Status -->
+    <string name="status_pending">Under Review</string>
+    <string name="status_approved">Approved</string>
+    <string name="status_edited">Edited</string>
+    <string name="status_closed">Closed</string>
+
+    <!-- My Reports -->
+    <string name="my_reports">My Reports</string>
+    <string name="my_reports_empty">You haven\'t submitted any reports yet</string>
+
+    <!-- Filter / Governorate -->
+    <string name="filter_governorate">Filter by Governorate</string>
+    <string name="all_governorates">All Governorates</string>
+
+    <!-- Profile -->
+    <string name="profile_title">My Profile</string>
+    <string name="profile_my_chats">My Chats</string>
+    <string name="profile_my_reports">My Reports</string>
+    <string name="profile_notifications">Notifications</string>
+    <string name="profile_language">Language</string>
+    <string name="profile_about">About App</string>
+    <string name="profile_disclaimer">Terms &amp; Rights</string>
+    <string name="profile_logout">Sign Out</string>
+    <string name="profile_admin">Admin Panel</string>
+
+    <!-- Map -->
+    <string name="map_title">Missing Persons Map</string>
+    <string name="map_pick_title">Pick Location</string>
+    <string name="map_permission_title">Location Permission Required</string>
+    <string name="map_permission_msg">The app needs your location to show nearby cases</string>
+    <string name="map_allow">Allow</string>
+    <string name="map_later">Later</string>
+
+    <!-- Sighting -->
+    <string name="sighting_title">I Saw an Unknown Person</string>
+    <string name="sighting_desc_hint">Description (clothing, location, condition...)</string>
+    <string name="sighting_location_hint">Detailed location</string>
+    <string name="sighting_submit">Submit Report</string>
+
+    <!-- Stats / Leaderboard / Stories -->
+    <string name="stats_title">App Statistics</string>
+    <string name="points_title">My Points</string>
+    <string name="leaderboard_title">Leaderboard</string>
+    <string name="stories_title">Success Stories</string>
+
+    <!-- Share / Export -->
+    <string name="share_to_whatsapp">Share on WhatsApp</string>
+    <string name="export_pdf">Export PDF</string>
+
+    <!-- Accessibility -->
+    <string name="cd_case_card">Missing person card — tap for details</string>
+    <string name="cd_person_photo">Photo of missing person</string>
+
+    <!-- Widget -->
+    <string name="widget_description">Shows the latest 3 missing persons cases</string>
+
+    <!-- Generic -->
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="search">Search</string>
+    <string name="all">All</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="unknown">Unknown</string>
+    <!-- Unified version number — edit values/strings.xml app_version_name to update everywhere -->
+    <string name="app_version_name">1.7.9</string>
+    <string name="version">Version 1.7.9</string>
+    <string name="version_full">Version: 1.7.9 | All rights reserved © 2025</string>
+    <string name="version_disclaimer">Version 1.7.9 — Non-profit | Ad-free</string>
+</resources>

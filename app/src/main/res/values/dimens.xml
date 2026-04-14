@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ═══════════════════════════════════════════
+         8dp Grid Spacing System
+         استخدام: @dimen/spacing_4 = 16dp
+         ═══════════════════════════════════════════ -->
+    <dimen name="spacing_1">4dp</dimen>
+    <dimen name="spacing_2">8dp</dimen>
+    <dimen name="spacing_3">12dp</dimen>
+    <dimen name="spacing_4">16dp</dimen>
+    <dimen name="spacing_5">20dp</dimen>
+    <dimen name="spacing_6">24dp</dimen>
+    <dimen name="spacing_8">32dp</dimen>
+    <dimen name="spacing_10">40dp</dimen>
+    <dimen name="spacing_12">48dp</dimen>
+    <dimen name="spacing_16">64dp</dimen>
+
+    <!-- ═══════════════════════════════════════════
+         Corner Radius Tokens (M3)
+         ═══════════════════════════════════════════ -->
+    <dimen name="corner_extra_small">4dp</dimen>
+    <dimen name="corner_small">8dp</dimen>
+    <dimen name="corner_medium">12dp</dimen>
+    <dimen name="corner_large">16dp</dimen>
+    <dimen name="corner_extra_large">24dp</dimen>
+    <dimen name="corner_full">100dp</dimen>
+
+    <!-- ═══════════════════════════════════════════
+         Component Sizes
+         ═══════════════════════════════════════════ -->
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_height_small">36dp</dimen>
+    <dimen name="button_height_large">56dp</dimen>
+
+    <dimen name="card_margin">8dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_elevation">0dp</dimen>
+
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_medium">24dp</dimen>
+    <dimen name="icon_size_large">32dp</dimen>
+    <dimen name="icon_size_xl">48dp</dimen>
+
+    <!-- ═══════════════════════════════════════════
+         Avatar / Image Sizes
+         ═══════════════════════════════════════════ -->
+    <dimen name="avatar_small">40dp</dimen>
+    <dimen name="avatar_medium">56dp</dimen>
+    <dimen name="avatar_large">80dp</dimen>
+    <dimen name="avatar_xl">96dp</dimen>
+    <dimen name="avatar_xxl">120dp</dimen>
+
+    <dimen name="card_image_width">80dp</dimen>
+    <dimen name="card_image_height">88dp</dimen>
+    <dimen name="card_image_large">200dp</dimen>
+
+    <!-- ═══════════════════════════════════════════
+         Navigation & Toolbar
+         ═══════════════════════════════════════════ -->
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_bottom_margin">80dp</dimen>
+
+    <!-- ═══════════════════════════════════════════
+         Typography Scale (M3)
+         استخدم مع android:textSize="@dimen/text_title_large"
+         ═══════════════════════════════════════════ -->
+    <dimen name="text_display_large">57sp</dimen>
+    <dimen name="text_display_medium">45sp</dimen>
+    <dimen name="text_display_small">36sp</dimen>
+    <dimen name="text_headline_large">32sp</dimen>
+    <dimen name="text_headline_medium">28sp</dimen>
+    <dimen name="text_headline_small">24sp</dimen>
+    <dimen name="text_title_large">22sp</dimen>
+    <dimen name="text_title_medium">16sp</dimen>
+    <dimen name="text_title_small">14sp</dimen>
+    <dimen name="text_body_large">16sp</dimen>
+    <dimen name="text_body_medium">14sp</dimen>
+    <dimen name="text_body_small">12sp</dimen>
+    <dimen name="text_label_large">14sp</dimen>
+    <dimen name="text_label_medium">12sp</dimen>
+    <dimen name="text_label_small">11sp</dimen>
+
+    <!-- ═══════════════════════════════════════════
+         Elevation Tokens (M3)
+         ═══════════════════════════════════════════ -->
+    <dimen name="elevation_level0">0dp</dimen>
+    <dimen name="elevation_level1">1dp</dimen>
+    <dimen name="elevation_level2">3dp</dimen>
+    <dimen name="elevation_level3">6dp</dimen>
+    <dimen name="elevation_level4">8dp</dimen>
+    <dimen name="elevation_level5">12dp</dimen>
+
+    <!-- ═══════════════════════════════════════════
+         Screen / Layout
+         ═══════════════════════════════════════════ -->
+    <dimen name="content_padding_horizontal">16dp</dimen>
+    <dimen name="content_padding_vertical">16dp</dimen>
+    <dimen name="section_spacing">24dp</dimen>
+    <dimen name="list_item_padding">16dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+
+    <!-- ═══════════════════════════════════════════
+         Stats Cards
+         ═══════════════════════════════════════════ -->
+    <dimen name="stat_card_min_width">100dp</dimen>
+    <dimen name="stat_icon_size">40dp</dimen>
+
+    <!-- ═══════════════════════════════════════════
+         Match Score Progress
+         ═══════════════════════════════════════════ -->
+    <dimen name="match_progress_height">6dp</dimen>
+    <dimen name="match_progress_corner">3dp</dimen>
+
+</resources>

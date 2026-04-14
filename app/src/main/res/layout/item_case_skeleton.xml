@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Skeleton loading card — يُعرض أثناء أول تحميل
+  Grey placeholders تحاكي شكل item_case_card الحقيقي
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/md_surface"
+    app:strokeColor="@color/md_outline_variant"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Photo placeholder -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/skeleton_color"/>
+
+        <!-- Info section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Name placeholder -->
+            <View
+                android:layout_width="160dp"
+                android:layout_height="18dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_skeleton_rounded"/>
+
+            <!-- Address placeholder -->
+            <View
+                android:layout_width="110dp"
+                android:layout_height="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_skeleton_rounded"/>
+
+            <!-- Chip row placeholders -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <View
+                    android:layout_width="70dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_skeleton_chip"/>
+
+                <View
+                    android:layout_width="55dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_skeleton_chip"/>
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_skeleton_chip"/>
+            </LinearLayout>
+
+            <!-- Bottom row placeholder -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_skeleton_rounded"/>
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="12dp"
+                    android:background="@drawable/bg_skeleton_rounded"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

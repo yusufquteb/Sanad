@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <!-- ══════════════════════════════════════
+         AppBar
+         ══════════════════════════════════════ -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_abuse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:liftOnScroll="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_abuse"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="بلاغات سوء الاستخدام"
+            app:titleCentered="true"
+            app:navigationIconTint="?attr/colorOnSurface" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- ══════════════════════════════════════
+         Main Content (with appbar behavior)
+         ══════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- ── Filter Chips Row ── -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="8dp">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipgroup_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_filter_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="الكل"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:checked="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_filter_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="جديد"
+                    style="@style/Widget.Material3.Chip.Filter" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_filter_resolved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="معالَج"
+                    style="@style/Widget.Material3.Chip.Filter" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_filter_dismissed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="مرفوض"
+                    style="@style/Widget.Material3.Chip.Filter" />
+
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+        <!-- ── Progress Indicator (full-width, 4dp track) ── -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_abuse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:trackCornerRadius="0dp" />
+
+        <!-- ── Empty State ── -->
+        <LinearLayout
+            android:id="@+id/layout_empty_abuse"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="48dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_warning_outline"
+                app:tint="?attr/colorPrimary"
+                android:alpha="0.35"
+                android:contentDescription="@null"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:id="@+id/tv_empty_abuse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="لا توجد بلاغات حالياً"
+                style="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/colorOnSurface"
+                android:layout_marginBottom="6dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="كل شيء على ما يرام"
+                style="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:layout_marginBottom="24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_empty_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="تحديث"
+                app:icon="@drawable/ic_refresh"
+                style="@style/Widget.Material3.Button.TonalButton"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+
+        <!-- ── RecyclerView ── -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_abuse_reports"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:paddingBottom="96dp"
+            android:clipToPadding="false" />
+
+    </LinearLayout>
+
+    <!-- ══════════════════════════════════════
+         FAB — تمييز كمقروء (Fixed bottom-end)
+         ══════════════════════════════════════ -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_mark_all_read"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="تمييز كمقروء"
+        app:icon="@drawable/ic_done_all"
+        app:cornerRadius="16dp"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

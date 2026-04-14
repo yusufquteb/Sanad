@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_background">
+
+    <!-- ══ HEADER — Gradient أزرق ══ -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_home_header"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_chats"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="💬 المحادثات"
+            app:titleTextColor="#FFFFFF"
+            app:navigationIconTint="#FFFFFF"/>
+
+        <!-- سطر subtitle تحت الـ Toolbar -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="تواصل مع أسر المفقودين"
+            android:textSize="12sp"
+            android:textColor="#CCFFFFFF"
+            android:paddingStart="72dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="12dp"
+            android:layout_marginTop="-10dp"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Progress -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_chats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/md_primary"
+            app:trackColor="@color/md_surface_variant"/>
+
+        <!-- Empty state -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="48dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_notification"
+                app:tint="@color/md_primary"
+                android:alpha="0.25"
+                android:contentDescription="@null"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/tv_empty_chats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="لا توجد محادثات بعد"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/md_on_surface"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="تواصل مع أصحاب البلاغات للمساعدة"
+                android:textSize="13sp"
+                android:textColor="@color/md_on_surface_variant"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- قائمة المحادثات -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chats"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"/>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

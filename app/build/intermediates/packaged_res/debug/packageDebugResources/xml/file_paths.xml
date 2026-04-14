@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Internal files -->
+    <files-path name="internal_files" path="." />
+    <!-- Camera output: getExternalFilesDir("reports") -->
+    <external-files-path name="reports" path="reports/" />
+    <!-- General external files -->
+    <external-files-path name="my_images" path="Pictures/" />
+    <!-- Cache paths -->
+    <cache-path name="compressed_images" path="." />
+    <external-cache-path name="external_cache" path="." />
+</paths>

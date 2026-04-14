@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MissingPersons" parent="Theme.Material3.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="colorOnPrimary">@color/md_on_primary</item>
+        <item name="colorPrimaryContainer">@color/md_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/md_on_primary_container</item>
+
+        <item name="colorSecondary">@color/md_secondary</item>
+        <item name="colorOnSecondary">@color/md_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/md_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/md_on_secondary_container</item>
+
+        <item name="colorTertiary">@color/md_tertiary</item>
+        <item name="colorOnTertiary">@color/md_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/md_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/md_on_tertiary_container</item>
+
+        <item name="colorError">@color/md_error</item>
+        <item name="colorOnError">@color/md_on_error</item>
+        <item name="colorErrorContainer">@color/md_error_container</item>
+        <item name="colorOnErrorContainer">@color/md_on_error_container</item>
+
+        <item name="android:colorBackground">@color/md_background</item>
+        <item name="colorSurface">@color/md_surface</item>
+        <item name="colorOnSurface">@color/md_on_surface</item>
+        <item name="colorSurfaceVariant">@color/md_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/md_on_surface_variant</item>
+        <item name="colorOutline">@color/md_outline</item>
+        <item name="colorOutlineVariant">@color/md_outline_variant</item>
+
+        <item name="android:fontFamily">@font/cairo</item>
+
+        <!-- ═══ M3 Typography Tokens (Cairo font) ═══ -->
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.App.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.App.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.App.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.App.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.App.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.App.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.App.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.App.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.App.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.App.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.App.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.App.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.App.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.App.LabelSmall</item>
+
+        <item name="shapeAppearanceSmallComponent">@style/Shape.M3.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/Shape.M3.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/Shape.M3.Large</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#1B2F7A</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <item name="android:layoutDirection">rtl</item>
+        <item name="elevationOverlayEnabled">false</item>
+
+        <item name="materialButtonStyle">@style/Widget.App.Button.Primary</item>
+        <item name="chipStyle">@style/Widget.App.Chip</item>
+        <item name="cardViewStyle">@style/Widget.App.Card</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+    </style>
+
+    <style name="Theme.MissingPersons.Splash" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">@color/splash_bg</item>
+        <item name="android:statusBarColor">@color/splash_bg</item>
+        <item name="android:navigationBarColor">@color/splash_bg</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <style name="Theme.MissingPersons.WithActionBar" parent="Theme.Material3.Light">
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="android:layoutDirection">rtl</item>
+    </style>
+
+    <!-- ════════════════════════════════════════════════════
+         M3 Typography Scale — Cairo font
+         الاستخدام: android:textAppearance="@style/TextAppearance.App.TitleLarge"
+         ════════════════════════════════════════════════════ -->
+
+    <style name="TextAppearance.App.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">57sp</item>
+        <item name="android:letterSpacing">-0.025</item>
+    </style>
+
+    <style name="TextAppearance.App.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">45sp</item>
+    </style>
+
+    <style name="TextAppearance.App.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="TextAppearance.App.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.App.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.App.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- TitleLarge → العناوين الرئيسية للشاشات -->
+    <style name="TextAppearance.App.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/md_on_surface</item>
+    </style>
+
+    <!-- TitleMedium → عناوين الـ Cards والـ Sections -->
+    <style name="TextAppearance.App.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/md_on_surface</item>
+    </style>
+
+    <!-- TitleSmall → عناوين فرعية صغيرة -->
+    <style name="TextAppearance.App.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/md_on_surface</item>
+    </style>
+
+    <!-- BodyLarge → نصوص رئيسية في القوائم -->
+    <style name="TextAppearance.App.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/md_on_surface</item>
+    </style>
+
+    <!-- BodyMedium → نصوص ثانوية، تفاصيل -->
+    <style name="TextAppearance.App.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- BodySmall → نصوص صغيرة، metadata -->
+    <style name="TextAppearance.App.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- LabelLarge → أزرار، تسميات مهمة -->
+    <style name="TextAppearance.App.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- LabelMedium → Chips، Badges -->
+    <style name="TextAppearance.App.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- LabelSmall → نسبة التطابق، timestamps صغيرة -->
+    <style name="TextAppearance.App.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- ════════════════════════════════════════════════════
+         M3 Shape Tokens
+         ════════════════════════════════════════════════════ -->
+    <style name="Shape.M3.ExtraSmall" parent="ShapeAppearance.Material3.Corner.ExtraSmall"/>
+    <style name="Shape.M3.Small" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">8dp</item>
+    </style>
+    <style name="Shape.M3.Medium" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerSize">12dp</item>
+    </style>
+    <style name="Shape.M3.Large" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="Shape.M3.ExtraLarge" parent="ShapeAppearance.Material3.Corner.ExtraLarge"/>
+    <style name="Shape.M3.Full" parent="ShapeAppearance.Material3.Corner.Full"/>
+
+    <!-- ════════════════════════════════════════════════════
+         Buttons
+         ════════════════════════════════════════════════════ -->
+    <style name="Widget.App.Button.Primary" parent="Widget.Material3.Button">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+
+    <style name="Widget.App.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+
+    <style name="Widget.App.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+
+    <style name="Widget.App.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+
+    <style name="Widget.App.Button.Small" parent="Widget.Material3.Button.TonalButton">
+        <item name="cornerRadius">8dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+
+    <!-- ════════════════════════════════════════════════════
+         Cards
+         ════════════════════════════════════════════════════ -->
+    <style name="Widget.App.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/md_outline_variant</item>
+        <item name="cardBackgroundColor">@color/md_surface</item>
+    </style>
+
+    <style name="Widget.App.Card.Outlined" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/md_surface</item>
+    </style>
+
+    <style name="Widget.App.Card.Stat" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/md_surface_container_low</item>
+    </style>
+
+    <style name="Widget.App.Card.Elevated" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardBackgroundColor">@color/md_surface</item>
+    </style>
+
+    <!-- ════════════════════════════════════════════════════
+         Chip / TextInput / Toolbar
+         ════════════════════════════════════════════════════ -->
+    <style name="Widget.App.Chip" parent="Widget.Material3.Chip.Assist">
+        <item name="chipCornerRadius">8dp</item>
+        <item name="chipMinTouchTargetSize">0dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+
+    <style name="Widget.App.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipCornerRadius">8dp</item>
+        <item name="chipMinTouchTargetSize">0dp</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+
+    <style name="Widget.App.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+    </style>
+
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/md_surface</item>
+        <item name="titleTextColor">@color/md_on_surface</item>
+    </style>
+
+    <!-- ════════════════════════════════════════════════════
+         Shimmer / Skeleton
+         ════════════════════════════════════════════════════ -->
+    <style name="Widget.App.Skeleton" parent="">
+        <item name="android:background">@drawable/bg_skeleton_rounded</item>
+    </style>
+
+    <!-- ════════════════════════════════════════════════════
+         Match Score Badge (Phase 2 — جاهز مسبقاً)
+         ════════════════════════════════════════════════════ -->
+    <style name="Widget.App.MatchBadge.High" parent="">
+        <item name="android:background">@color/success_color</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="RoundedImageView" parent="">
+        <item name="cornerSize">16dp</item>
+    </style>
+
+</resources>

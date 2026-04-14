@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_background"
+    android:layoutDirection="rtl">
+
+    <!-- HEADER -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_home_header"
+        app:elevation="0dp">
+
+        <!-- Title + actions row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="6dp">
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_arrow_forward"
+                android:padding="7dp"
+                android:background="@drawable/bg_icon_circle_white"
+                android:clickable="true"
+                android:focusable="true"
+                android:rotation="180"
+                android:layout_marginEnd="10dp"
+                app:tint="@color/white"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="تصفح الحالات"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
+
+            <!-- Map button - like hotel booking apps -->
+            <LinearLayout
+                android:id="@+id/btn_map_view"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_icon_circle_white"
+                android:paddingHorizontal="10dp"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true">
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_map_nav"
+                    app:tint="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" خريطة"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+
+            <!-- Grid/List toggle -->
+            <ImageView
+                android:id="@+id/btn_toggle_view"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_browse"
+                android:padding="7dp"
+                android:background="@drawable/bg_icon_circle_white"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:tint="@color/white"/>
+
+        </LinearLayout>
+
+        <!-- Search row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="10dp"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/search_container"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_search_white"
+                android:paddingHorizontal="12dp">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_search_person"
+                    android:layout_marginEnd="8dp"
+                    app:tint="#AAAAAA"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="ابحث بالاسم أو كود البلاغ..."
+                    android:textSize="13sp"
+                    android:textColorHint="#AAAAAA"
+                    android:background="@null"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"/>
+            </LinearLayout>
+
+            <!-- Filter button - opens BottomSheet with governorate filter -->
+            <LinearLayout
+                android:id="@+id/btn_filter"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:background="@drawable/bg_icon_circle_white"
+                android:clickable="true"
+                android:focusable="true">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_filter_list"
+                    app:tint="@color/white"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Type chips only (governorate moved to BottomSheet) -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="12dp"
+            android:clipToPadding="false">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cg_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                app:chipSpacingHorizontal="6dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="الكل"
+                    android:checked="true"
+                    android:textSize="12sp"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    app:chipMinTouchTargetSize="0dp"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_missing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="مفقود"
+                    android:textSize="12sp"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    app:chipMinTouchTargetSize="0dp"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_found"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="معثور"
+                    android:textSize="12sp"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    app:chipMinTouchTargetSize="0dp"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_sighting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="مشاهدة"
+                    android:textSize="12sp"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    app:chipMinTouchTargetSize="0dp"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_emergency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="طوارئ"
+                    android:textSize="12sp"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    app:chipMinTouchTargetSize="0dp"/>
+
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- CONTENT -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Sync progress -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_sync"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/md_theme_light_primary"/>
+
+        <!-- Offline banner -->
+        <LinearLayout
+            android:id="@+id/ll_offline_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:background="@color/md_error_container"
+            android:visibility="gone">
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_warning_outline"
+                android:layout_marginEnd="8dp"
+                app:tint="@color/md_error"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="أنت غير متصل — تعرض بيانات محفوظة"
+                android:textSize="12sp"
+                android:textColor="@color/md_on_error_container"/>
+        </LinearLayout>
+
+        <!-- Count -->
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp"
+            android:textSize="12sp"
+            android:textColor="@color/md_on_surface_variant"
+            android:textStyle="bold"/>
+
+        <!-- RecyclerView with Native Ads every 20 items -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_browse"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingHorizontal="8dp"
+            android:paddingBottom="16dp"/>
+
+        <!-- Empty State -->
+        <LinearLayout
+            android:id="@+id/layout_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="40dp"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🔍"
+                android:textSize="56sp"/>
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="لا توجد نتائج"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/md_on_surface"
+                android:layout_marginTop="12dp"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/tv_empty_sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="جرّب تغيير الفلاتر أو كلمة البحث"
+                android:textSize="14sp"
+                android:textColor="@color/md_on_surface_variant"
+                android:layout_marginTop="6dp"
+                android:gravity="center"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_reset_filters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="إعادة ضبط الفلاتر"
+                android:layout_marginTop="16dp"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                app:cornerRadius="20dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
