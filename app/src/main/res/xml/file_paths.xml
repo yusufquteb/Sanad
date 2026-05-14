@@ -9,4 +9,6 @@
     <!-- Cache paths -->
     <cache-path name="compressed_images" path="." />
     <external-cache-path name="external_cache" path="." />
+
+
 </paths>
