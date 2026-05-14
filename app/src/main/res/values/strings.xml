@@ -160,4 +160,22 @@
     <string name="update_failed">فشل تحميل التحديث، يرجى المحاولة لاحقاً</string>
     <string name="settings_title">الإعدادات</string>
 
+    <!-- Settings sections -->
+    <string name="settings_notifications_section">الإشعارات</string>
+    <string name="settings_master_notif">تفعيل الإشعارات</string>
+    <string name="settings_match_notif">إشعارات التطابق</string>
+    <string name="settings_amber_notif">تنبيهات الأطفال المفقودين</string>
+    <string name="settings_app_section">التطبيق</string>
+    <string name="settings_language">اللغة</string>
+    <string name="settings_clear_cache">مسح الذاكرة المؤقتة</string>
+    <string name="settings_clear_cache_done">تم مسح الذاكرة المؤقتة ✓</string>
+    <string name="settings_privacy_section">الخصوصية</string>
+    <string name="settings_privacy_policy">سياسة الخصوصية</string>
+    <string name="settings_terms">شروط الاستخدام</string>
+    <string name="settings_about_section">عن التطبيق</string>
+    <string name="settings_contact">تواصل معنا</string>
+    <string name="settings_app_nonprofit">غير ربحي — بدون إعلانات مدفوعة</string>
+    <string name="privacy_policy_url">https://sanad-app.com/privacy</string>
+    <string name="terms_url">https://sanad-app.com/terms</string>
+
 </resources>
