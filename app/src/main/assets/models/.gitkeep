@@ -1,0 +1,5 @@
+# مجلد نماذج AI
+# يجب وضع الملف adaface_ir18_112.tflite هنا قبل البناء
+# المصدر: https://github.com/mk-minchul/AdaFace — اختر ir18
+# الحجم المتوقع: ~3.5MB
+

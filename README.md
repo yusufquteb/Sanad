@@ -4,7 +4,8 @@
 > **Package:** `com.missingpersons.app`  
 > **الإصدار:** V2.1 — Production-Ready Reference (النسخة النهائية)  
 > **اللغة:** Java | Android | minSdk 24 / targetSdk 35  
-> **آخر تحديث:** مايو 2026
+> **آخر تحديث:** مايو 2026  
+> **حالة المرحلة الأولى:** ✅ مكتملة
 
 ---
 
@@ -81,13 +82,18 @@ Coil, Lottie, AdMob
 
 | الملف | الوظيفة | الحالة |
 |-------|---------|--------|
-| `TFLiteFaceRecognizer.java` | تشغيل النموذج + cosine similarity | ✅ يحتاج تحديث لـ 512-dim |
-| `FaceEmbeddingManager.java` | استخراج embedding كامل مع versioning | ✅ يحتاج استبدال النموذج |
-| `CrossMatchManager.java` | المطابقة ثنائية الاتجاه | ✅ يحتاج دعم multi-embedding |
-| `ImagePreprocessor.java` | EXIF + جودة + ضغط | ✅ لا تعديل |
-| `ImageQualityEnhancer.java` | Quality Gate | ✅ يُستبدل بـ QualityAnalyzer الجديد |
-| `FaceAnalyzer.java` | ML Kit wrapper + landmarks | ✅ يُوسَّع لاستخراج 5 نقاط |
-| `AiError.java` | Error taxonomy | ✅ يُضاف إليه أكواد جديدة |
+| `TFLiteFaceRecognizer.java` | تشغيل النموذج + cosine similarity | ✅ موجود (V1 — يعمل مع 128-dim) |
+| `FaceEmbeddingManager.java` | استخراج embedding كامل مع versioning | ✅ محدّث — `EMBEDDING_VERSION=3` |
+| `CrossMatchManager.java` | المطابقة ثنائية الاتجاه | ✅ يحتاج دعم multi-embedding (M2) |
+| `ImagePreprocessor.java` | تجهيز الصورة + load من Uri/File | ✅ محدّث — `preprocessFromUri()` مضافة |
+| `ImageQualityEnhancer.java` | Quality Gate (V1 Boolean) | ✅ موجود — يُكمل للتوافق مع V1 |
+| `FaceQualityAnalyzer.java` | Quality Gate (V2 float score) | ✅ جديد — composite score 0.0–1.0 |
+| `AdaFaceRecognizer.java` | AdaFace IR18 TFLite — 512-dim | ✅ جديد |
+| `FivePointAligner.java` | 5-point Similarity Transform | ✅ جديد |
+| `EmbeddingStabilityValidator.java` | فحص ثبات الـ embedding | ✅ جديد |
+| `FaceEmbeddingWorker.java` | WorkManager pipeline كامل | ✅ جديد |
+| `FaceAnalyzer.java` | ML Kit wrapper + landmarks | ✅ موجود |
+| `AiError.java` | Error taxonomy | ✅ موجود |
 
 ---
 
@@ -978,18 +984,22 @@ public static final int    LEGACY_EMBEDDING_VERSION = 2;   // MobileFaceNet 128-
 
 ## ٩. خارطة التطوير
 
-### 🔴 المرحلة الأولى — الأساس (ابدأ هنا، أولوية قصوى)
+### ✅ المرحلة الأولى — مكتملة
 
-| المهمة | الأثر | الملفات المتأثرة |
-|--------|-------|-----------------|
-| إضافة `adaface_ir18_112.tflite` | +++ | `assets/models/` |
-| `FivePointAligner.java` | +++ | جديد |
-| `FaceQualityAnalyzer.java` (float score) | ++ | يستبدل `ImageQualityEnhancer` |
-| `AdaFaceRecognizer.java` | +++ | يستبدل `TFLiteFaceRecognizer` |
-| `EmbeddingStabilityValidator.java` | ++ | جديد |
-| تحديث Firebase Schema للـ multi-embedding | +++ | `CrossMatchManager` |
-| `FaceEmbeddingWorker` (WorkManager) | +++ | يستبدل الـ pipeline في Activities |
-| Debug Snapshots في Room DB (Admin فقط) | ++ | جديد |
+| المهمة | الأثر | الملفات المتأثرة | الحالة |
+|--------|-------|-----------------|--------|
+| إضافة `adaface_ir18_112.tflite` | +++ | `assets/models/` | ⚠️ يتطلب تنزيل يدوي |
+| `FivePointAligner.java` | +++ | جديد | ✅ منتهي |
+| `FaceQualityAnalyzer.java` (float score) | ++ | يستبدل `ImageQualityEnhancer` | ✅ منتهي |
+| `AdaFaceRecognizer.java` | +++ | يستبدل `TFLiteFaceRecognizer` | ✅ منتهي |
+| `EmbeddingStabilityValidator.java` | ++ | جديد | ✅ منتهي |
+| `FaceEmbeddingWorker.java` (WorkManager) | +++ | `workers/` | ✅ منتهي |
+| تحديث `FaceEmbeddingManager.java` — V2 constants | ++ | `EMBEDDING_VERSION=3` | ✅ منتهي |
+| تحديث `ImagePreprocessor.java` — `preprocessFromUri` | + | إضافة دوال | ✅ منتهي |
+| Debug Snapshots في Room DB (Admin فقط) | ++ | جديد | 🟠 المرحلة الثانية |
+
+> ⚠️ **ملاحظة:** ملف `adaface_ir18_112.tflite` (~3.5MB) يجب تنزيله يدوياً من  
+> https://github.com/mk-minchul/AdaFace — اختر `IR18` — وضعه في `app/src/main/assets/models/`
 
 **النتيجة المتوقعة:** رفع الدقة الواقعية من ~55% إلى ~82%
 
