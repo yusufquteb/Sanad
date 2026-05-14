@@ -154,4 +154,9 @@
     <string name="empty_notifications">لا إشعارات جديدة\nستصلك إشعارات عند وجود تطابق</string>
     <string name="empty_leaderboard">كن أول من يسجل في لوحة الشرف!\nارفع بلاغات وساعد في إيجاد المفقودين</string>
 
+    <!-- InAppUpdateManager strings -->
+    <string name="update_available_title">تحديث جاهز للتثبيت</string>
+    <string name="update_restart_action">إعادة التشغيل</string>
+    <string name="update_failed">فشل تحميل التحديث، يرجى المحاولة لاحقاً</string>
+
 </resources>

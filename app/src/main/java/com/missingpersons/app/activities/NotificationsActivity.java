@@ -54,6 +54,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
         adapter = new NotifAdapter();
         rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setHasFixedSize(true);
         rv.setAdapter(adapter);
 
         btnMarkAll.setOnClickListener(v -> markAllRead());

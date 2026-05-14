@@ -148,4 +148,8 @@ public interface ReportDao {
 
     @Query("SELECT COUNT(*) FROM reports WHERE status = 'resolved'")
     int getResolvedCount();
+
+    /** آخر N بلاغ معتمد مرتّب حسب التوقيت (للـ Widget) */
+    @Query("SELECT * FROM reports WHERE status='approved' ORDER BY timestamp DESC LIMIT :limit")
+    List<ReportEntity> getLatestApproved(int limit);
 }

@@ -19,6 +19,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.FirebaseDatabase;
 import com.missingpersons.app.BuildConfig;
 import com.missingpersons.app.utils.AiError;
+import com.missingpersons.app.utils.PerformanceConfig;
 import com.missingpersons.app.utils.FaceEmbeddingManager;
 import com.missingpersons.app.utils.RateLimiter;
 import com.missingpersons.app.utils.RoleManager;
@@ -63,6 +64,9 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
+        // ── [7.1] تهيئة الأداء (Coil + Firebase keepSynced) ─────────────────
+        try { PerformanceConfig.init(this); } catch (Exception e) { android.util.Log.e(TAG, "PerformanceConfig: " + e); }
+
         // ── Firebase Offline Persistence (يجب قبل أي استخدام لـ Firebase) ──
         try {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -82,7 +86,6 @@ public class MyApplication extends MultiDexApplication {
 
         try { createNotificationChannels(); } catch (Exception e) { Log.e(TAG, "createNotificationChannels: " + e); }
         try { initCrashlytics();            } catch (Exception e) { Log.e(TAG, "initCrashlytics: "            + e); }
-        try { initCoilImageLoader();        } catch (Exception e) { Log.e(TAG, "initCoilImageLoader: "        + e); }
         try { initAdMob();                  } catch (Exception e) { Log.e(TAG, "initAdMob: "                  + e); }
         try { initAnalytics();              } catch (Exception e) { Log.e(TAG, "initAnalytics: "              + e); }
         try { initAppCheck();               } catch (Exception e) { Log.e(TAG, "initAppCheck: "               + e); }
