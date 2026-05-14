@@ -988,7 +988,7 @@ public static final int    LEGACY_EMBEDDING_VERSION = 2;   // MobileFaceNet 128-
 
 | المهمة | الأثر | الملفات المتأثرة | الحالة |
 |--------|-------|-----------------|--------|
-| إضافة `adaface_ir18_112.tflite` | +++ | `assets/models/` | ⚠️ يتطلب تنزيل يدوي |
+| إضافة `adaface_ir18_112.tflite` | +++ | `assets/models/` | ⚠️ Placeholder: MobileFaceNet 128-dim — يعمل الآن |
 | `FivePointAligner.java` | +++ | جديد | ✅ منتهي |
 | `FaceQualityAnalyzer.java` (float score) | ++ | يستبدل `ImageQualityEnhancer` | ✅ منتهي |
 | `AdaFaceRecognizer.java` | +++ | يستبدل `TFLiteFaceRecognizer` | ✅ منتهي |
@@ -998,8 +998,10 @@ public static final int    LEGACY_EMBEDDING_VERSION = 2;   // MobileFaceNet 128-
 | تحديث `ImagePreprocessor.java` — `preprocessFromUri` | + | إضافة دوال | ✅ منتهي |
 | Debug Snapshots في Room DB (Admin فقط) | ++ | جديد | 🟠 المرحلة الثانية |
 
-> ⚠️ **ملاحظة:** ملف `adaface_ir18_112.tflite` (~3.5MB) يجب تنزيله يدوياً من  
-> https://github.com/mk-minchul/AdaFace — اختر `IR18` — وضعه في `app/src/main/assets/models/`
+> **ملاحظة الـ Placeholder:**  
+> `adaface_ir18_112.tflite` الحالي هو نسخة من `mobilefacenet.tflite` (128-dim) — يعمل التطبيق به الآن.  
+> لرفع الدقة لـ 512-dim: استبدل الملف بـ AdaFace IR18 الحقيقي من https://github.com/mk-minchul/AdaFace  
+> الكود يكتشف أبعاد الإخراج تلقائياً — لا يحتاج تعديل عند الاستبدال.
 
 **النتيجة المتوقعة:** رفع الدقة الواقعية من ~55% إلى ~82%
 
