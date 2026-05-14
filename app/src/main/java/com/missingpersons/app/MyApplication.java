@@ -23,6 +23,7 @@ import com.missingpersons.app.utils.PerformanceConfig;
 import com.missingpersons.app.utils.FaceEmbeddingManager;
 import com.missingpersons.app.utils.RateLimiter;
 import com.missingpersons.app.utils.RoleManager;
+import com.missingpersons.app.utils.AdaFaceRecognizer;
 import com.missingpersons.app.utils.TFLiteFaceRecognizer;
 import com.missingpersons.app.workers.BackgroundMatchWorker;
 import com.missingpersons.app.workers.ProximityCheckWorker;
@@ -120,41 +121,38 @@ public class MyApplication extends MultiDexApplication {
     private void verifyTFLiteModel() {
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
-                TFLiteFaceRecognizer recognizer = TFLiteFaceRecognizer.getInstance(this);
+                AdaFaceRecognizer recognizer = AdaFaceRecognizer.getInstance(this);
 
-                if (recognizer.isAvailable()) {
-                    Log.i(TAG, "✅ TFLite Model Verified: mobilefacenet.tflite جاهز"
+                if (recognizer != null && recognizer.isAvailable()) {
+                    Log.i(TAG, "✅ AdaFace IR18 Model Verified: adaface_ir18_112.tflite جاهز"
                         + " | model=" + FaceEmbeddingManager.MODEL_VERSION
-                        + " | embeddingVersion=" + FaceEmbeddingManager.EMBEDDING_VERSION
-                        + " | threshold=" + TFLiteFaceRecognizer.MATCH_THRESHOLD);
+                        + " | embeddingVersion=" + FaceEmbeddingManager.EMBEDDING_VERSION);
 
                     // تسجيل معلومات النموذج في Crashlytics للمرجعية
                     try {
                         FirebaseCrashlytics c = FirebaseCrashlytics.getInstance();
-                        c.setCustomKey("tflite_loaded",       true);
+                        c.setCustomKey("adaface_loaded",      true);
                         c.setCustomKey("model_version",       FaceEmbeddingManager.MODEL_VERSION);
                         c.setCustomKey("embedding_version",   FaceEmbeddingManager.EMBEDDING_VERSION);
-                        c.setCustomKey("match_threshold",     TFLiteFaceRecognizer.MATCH_THRESHOLD);
                     } catch (Exception ignored) {}
 
                 } else {
                     // ❌ النموذج غير متاح — هذا خطأ جوهري
-                    Log.e(TAG, "❌ ❌ ❌ TFLite Model FAILED TO LOAD ❌ ❌ ❌");
-                    Log.e(TAG, "→ تأكد من وجود mobilefacenet.tflite في app/src/main/assets/");
+                    Log.e(TAG, "❌ ❌ ❌ AdaFace IR18 Model FAILED TO LOAD ❌ ❌ ❌");
+                    Log.e(TAG, "→ تأكد من وجود adaface_ir18_112.tflite في app/src/main/assets/");
                     Log.e(TAG, "→ لن تعمل المطابقة على هذا الجهاز حتى يتم الإصلاح");
 
                     // تسجيل في Crashlytics
                     try {
                         FirebaseCrashlytics c = FirebaseCrashlytics.getInstance();
-                        c.setCustomKey("tflite_loaded",     false);
+                        c.setCustomKey("adaface_loaded",    false);
                         c.setCustomKey("model_version",     FaceEmbeddingManager.MODEL_VERSION);
                         c.setCustomKey("embedding_version", FaceEmbeddingManager.EMBEDDING_VERSION);
                         c.setCustomKey("device_model",      android.os.Build.MODEL);
                         c.setCustomKey("android_version",   android.os.Build.VERSION.SDK_INT);
-                        // تسجيل كـ non-fatal (لا يُغلق التطبيق)
                         c.recordException(new RuntimeException(
                             "AI_ERROR:" + AiError.MODEL_NOT_LOADED
-                            + " | mobilefacenet.tflite failed to load"
+                            + " | adaface_ir18_112.tflite failed to load"
                             + " | device=" + android.os.Build.MODEL
                             + " | sdk=" + android.os.Build.VERSION.SDK_INT));
                     } catch (Exception ignored) {}
