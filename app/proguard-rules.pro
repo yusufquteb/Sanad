@@ -168,6 +168,16 @@
 -keep class com.missingpersons.app.utils.AccessibilityUtils { *; }
 -keep class com.missingpersons.app.utils.PerformanceConfig { *; }
 
+# ── كلاسات AI المضافة (Phase 2) ─────────────────────────────
+-keep class com.missingpersons.app.utils.AdaFaceRecognizer { *; }
+-keep class com.missingpersons.app.utils.DynamicThresholdEngine { *; }
+-keep class com.missingpersons.app.utils.MultiEmbeddingIdentity { *; }
+-keep class com.missingpersons.app.utils.TopKCandidateRanker { *; }
+-keep class com.missingpersons.app.utils.HumanReviewQueueManager { *; }
+-keep class com.missingpersons.app.utils.EmbeddingMigrationTool { *; }
+-keep class com.missingpersons.app.utils.GovernorateManager { *; }
+-keep class com.missingpersons.app.viewmodel.AdminDashboardViewModel { *; }
+
 # ══════════════════════════════════════════════════════════════
 #  General
 # ══════════════════════════════════════════════════════════════
