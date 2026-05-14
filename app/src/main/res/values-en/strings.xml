@@ -148,4 +148,5 @@
     <string name="update_available_title">Update ready to install</string>
     <string name="update_restart_action">Restart</string>
     <string name="update_failed">Update download failed. Please try again later.</string>
+    <string name="settings_title">Settings</string>
 </resources>

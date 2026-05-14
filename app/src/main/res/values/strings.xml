@@ -158,5 +158,6 @@
     <string name="update_available_title">تحديث جاهز للتثبيت</string>
     <string name="update_restart_action">إعادة التشغيل</string>
     <string name="update_failed">فشل تحميل التحديث، يرجى المحاولة لاحقاً</string>
+    <string name="settings_title">الإعدادات</string>
 
 </resources>
