@@ -29,7 +29,7 @@
         android:layout_marginBottom="16dp"
         android:gravity="center"/>
 
-    <!-- Governorate Filter -->
+    <!-- Governorate Filter — [إصلاح] AutoCompleteTextView بدلاً من Chips -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,21 +39,39 @@
         android:textColor="@color/md_on_surface_variant"
         android:layout_marginBottom="8dp"/>
 
-    <HorizontalScrollView
+    <!--
+        [إصلاح Phase-1] استبدال HorizontalScrollView+ChipGroup بـ TextInputLayout+AutoCompleteTextView
+        السبب: 28 محافظة في Chips = ازدحام + صعوبة تصفح
+        AutoComplete: يدعم البحث بالكتابة + القائمة المنسدلة
+    -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:hint="اختر المحافظة...">
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_governorate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:singleSelection="true"
-            app:chipSpacingHorizontal="8dp"
-            app:chipSpacingVertical="8dp"/>
+        <AutoCompleteTextView
+            android:id="@+id/actv_governorate"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:completionThreshold="1"
+            android:text="الكل"
+            android:textSize="14sp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
 
-    </HorizontalScrollView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Keep ChipGroup hidden for backwards compat (Java fallback reads it) -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_governorate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:singleSelection="true"/>
 
     <!-- Sort Order -->
     <TextView
@@ -90,7 +108,7 @@
             android:paddingVertical="8dp"/>
 
         <RadioButton
-            android:id="@+id/radio_nearest"
+            android:id="@+id/radio_sort_nearest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="📍 الأقرب إليك"

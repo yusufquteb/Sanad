@@ -24,17 +24,12 @@ public final class ActivityAboutBinding implements ViewBinding {
   public final MaterialToolbar toolbarAbout;
 
   @NonNull
-  public final TextView tvAboutContent;
-
-  @NonNull
   public final TextView tvAboutVersion;
 
   private ActivityAboutBinding(@NonNull CoordinatorLayout rootView,
-      @NonNull MaterialToolbar toolbarAbout, @NonNull TextView tvAboutContent,
-      @NonNull TextView tvAboutVersion) {
+      @NonNull MaterialToolbar toolbarAbout, @NonNull TextView tvAboutVersion) {
     this.rootView = rootView;
     this.toolbarAbout = toolbarAbout;
-    this.tvAboutContent = tvAboutContent;
     this.tvAboutVersion = tvAboutVersion;
   }
 
@@ -71,20 +66,13 @@ public final class ActivityAboutBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.tv_about_content;
-      TextView tvAboutContent = ViewBindings.findChildViewById(rootView, id);
-      if (tvAboutContent == null) {
-        break missingId;
-      }
-
       id = R.id.tv_about_version;
       TextView tvAboutVersion = ViewBindings.findChildViewById(rootView, id);
       if (tvAboutVersion == null) {
         break missingId;
       }
 
-      return new ActivityAboutBinding((CoordinatorLayout) rootView, toolbarAbout, tvAboutContent,
-          tvAboutVersion);
+      return new ActivityAboutBinding((CoordinatorLayout) rootView, toolbarAbout, tvAboutVersion);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

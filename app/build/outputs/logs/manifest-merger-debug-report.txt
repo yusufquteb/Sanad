@@ -1,20 +1,20 @@
 -- Merging decision tree log ---
 provider#androidx.core.content.FileProvider
-INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:84:9-92:20
+INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:97:9-105:20
 	android:grantUriPermissions
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:88:13-47
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:101:13-47
 	android:authorities
-		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:86:13-60
+		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:99:13-60
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:87:13-37
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:100:13-37
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:85:13-62
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:98:13-62
 manifest
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:2:1-113:12
-INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:2:1-113:12
-INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:2:1-113:12
-INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:2:1-113:12
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:2:1-127:12
+INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:2:1-127:12
+INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:2:1-127:12
+INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:2:1-127:12
 MERGED from [androidx.databinding:viewbinding:8.9.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\85213d1be95b6d7c62374d8d6768937c\transformed\jetified-viewbinding-8.9.1\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.firebase:firebase-appcheck-debug:18.0.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f8ffe2c71a0583be07b8a8437a24bca9\transformed\jetified-firebase-appcheck-debug-18.0.0\AndroidManifest.xml:15:1-31:12
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3dc9e270e1858a682d27a41849d01dd9\transformed\material-1.12.0\AndroidManifest.xml:17:1-24:12
@@ -115,6 +115,7 @@ MERGED from [com.google.android.gms:play-services-measurement-base:22.2.0] C:\Us
 MERGED from [com.google.android.gms:play-services-basement:18.5.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\4b205a188addf82fdabb460e99a6b079\transformed\jetified-play-services-basement-18.5.0\AndroidManifest.xml:16:1-26:12
 MERGED from [androidx.fragment:fragment:1.5.7] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\0be5d09a6bb257ef7e05d1c9bdc99678\transformed\fragment-1.5.7\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.activity:activity:1.10.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\e5acc6a7f1e073c15230b3786c976050\transformed\jetified-activity-1.10.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97f1946fe7c938a4db39b077d59850a9\transformed\exifinterface-1.3.7\AndroidManifest.xml:17:1-24:12
 MERGED from [com.github.PhilJay:MPAndroidChart:v3.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\859ca7aec37797ed0d1053c6ba65f6fd\transformed\jetified-MPAndroidChart-v3.1.0\AndroidManifest.xml:2:1-20:12
 MERGED from [org.osmdroid:osmdroid-android:6.1.20] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\7e80fa199e632fdfe9a41315aa651431\transformed\jetified-osmdroid-android-6.1.20\AndroidManifest.xml:2:1-27:12
 MERGED from [de.hdodenhof:circleimageview:3.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\8e0cff5d5781c72a046b91edab21bc7f\transformed\jetified-circleimageview-3.1.0\AndroidManifest.xml:2:1-11:12
@@ -129,7 +130,6 @@ MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\m_a_2\.gradle\
 MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\7430e2dae4107749c853f369889f4c60\transformed\jetified-profileinstaller-1.4.0\AndroidManifest.xml:17:1-55:12
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\398f1e2ce9d0ddead135c542c3ecf51b\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\2d116d25da63be52e9407ff59086704f\transformed\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97f1946fe7c938a4db39b077d59850a9\transformed\exifinterface-1.3.7\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\ead6f1a63f7800c85a6251df5e338d10\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\7d0745683b635391d00e35e6b14a83a2\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.sqlite:sqlite:2.4.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\62b796dbfad2042b2392458251c6d005\transformed\sqlite-2.4.0\AndroidManifest.xml:17:1-22:12
@@ -150,17 +150,17 @@ MERGED from [org.tensorflow:tensorflow-lite-support-api:0.4.4] C:\Users\m_a_2\.g
 MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\5a05108933f78b82a39033c539691461\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\cb32f466b9f6b148ac61cba0bdbe1da8\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:2:1-9:12
 	package
-		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml
 	xmlns:tools
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:3:5-51
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
-		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:5:5-66
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:5:5-66
 MERGED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:25:5-67
 MERGED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:25:5-67
 MERGED from [com.google.firebase:firebase-storage:21.0.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\99d11a139fae31e896d0b47fec516515\transformed\jetified-firebase-storage-21.0.1\AndroidManifest.xml:24:5-67
@@ -188,9 +188,9 @@ MERGED from [com.google.android.gms:play-services-measurement-sdk-api:22.2.0] C:
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.3.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\c3842dd3fc836759ad89a72759882d6b\transformed\jetified-transport-backend-cct-3.3.0\AndroidManifest.xml:23:5-67
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.3.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\c3842dd3fc836759ad89a72759882d6b\transformed\jetified-transport-backend-cct-3.3.0\AndroidManifest.xml:23:5-67
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:5:22-64
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:5:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:6:5-78
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:6:5-78
 MERGED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:26:5-79
 MERGED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:26:5-79
 MERGED from [com.google.firebase:firebase-messaging:24.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\ad7c6d8a19acb5e2b7573171e7b37645\transformed\jetified-firebase-messaging-24.1.0\AndroidManifest.xml:22:5-79
@@ -222,68 +222,68 @@ MERGED from [com.google.android.datatransport:transport-backend-cct:3.3.0] C:\Us
 MERGED from [com.google.android.datatransport:transport-runtime:3.3.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3dcff9ae0b1d80ccc78d62c7f84e5994\transformed\jetified-transport-runtime-3.3.0\AndroidManifest.xml:20:5-79
 MERGED from [com.google.android.datatransport:transport-runtime:3.3.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3dcff9ae0b1d80ccc78d62c7f84e5994\transformed\jetified-transport-runtime-3.3.0\AndroidManifest.xml:20:5-79
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:6:22-76
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:6:22-76
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:7:5-78
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:7:5-78
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:7:22-76
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:7:22-76
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:8:5-80
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:8:5-80
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:8:22-78
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:8:22-78
 uses-permission#android.permission.CAMERA
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:9:5-64
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:9:5-64
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:9:22-62
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:9:22-62
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:10:5-106
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:10:5-106
 	android:maxSdkVersion
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:10:78-104
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:10:78-104
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:10:22-77
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:10:22-77
 uses-permission#android.permission.READ_MEDIA_IMAGES
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:11:5-75
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:11:5-75
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:11:22-73
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:11:22-73
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:12:5-13:66
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:12:5-13:66
 	android:maxSdkVersion
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:13:9-35
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:13:9-35
 	tools:ignore
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:13:36-64
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:13:36-64
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:12:22-78
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:12:22-78
 uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:14:5-76
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:14:5-76
 MERGED from [com.google.firebase:firebase-messaging:24.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\ad7c6d8a19acb5e2b7573171e7b37645\transformed\jetified-firebase-messaging-24.1.0\AndroidManifest.xml:23:5-77
 MERGED from [com.google.firebase:firebase-messaging:24.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\ad7c6d8a19acb5e2b7573171e7b37645\transformed\jetified-firebase-messaging-24.1.0\AndroidManifest.xml:23:5-77
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:14:22-74
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:14:22-74
 uses-permission#android.permission.VIBRATE
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:15:5-65
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:15:5-65
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:15:22-63
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:15:22-63
 uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:16:5-80
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:16:5-80
 REJECTED from [com.google.android.gms:play-services-ads-lite:23.6.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\2f4250a833222eb920d8a4f1230cb25c\transformed\jetified-play-services-ads-lite-23.6.0\AndroidManifest.xml:30:5-32:31
 REJECTED from [androidx.work:work-runtime:2.10.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\8d999696bd9ad19b50217d169d3993ca\transformed\work-runtime-2.10.0\AndroidManifest.xml:25:5-81
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:16:22-78
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:16:22-78
 uses-permission#android.permission.FOREGROUND_SERVICE
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:17:5-76
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:17:5-76
 MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\8d999696bd9ad19b50217d169d3993ca\transformed\work-runtime-2.10.0\AndroidManifest.xml:26:5-77
 MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\8d999696bd9ad19b50217d169d3993ca\transformed\work-runtime-2.10.0\AndroidManifest.xml:26:5-77
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:17:22-74
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:17:22-74
 uses-feature#android.hardware.camera
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:19:5-84
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:19:5-84
 	android:required
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:19:58-82
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:19:58-82
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:19:19-57
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:19:19-57
 application
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:21:5-112:19
-INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:21:5-112:19
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:21:5-126:19
+INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:21:5-126:19
 MERGED from [com.google.firebase:firebase-appcheck-debug:18.0.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f8ffe2c71a0583be07b8a8437a24bca9\transformed\jetified-firebase-appcheck-debug-18.0.0\AndroidManifest.xml:21:5-29:19
 MERGED from [com.google.firebase:firebase-appcheck-debug:18.0.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f8ffe2c71a0583be07b8a8437a24bca9\transformed\jetified-firebase-appcheck-debug-18.0.0\AndroidManifest.xml:21:5-29:19
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\3dc9e270e1858a682d27a41849d01dd9\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
@@ -405,270 +405,302 @@ MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\m_a_2\.gradle\c
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\cb32f466b9f6b148ac61cba0bdbe1da8\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\cb32f466b9f6b148ac61cba0bdbe1da8\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:7:5-20
 	android:extractNativeLibs
-		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\df849799def5dfd5ab754799291c2bdd\transformed\core-1.13.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:27:9-35
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:27:9-35
 	android:label
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:25:9-41
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:25:9-41
 	android:roundIcon
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:26:9-48
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:26:9-48
 	tools:targetApi
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:30:9-29
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:30:9-29
 	android:icon
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:24:9-43
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:24:9-43
 	android:allowBackup
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:23:9-36
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:23:9-36
 	android:theme
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:28:9-52
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:28:9-52
 	android:networkSecurityConfig
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:29:9-69
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:29:9-69
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:22:9-38
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:22:9-38
 meta-data#com.google.android.gms.ads.APPLICATION_ID
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:32:9-34:69
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:32:9-34:69
 	android:value
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:34:13-67
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:34:13-67
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:33:13-69
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:33:13-69
 property#android.adservices.AD_SERVICES_CONFIG
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:35:9-39:35
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:35:9-39:35
 REJECTED from [com.google.android.gms:play-services-ads-lite:23.6.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\2f4250a833222eb920d8a4f1230cb25c\transformed\jetified-play-services-ads-lite-23.6.0\AndroidManifest.xml:107:9-109:62
 	android:resource
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:37:13-59
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:37:13-59
 	tools:node
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:39:13-33
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:39:13-33
 	tools:replace
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:38:13-45
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:38:13-45
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:36:13-65
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:36:13-65
 activity#com.missingpersons.app.activities.SplashActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:42:9-49:20
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:42:9-49:20
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:43:13-36
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:43:13-36
 	android:theme
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:44:13-63
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:44:13-63
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:42:19-60
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:42:19-60
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:45:13-48:29
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:45:13-48:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:46:17-68
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:46:17-68
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:46:25-66
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:46:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:47:17-76
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:47:17-76
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:47:27-74
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:47:27-74
 activity#com.missingpersons.app.activities.OnboardingActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:51:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:51:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:51:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:51:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:51:19-64
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:51:19-64
 activity#com.missingpersons.app.activities.LoginActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:52:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:52:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:52:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:52:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:52:19-59
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:52:19-59
 activity#com.missingpersons.app.activities.ReportActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:54:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:54:9-66:20
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:54:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:54:61-84
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:54:19-60
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:54:19-60
+intent-filter#action:name:android.intent.action.SEND+category:name:android.intent.category.DEFAULT+data:mimeType:image/*
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:56:13-60:29
+action#android.intent.action.SEND
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:57:17-69
+	android:name
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:57:25-66
+category#android.intent.category.DEFAULT
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:58:17-76
+	android:name
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:58:27-73
+data
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:59:17-52
+	android:mimeType
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:59:23-49
+intent-filter#action:name:android.intent.action.SEND_MULTIPLE+category:name:android.intent.category.DEFAULT+data:mimeType:image/*
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:61:13-65:29
+action#android.intent.action.SEND_MULTIPLE
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:62:17-78
+	android:name
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:62:25-75
 activity#com.missingpersons.app.activities.BrowseActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:55:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:67:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:55:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:67:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:55:19-60
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:67:19-60
 activity#com.missingpersons.app.activities.SearchActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:56:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:68:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:56:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:68:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:56:19-60
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:68:19-60
 activity#com.missingpersons.app.activities.CaseDetailActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:57:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:69:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:57:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:69:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:57:19-64
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:69:19-64
 activity#com.missingpersons.app.activities.ChatActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:58:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:70:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:58:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:70:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:58:19-58
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:70:19-58
 activity#com.missingpersons.app.activities.ChatsListActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:59:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:71:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:59:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:71:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:59:19-63
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:71:19-63
 activity#com.missingpersons.app.activities.ProfileActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:60:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:72:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:60:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:72:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:60:19-61
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:72:19-61
 activity#com.missingpersons.app.activities.AboutActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:61:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:73:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:61:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:73:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:61:19-59
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:73:19-59
 activity#com.missingpersons.app.activities.AdminActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:62:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:74:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:62:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:74:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:62:19-59
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:74:19-59
 activity#com.missingpersons.app.activities.AdminDashboardActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:63:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:75:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:63:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:75:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:63:19-68
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:75:19-68
+activity#com.missingpersons.app.activities.EnhancedAdminDashboardActivity
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:76:9-103
+	android:exported
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:76:77-101
+	android:name
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:76:19-76
 activity#com.missingpersons.app.activities.MembersActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:64:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:77:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:64:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:77:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:64:19-61
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:77:19-61
 activity#com.missingpersons.app.activities.ManagersActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:65:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:78:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:65:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:78:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:65:19-62
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:78:19-62
 activity#com.missingpersons.app.activities.DisclaimerActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:66:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:79:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:66:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:79:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:66:19-64
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:79:19-64
 activity#com.missingpersons.app.activities.AbuseReportsActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:67:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:80:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:67:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:80:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:67:19-66
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:80:19-66
 activity#com.missingpersons.app.activities.AdminChatsActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:68:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:81:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:68:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:81:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:68:19-64
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:81:19-64
 activity#com.missingpersons.app.activities.FoundPersonActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:69:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:82:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:69:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:82:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:69:19-65
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:82:19-65
 activity#com.missingpersons.app.activities.SearchFilterActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:70:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:83:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:70:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:83:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:70:19-66
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:83:19-66
 activity#com.missingpersons.app.activities.MapActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:71:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:84:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:71:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:84:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:71:19-57
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:84:19-57
 activity#com.missingpersons.app.activities.FoundSightingActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:72:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:85:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:72:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:85:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:72:19-67
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:85:19-67
 activity#com.missingpersons.app.activities.StatisticsActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:73:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:86:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:73:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:86:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:73:19-64
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:86:19-64
 activity#com.missingpersons.app.activities.LeaderboardActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:74:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:87:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:74:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:87:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:74:19-65
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:87:19-65
 activity#com.missingpersons.app.activities.SuccessStoriesActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:75:9-97
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:88:9-97
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:75:71-95
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:88:71-95
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:75:19-68
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:88:19-68
 activity#com.missingpersons.app.activities.MyReportsActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:76:9-98
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:89:9-98
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:76:72-96
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:89:72-96
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:76:19-63
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:89:19-63
 activity#com.missingpersons.app.activities.ReportUpdateActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:77:9-78:37
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:90:9-91:37
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:78:11-35
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:91:11-35
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:77:19-66
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:90:19-66
 activity#com.missingpersons.app.activities.NotificationsActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:79:9-80:37
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:92:9-93:37
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:80:11-35
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:93:11-35
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:79:19-67
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:92:19-67
 activity#com.missingpersons.app.activities.NewHomeActivity
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:81:9-82:37
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:94:9-95:37
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:82:11-35
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:95:11-35
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:81:19-61
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:94:19-61
 receiver#com.missingpersons.app.widget.MissingPersonsWidget
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:95:9-104:20
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:108:9-117:20
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:97:13-36
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:110:13-36
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:96:13-56
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:109:13-56
 intent-filter#action:name:android.appwidget.action.APPWIDGET_UPDATE
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:98:13-100:29
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:111:13-113:29
 action#android.appwidget.action.APPWIDGET_UPDATE
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:99:17-83
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:112:17-83
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:99:25-81
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:112:25-81
 meta-data#android.appwidget.provider
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:101:13-103:70
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:114:13-116:70
 	android:resource
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:103:17-68
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:116:17-68
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:102:17-58
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:115:17-58
 service#com.missingpersons.app.services.FCMService
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:106:9-110:19
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:119:9-123:19
 	android:exported
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:106:54-78
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:119:54-78
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:106:18-53
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:119:18-53
 intent-filter#action:name:com.google.firebase.MESSAGING_EVENT
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:107:13-109:29
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:120:13-122:29
 action#com.google.firebase.MESSAGING_EVENT
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:108:17-77
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:121:17-77
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:108:25-75
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:121:25-75
+activity#com.missingpersons.app.activities.SettingsActivity
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:125:13-93
+	android:exported
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:125:67-91
+	android:name
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:125:23-66
 meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:89:13-91:53
+ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:102:13-104:53
 	android:resource
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:91:17-51
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:104:17-51
 	android:name
-		ADDED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml:90:17-67
+		ADDED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml:103:17-67
 uses-sdk
-INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
-INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml
 MERGED from [androidx.databinding:viewbinding:8.9.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\85213d1be95b6d7c62374d8d6768937c\transformed\jetified-viewbinding-8.9.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.databinding:viewbinding:8.9.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\85213d1be95b6d7c62374d8d6768937c\transformed\jetified-viewbinding-8.9.1\AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-appcheck-debug:18.0.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f8ffe2c71a0583be07b8a8437a24bca9\transformed\jetified-firebase-appcheck-debug-18.0.0\AndroidManifest.xml:18:5-44
@@ -869,6 +901,8 @@ MERGED from [androidx.fragment:fragment:1.5.7] C:\Users\m_a_2\.gradle\caches\8.1
 MERGED from [androidx.fragment:fragment:1.5.7] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\0be5d09a6bb257ef7e05d1c9bdc99678\transformed\fragment-1.5.7\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.activity:activity:1.10.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\e5acc6a7f1e073c15230b3786c976050\transformed\jetified-activity-1.10.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.activity:activity:1.10.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\e5acc6a7f1e073c15230b3786c976050\transformed\jetified-activity-1.10.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97f1946fe7c938a4db39b077d59850a9\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97f1946fe7c938a4db39b077d59850a9\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41
 MERGED from [com.github.PhilJay:MPAndroidChart:v3.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\859ca7aec37797ed0d1053c6ba65f6fd\transformed\jetified-MPAndroidChart-v3.1.0\AndroidManifest.xml:16:5-18:41
 MERGED from [com.github.PhilJay:MPAndroidChart:v3.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\859ca7aec37797ed0d1053c6ba65f6fd\transformed\jetified-MPAndroidChart-v3.1.0\AndroidManifest.xml:16:5-18:41
 MERGED from [org.osmdroid:osmdroid-android:6.1.20] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\7e80fa199e632fdfe9a41315aa651431\transformed\jetified-osmdroid-android-6.1.20\AndroidManifest.xml:5:5-7:41
@@ -897,8 +931,6 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\m_a_2\.gradle\cache
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\398f1e2ce9d0ddead135c542c3ecf51b\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\2d116d25da63be52e9407ff59086704f\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\2d116d25da63be52e9407ff59086704f\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97f1946fe7c938a4db39b077d59850a9\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\97f1946fe7c938a4db39b077d59850a9\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\ead6f1a63f7800c85a6251df5e338d10\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\ead6f1a63f7800c85a6251df5e338d10\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
 MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\7d0745683b635391d00e35e6b14a83a2\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:20:5-44
@@ -940,9 +972,9 @@ MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\m_a_2\.gradle\c
 	tools:overrideLibrary
 		ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:23:9-148
 	android:targetSdkVersion
-		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\AndroidManifest.xml
 service#com.google.firebase.components.ComponentDiscoveryService
 ADDED from [com.google.firebase:firebase-appcheck-debug:18.0.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f8ffe2c71a0583be07b8a8437a24bca9\transformed\jetified-firebase-appcheck-debug-18.0.0\AndroidManifest.xml:22:9-28:19
 MERGED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:66:9-72:19
@@ -1045,22 +1077,10 @@ action#android.intent.action.VIEW
 ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:36:17-69
 	android:name
 		ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:36:25-66
-category#android.intent.category.DEFAULT
-ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:38:17-76
-	android:name
-		ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:38:27-73
 category#android.intent.category.BROWSABLE
 ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:39:17-78
 	android:name
 		ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:39:27-75
-data
-ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:41:17-44:51
-	android:path
-		ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:43:21-37
-	android:host
-		ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:42:21-49
-	android:scheme
-		ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:44:21-48
 activity#com.google.firebase.auth.internal.RecaptchaActivity
 ADDED from [com.google.firebase:firebase-auth:23.1.0] C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\302762d32cb9fa6fff47949e9e2726a0\transformed\jetified-firebase-auth-23.1.0\AndroidManifest.xml:47:9-64:20
 	android:excludeFromRecents

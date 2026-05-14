@@ -13,9 +13,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.missingpersons.app.R;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -24,6 +27,9 @@ import java.lang.String;
 public final class ActivityCaseDetailBinding implements ViewBinding {
   @NonNull
   private final CoordinatorLayout rootView;
+
+  @NonNull
+  public final AppBarLayout appBar;
 
   @NonNull
   public final TextView btnAddComment;
@@ -38,7 +44,7 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
   public final MaterialButton btnExportPdf;
 
   @NonNull
-  public final MaterialButton btnOpenChat;
+  public final ExtendedFloatingActionButton btnOpenChat;
 
   @NonNull
   public final TextView btnRateReporter;
@@ -51,6 +57,9 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
 
   @NonNull
   public final MaterialCardView cardMatchConfidence;
+
+  @NonNull
+  public final Chip chipStatus;
 
   @NonNull
   public final ImageView ivDetailMain;
@@ -66,6 +75,9 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
 
   @NonNull
   public final LinearLayout llMatchConfidenceContainer;
+
+  @NonNull
+  public final LinearLayout llSimilarCases;
 
   @NonNull
   public final LinearLayout llTimeline;
@@ -106,22 +118,27 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
   @NonNull
   public final TextView tvSafetyWarning;
 
+  @NonNull
+  public final TextView tvSimilarCount;
+
   private ActivityCaseDetailBinding(@NonNull CoordinatorLayout rootView,
-      @NonNull TextView btnAddComment, @NonNull MaterialButton btnAddUpdate,
-      @NonNull MaterialButton btnBookmark, @NonNull MaterialButton btnExportPdf,
-      @NonNull MaterialButton btnOpenChat, @NonNull TextView btnRateReporter,
-      @NonNull MaterialButton btnShareReport, @NonNull MaterialButton btnWhatsappShare,
-      @NonNull MaterialCardView cardMatchConfidence, @NonNull ImageView ivDetailMain,
-      @NonNull ImageView ivQrCode, @NonNull LinearLayout layoutAdminActions,
-      @NonNull LinearLayout llDetailPhotos, @NonNull LinearLayout llMatchConfidenceContainer,
+      @NonNull AppBarLayout appBar, @NonNull TextView btnAddComment,
+      @NonNull MaterialButton btnAddUpdate, @NonNull MaterialButton btnBookmark,
+      @NonNull MaterialButton btnExportPdf, @NonNull ExtendedFloatingActionButton btnOpenChat,
+      @NonNull TextView btnRateReporter, @NonNull MaterialButton btnShareReport,
+      @NonNull MaterialButton btnWhatsappShare, @NonNull MaterialCardView cardMatchConfidence,
+      @NonNull Chip chipStatus, @NonNull ImageView ivDetailMain, @NonNull ImageView ivQrCode,
+      @NonNull LinearLayout layoutAdminActions, @NonNull LinearLayout llDetailPhotos,
+      @NonNull LinearLayout llMatchConfidenceContainer, @NonNull LinearLayout llSimilarCases,
       @NonNull LinearLayout llTimeline, @NonNull RecyclerView rvComments,
       @NonNull MaterialToolbar toolbarCaseDetail, @NonNull TextView tvChatStatus,
       @NonNull TextView tvCommentsCount, @NonNull TextView tvCommentsEmpty,
       @NonNull TextView tvDetailAddr, @NonNull TextView tvDetailAge,
       @NonNull TextView tvDetailFoundDate, @NonNull TextView tvDetailGender,
       @NonNull TextView tvDetailName, @NonNull TextView tvDetailTime,
-      @NonNull TextView tvSafetyWarning) {
+      @NonNull TextView tvSafetyWarning, @NonNull TextView tvSimilarCount) {
     this.rootView = rootView;
+    this.appBar = appBar;
     this.btnAddComment = btnAddComment;
     this.btnAddUpdate = btnAddUpdate;
     this.btnBookmark = btnBookmark;
@@ -131,11 +148,13 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
     this.btnShareReport = btnShareReport;
     this.btnWhatsappShare = btnWhatsappShare;
     this.cardMatchConfidence = cardMatchConfidence;
+    this.chipStatus = chipStatus;
     this.ivDetailMain = ivDetailMain;
     this.ivQrCode = ivQrCode;
     this.layoutAdminActions = layoutAdminActions;
     this.llDetailPhotos = llDetailPhotos;
     this.llMatchConfidenceContainer = llMatchConfidenceContainer;
+    this.llSimilarCases = llSimilarCases;
     this.llTimeline = llTimeline;
     this.rvComments = rvComments;
     this.toolbarCaseDetail = toolbarCaseDetail;
@@ -149,6 +168,7 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
     this.tvDetailName = tvDetailName;
     this.tvDetailTime = tvDetailTime;
     this.tvSafetyWarning = tvSafetyWarning;
+    this.tvSimilarCount = tvSimilarCount;
   }
 
   @Override
@@ -178,6 +198,12 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.app_bar;
+      AppBarLayout appBar = ViewBindings.findChildViewById(rootView, id);
+      if (appBar == null) {
+        break missingId;
+      }
+
       id = R.id.btn_add_comment;
       TextView btnAddComment = ViewBindings.findChildViewById(rootView, id);
       if (btnAddComment == null) {
@@ -203,7 +229,7 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
       }
 
       id = R.id.btn_open_chat;
-      MaterialButton btnOpenChat = ViewBindings.findChildViewById(rootView, id);
+      ExtendedFloatingActionButton btnOpenChat = ViewBindings.findChildViewById(rootView, id);
       if (btnOpenChat == null) {
         break missingId;
       }
@@ -229,6 +255,12 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
       id = R.id.card_match_confidence;
       MaterialCardView cardMatchConfidence = ViewBindings.findChildViewById(rootView, id);
       if (cardMatchConfidence == null) {
+        break missingId;
+      }
+
+      id = R.id.chip_status;
+      Chip chipStatus = ViewBindings.findChildViewById(rootView, id);
+      if (chipStatus == null) {
         break missingId;
       }
 
@@ -259,6 +291,12 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
       id = R.id.ll_match_confidence_container;
       LinearLayout llMatchConfidenceContainer = ViewBindings.findChildViewById(rootView, id);
       if (llMatchConfidenceContainer == null) {
+        break missingId;
+      }
+
+      id = R.id.ll_similar_cases;
+      LinearLayout llSimilarCases = ViewBindings.findChildViewById(rootView, id);
+      if (llSimilarCases == null) {
         break missingId;
       }
 
@@ -340,12 +378,19 @@ public final class ActivityCaseDetailBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityCaseDetailBinding((CoordinatorLayout) rootView, btnAddComment,
+      id = R.id.tv_similar_count;
+      TextView tvSimilarCount = ViewBindings.findChildViewById(rootView, id);
+      if (tvSimilarCount == null) {
+        break missingId;
+      }
+
+      return new ActivityCaseDetailBinding((CoordinatorLayout) rootView, appBar, btnAddComment,
           btnAddUpdate, btnBookmark, btnExportPdf, btnOpenChat, btnRateReporter, btnShareReport,
-          btnWhatsappShare, cardMatchConfidence, ivDetailMain, ivQrCode, layoutAdminActions,
-          llDetailPhotos, llMatchConfidenceContainer, llTimeline, rvComments, toolbarCaseDetail,
-          tvChatStatus, tvCommentsCount, tvCommentsEmpty, tvDetailAddr, tvDetailAge,
-          tvDetailFoundDate, tvDetailGender, tvDetailName, tvDetailTime, tvSafetyWarning);
+          btnWhatsappShare, cardMatchConfidence, chipStatus, ivDetailMain, ivQrCode,
+          layoutAdminActions, llDetailPhotos, llMatchConfidenceContainer, llSimilarCases,
+          llTimeline, rvComments, toolbarCaseDetail, tvChatStatus, tvCommentsCount, tvCommentsEmpty,
+          tvDetailAddr, tvDetailAge, tvDetailFoundDate, tvDetailGender, tvDetailName, tvDetailTime,
+          tvSafetyWarning, tvSimilarCount);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

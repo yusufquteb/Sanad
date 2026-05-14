@@ -34,6 +34,9 @@ public final class ActivityProfileBinding implements ViewBinding {
   public final LinearLayout btnDisclaimer;
 
   @NonNull
+  public final LinearLayout btnEditGovernorate;
+
+  @NonNull
   public final MaterialButton btnEditProfileMain;
 
   @NonNull
@@ -47,6 +50,9 @@ public final class ActivityProfileBinding implements ViewBinding {
 
   @NonNull
   public final LinearLayout btnMyReports;
+
+  @NonNull
+  public final LinearLayout btnSettingsProfile;
 
   @NonNull
   public final LinearLayout btnShareApp;
@@ -78,25 +84,32 @@ public final class ActivityProfileBinding implements ViewBinding {
   @NonNull
   public final TextView tvProfileRole;
 
+  @NonNull
+  public final TextView tvUserGovernorate;
+
   private ActivityProfileBinding(@NonNull CoordinatorLayout rootView,
       @NonNull LinearLayout btnAbout, @NonNull View btnChangeAvatar,
-      @NonNull LinearLayout btnDisclaimer, @NonNull MaterialButton btnEditProfileMain,
-      @NonNull LinearLayout btnLanguage, @NonNull LinearLayout btnLogout,
-      @NonNull LinearLayout btnMyChats, @NonNull LinearLayout btnMyReports,
+      @NonNull LinearLayout btnDisclaimer, @NonNull LinearLayout btnEditGovernorate,
+      @NonNull MaterialButton btnEditProfileMain, @NonNull LinearLayout btnLanguage,
+      @NonNull LinearLayout btnLogout, @NonNull LinearLayout btnMyChats,
+      @NonNull LinearLayout btnMyReports, @NonNull LinearLayout btnSettingsProfile,
       @NonNull LinearLayout btnShareApp, @NonNull MaterialCardView cardAdminAccess,
       @NonNull CircleImageView ivProfileAvatar, @NonNull SwitchCompat switchNotifications,
       @NonNull TextView tvProfileEmail, @NonNull TextView tvProfileJoinDate,
       @NonNull TextView tvProfileName, @NonNull TextView tvProfilePoints,
-      @NonNull TextView tvProfileReportsCount, @NonNull TextView tvProfileRole) {
+      @NonNull TextView tvProfileReportsCount, @NonNull TextView tvProfileRole,
+      @NonNull TextView tvUserGovernorate) {
     this.rootView = rootView;
     this.btnAbout = btnAbout;
     this.btnChangeAvatar = btnChangeAvatar;
     this.btnDisclaimer = btnDisclaimer;
+    this.btnEditGovernorate = btnEditGovernorate;
     this.btnEditProfileMain = btnEditProfileMain;
     this.btnLanguage = btnLanguage;
     this.btnLogout = btnLogout;
     this.btnMyChats = btnMyChats;
     this.btnMyReports = btnMyReports;
+    this.btnSettingsProfile = btnSettingsProfile;
     this.btnShareApp = btnShareApp;
     this.cardAdminAccess = cardAdminAccess;
     this.ivProfileAvatar = ivProfileAvatar;
@@ -107,6 +120,7 @@ public final class ActivityProfileBinding implements ViewBinding {
     this.tvProfilePoints = tvProfilePoints;
     this.tvProfileReportsCount = tvProfileReportsCount;
     this.tvProfileRole = tvProfileRole;
+    this.tvUserGovernorate = tvUserGovernorate;
   }
 
   @Override
@@ -154,6 +168,12 @@ public final class ActivityProfileBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btn_edit_governorate;
+      LinearLayout btnEditGovernorate = ViewBindings.findChildViewById(rootView, id);
+      if (btnEditGovernorate == null) {
+        break missingId;
+      }
+
       id = R.id.btn_edit_profile_main;
       MaterialButton btnEditProfileMain = ViewBindings.findChildViewById(rootView, id);
       if (btnEditProfileMain == null) {
@@ -181,6 +201,12 @@ public final class ActivityProfileBinding implements ViewBinding {
       id = R.id.btn_my_reports;
       LinearLayout btnMyReports = ViewBindings.findChildViewById(rootView, id);
       if (btnMyReports == null) {
+        break missingId;
+      }
+
+      id = R.id.btn_settings_profile;
+      LinearLayout btnSettingsProfile = ViewBindings.findChildViewById(rootView, id);
+      if (btnSettingsProfile == null) {
         break missingId;
       }
 
@@ -244,10 +270,17 @@ public final class ActivityProfileBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tv_user_governorate;
+      TextView tvUserGovernorate = ViewBindings.findChildViewById(rootView, id);
+      if (tvUserGovernorate == null) {
+        break missingId;
+      }
+
       return new ActivityProfileBinding((CoordinatorLayout) rootView, btnAbout, btnChangeAvatar,
-          btnDisclaimer, btnEditProfileMain, btnLanguage, btnLogout, btnMyChats, btnMyReports,
-          btnShareApp, cardAdminAccess, ivProfileAvatar, switchNotifications, tvProfileEmail,
-          tvProfileJoinDate, tvProfileName, tvProfilePoints, tvProfileReportsCount, tvProfileRole);
+          btnDisclaimer, btnEditGovernorate, btnEditProfileMain, btnLanguage, btnLogout, btnMyChats,
+          btnMyReports, btnSettingsProfile, btnShareApp, cardAdminAccess, ivProfileAvatar,
+          switchNotifications, tvProfileEmail, tvProfileJoinDate, tvProfileName, tvProfilePoints,
+          tvProfileReportsCount, tvProfileRole, tvUserGovernorate);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

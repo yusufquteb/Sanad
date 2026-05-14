@@ -175,6 +175,174 @@
                         android:textSize="12sp" android:textColor="?attr/colorOnSurfaceVariant"
                         android:layout_marginBottom="14dp"/>
 
+                    <!-- [Phase 5] الصورة أولاً — تُرفع قبل اختيار النوع -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="?attr/colorPrimary"
+                        app:strokeWidth="2dp"
+                        app:cardBackgroundColor="?attr/colorSurfaceVariant"
+                        android:layout_marginBottom="16dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="10dp">
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="📷 أضف صورة واضحة للوجه"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="?attr/colorOnSurface"/>
+                                <TextView
+                                    android:id="@+id/tv_photo_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0/5"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold"
+                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:background="@drawable/bg_photo_count"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="3dp"/>
+                            </LinearLayout>
+
+                            <!-- صور مضافة -->
+                            <HorizontalScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp">
+                                <LinearLayout
+                                    android:id="@+id/layout_photos"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="4dp"/>
+                            </HorizontalScrollView>
+
+                            <!-- Placeholder -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/card_photo_placeholder"
+                                android:layout_width="match_parent"
+                                android:layout_height="110dp"
+                                app:cardCornerRadius="14dp"
+                                app:cardElevation="0dp"
+                                app:strokeColor="?attr/colorPrimary"
+                                app:strokeWidth="1dp"
+                                app:cardBackgroundColor="?attr/colorSurface"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?attr/selectableItemBackground"
+                                android:layout_marginBottom="10dp">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:gravity="center">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="📷"
+                                        android:textSize="36sp"
+                                        android:layout_marginBottom="4dp"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="اضغط لإضافة صورة"
+                                        android:textSize="13sp"
+                                        android:textStyle="bold"
+                                        android:textColor="?attr/colorPrimary"/>
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <!-- نتيجة مطابقة فورية -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="0dp"
+                                app:cardBackgroundColor="@color/md_secondary_container"
+                                android:layout_marginBottom="8dp">
+                                <TextView
+                                    android:id="@+id/tv_match_result"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="12dp"
+                                    android:textSize="13sp"
+                                    android:textColor="@color/md_on_secondary_container"
+                                    android:visibility="gone"/>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <!-- أزرار الكاميرا والمعرض -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btn_camera"
+                                    android:layout_width="0dp"
+                                    android:layout_height="48dp"
+                                    android:layout_weight="1"
+                                    android:text="📷 الكاميرا"
+                                    android:textSize="13sp"
+                                    android:layout_marginEnd="8dp"
+                                    style="@style/Widget.Material3.Button"
+                                    app:cornerRadius="14dp"/>
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btn_gallery"
+                                    android:layout_width="0dp"
+                                    android:layout_height="48dp"
+                                    android:layout_weight="1"
+                                    android:text="🖼️ المعرض"
+                                    android:textSize="13sp"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    app:cornerRadius="14dp"/>
+                            </LinearLayout>
+
+                            <!-- AI hint للعمر -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/card_age_ai_hint"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="0dp"
+                                app:cardBackgroundColor="?attr/colorTertiaryContainer"
+                                android:layout_marginTop="8dp"
+                                android:visibility="gone">
+                                <TextView
+                                    android:id="@+id/tv_age_ai_hint"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="12dp"
+                                    android:textSize="12sp"
+                                    android:textColor="?attr/colorOnTertiaryContainer"/>
+                            </com.google.android.material.card.MaterialCardView>
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ثم اختر نوع البلاغ:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:layout_marginBottom="10dp"/>
+
+
+
                     <!-- Row 1 -->
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:orientation="horizontal" android:layout_marginBottom="10dp">
@@ -467,110 +635,7 @@
                         style="@style/Widget.Material3.Button.OutlinedButton" app:cornerRadius="14dp"/>
 
                     <!-- الصور section title + count -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="8dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="📷 الصور (صورة واضحة للوجه تُفعّل نظام المطابقة)"
-                            android:textSize="13sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurface"/>
-
-                        <TextView
-                            android:id="@+id/tv_photo_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0/5"
-                            android:textSize="11sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:background="@drawable/bg_photo_count"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="3dp"/>
-
-                    </LinearLayout>
-
-                    <!-- صور مضافة -->
-                    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp">
-                        <LinearLayout android:id="@+id/layout_photos"
-                            android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingTop="6dp"
-                            android:paddingBottom="6dp"/>
-                    </HorizontalScrollView>
-
-                    <!-- Placeholder الصورة -->
-                    <com.google.android.material.card.MaterialCardView android:id="@+id/card_photo_placeholder"
-                        android:layout_width="match_parent" android:layout_height="110dp"
-                        app:cardCornerRadius="16dp" app:cardElevation="0dp"
-                        app:strokeColor="?attr/colorPrimary" app:strokeWidth="2dp"
-                        app:cardBackgroundColor="?attr/colorSurfaceVariant"
-                        android:clickable="true" android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground" android:layout_marginBottom="10dp">
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                            android:orientation="vertical" android:gravity="center">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="📷" android:textSize="36sp" android:layout_marginBottom="6dp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="اضغط لإضافة صورة" android:textSize="14sp"
-                                android:textStyle="bold" android:textColor="?attr/colorPrimary"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="أو استخدم الأزرار أدناه" android:textSize="11sp"
-                                android:textColor="?attr/colorOnSurfaceVariant" android:layout_marginTop="2dp"/>
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- نتيجة مطابقة -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        app:cardCornerRadius="14dp" app:cardElevation="0dp"
-                        app:cardBackgroundColor="@color/md_secondary_container" android:layout_marginBottom="10dp">
-                        <TextView android:id="@+id/tv_match_result"
-                            android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:padding="14dp" android:textSize="13sp"
-                            android:textColor="@color/md_on_secondary_container" android:visibility="gone"/>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- أزرار الكاميرا / المعرض -->
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:orientation="horizontal" android:layout_marginBottom="12dp">
-                        <com.google.android.material.button.MaterialButton android:id="@+id/btn_camera"
-                            android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
-                            android:text="📷 الكاميرا" android:textSize="13sp" android:layout_marginEnd="8dp"
-                            style="@style/Widget.Material3.Button" app:cornerRadius="14dp"/>
-                        <com.google.android.material.button.MaterialButton android:id="@+id/btn_gallery"
-                            android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
-                            android:text="🖼️ المعرض" android:textSize="13sp"
-                            style="@style/Widget.Material3.Button.OutlinedButton" app:cornerRadius="14dp"/>
-                    </LinearLayout>
-
-                    <!-- AI hint -->
-                    <com.google.android.material.card.MaterialCardView android:id="@+id/card_age_ai_hint"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        app:cardCornerRadius="12dp" app:cardElevation="0dp"
-                        app:cardBackgroundColor="?attr/colorTertiaryContainer"
-                        android:layout_marginBottom="14dp" android:visibility="gone">
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="🤖" android:textSize="18sp" android:layout_marginEnd="10dp"/>
-                            <TextView android:id="@+id/tv_age_ai_hint"
-                                android:layout_width="0dp" android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="التقدير من الصورة: ~? سنة"
-                                android:textSize="12sp" android:textColor="?attr/colorOnTertiaryContainer"/>
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- الحالة الجسدية -->
+<!-- الحالة الجسدية -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:hint="الحالة الجسدية والنفسية (اختياري)"

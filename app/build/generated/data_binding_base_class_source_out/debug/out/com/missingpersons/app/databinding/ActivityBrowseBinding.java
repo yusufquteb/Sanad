@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -41,7 +40,7 @@ public final class ActivityBrowseBinding implements ViewBinding {
   public final LinearLayout btnMapView;
 
   @NonNull
-  public final MaterialButton btnResetFilters;
+  public final TextView btnResetFilters;
 
   @NonNull
   public final ImageView btnToggleView;
@@ -83,23 +82,23 @@ public final class ActivityBrowseBinding implements ViewBinding {
   public final LinearLayout searchContainer;
 
   @NonNull
+  public final TextView tvActiveFilter;
+
+  @NonNull
   public final TextView tvCount;
 
   @NonNull
   public final TextView tvEmpty;
 
-  @NonNull
-  public final TextView tvEmptySub;
-
   private ActivityBrowseBinding(@NonNull CoordinatorLayout rootView, @NonNull AppBarLayout appBar,
       @NonNull ImageView btnBack, @NonNull LinearLayout btnFilter, @NonNull LinearLayout btnMapView,
-      @NonNull MaterialButton btnResetFilters, @NonNull ImageView btnToggleView,
+      @NonNull TextView btnResetFilters, @NonNull ImageView btnToggleView,
       @NonNull ChipGroup cgType, @NonNull Chip chipAll, @NonNull Chip chipEmergency,
       @NonNull Chip chipFound, @NonNull Chip chipMissing, @NonNull Chip chipSighting,
       @NonNull TextInputEditText etSearch, @NonNull LinearLayout layoutEmptyState,
       @NonNull LinearLayout llOfflineBanner, @NonNull LinearProgressIndicator progressSync,
       @NonNull RecyclerView rvBrowse, @NonNull LinearLayout searchContainer,
-      @NonNull TextView tvCount, @NonNull TextView tvEmpty, @NonNull TextView tvEmptySub) {
+      @NonNull TextView tvActiveFilter, @NonNull TextView tvCount, @NonNull TextView tvEmpty) {
     this.rootView = rootView;
     this.appBar = appBar;
     this.btnBack = btnBack;
@@ -119,9 +118,9 @@ public final class ActivityBrowseBinding implements ViewBinding {
     this.progressSync = progressSync;
     this.rvBrowse = rvBrowse;
     this.searchContainer = searchContainer;
+    this.tvActiveFilter = tvActiveFilter;
     this.tvCount = tvCount;
     this.tvEmpty = tvEmpty;
-    this.tvEmptySub = tvEmptySub;
   }
 
   @Override
@@ -176,7 +175,7 @@ public final class ActivityBrowseBinding implements ViewBinding {
       }
 
       id = R.id.btn_reset_filters;
-      MaterialButton btnResetFilters = ViewBindings.findChildViewById(rootView, id);
+      TextView btnResetFilters = ViewBindings.findChildViewById(rootView, id);
       if (btnResetFilters == null) {
         break missingId;
       }
@@ -259,6 +258,12 @@ public final class ActivityBrowseBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tv_active_filter;
+      TextView tvActiveFilter = ViewBindings.findChildViewById(rootView, id);
+      if (tvActiveFilter == null) {
+        break missingId;
+      }
+
       id = R.id.tv_count;
       TextView tvCount = ViewBindings.findChildViewById(rootView, id);
       if (tvCount == null) {
@@ -271,16 +276,10 @@ public final class ActivityBrowseBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.tv_empty_sub;
-      TextView tvEmptySub = ViewBindings.findChildViewById(rootView, id);
-      if (tvEmptySub == null) {
-        break missingId;
-      }
-
       return new ActivityBrowseBinding((CoordinatorLayout) rootView, appBar, btnBack, btnFilter,
           btnMapView, btnResetFilters, btnToggleView, cgType, chipAll, chipEmergency, chipFound,
           chipMissing, chipSighting, etSearch, layoutEmptyState, llOfflineBanner, progressSync,
-          rvBrowse, searchContainer, tvCount, tvEmpty, tvEmptySub);
+          rvBrowse, searchContainer, tvActiveFilter, tvCount, tvEmpty);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

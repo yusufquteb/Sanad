@@ -3,7 +3,7 @@
 
     "reports": {
       ".read": "auth != null",
-      ".indexOn": ["status", "timestamp", "reporterId", "approved", "location", "personAge"],
+      ".indexOn": ["status", "timestamp", "reporterId", "approved", "location", "personAge", "imageHash"],
       "$reportId": {
         ".write": "auth != null && (\n          !data.exists() ||\n          data.child('reporterId').val() === auth.uid ||\n          root.child('users').child(auth.uid).child('role').val() === 'admin' ||\n          root.child('users').child(auth.uid).child('role').val() === 'manager'\n        )",
         ".validate": "newData.hasChildren(['personName','reporterId','timestamp'])"
@@ -12,7 +12,7 @@
 
     "found_persons": {
       ".read": "auth != null",
-      ".indexOn": ["status", "timestamp", "reporterId", "location"],
+      ".indexOn": ["status", "timestamp", "reporterId", "location", "imageHash"],
       "$foundId": {
         ".write": "auth != null && (\n          !data.exists() ||\n          data.child('reporterId').val() === auth.uid ||\n          root.child('users').child(auth.uid).child('role').val() === 'admin'\n        )",
         ".validate": "newData.hasChildren(['reporterId','timestamp'])"

@@ -137,59 +137,13 @@
                             android:textColor="#AAAAAA"/>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="16dp"
-                        android:gravity="center">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
-                            <TextView
-                                android:id="@+id/tv_profile_points"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textSize="22sp"
-                                android:textStyle="bold"
-                                android:textColor="#1565C0"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="⭐ نقطة"
-                                android:textSize="11sp"
-                                android:textColor="#888"/>
-                        </LinearLayout>
-
-                        <View android:layout_width="1dp" android:layout_height="36dp" android:background="#EEEEEE"/>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
-                            <TextView
-                                android:id="@+id/tv_profile_reports_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textSize="22sp"
-                                android:textStyle="bold"
-                                android:textColor="#1565C0"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="📋 بلاغ"
-                                android:textSize="11sp"
-                                android:textColor="#888"/>
-                        </LinearLayout>
-                    </LinearLayout>
+                    <!-- [إصلاح] الإحصائيات منقولة لكارد الرتبة — هذه TextViews مخفية للتوافق -->
+                    <TextView android:id="@+id/tv_profile_points"
+                        android:layout_width="0dp" android:layout_height="0dp"
+                        android:visibility="gone"/>
+                    <TextView android:id="@+id/tv_profile_reports_count"
+                        android:layout_width="0dp" android:layout_height="0dp"
+                        android:visibility="gone"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_edit_profile_main"
@@ -332,6 +286,46 @@
                         </FrameLayout>
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="اللغة" android:textSize="14sp" android:textColor="#1a1a1a" android:textStyle="bold"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="عربي  ›" android:textSize="13sp" android:textColor="#888888"/>
+                    </LinearLayout>
+
+                    
+                    <!-- [Phase 5] محافظة المستخدم وإشعاراتها -->
+                    <LinearLayout android:id="@+id/btn_edit_governorate"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp" android:paddingVertical="12dp"
+                        android:clickable="true" android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="horizontal" android:gravity="center_vertical">
+                            <FrameLayout android:layout_width="38dp" android:layout_height="38dp"
+                                android:background="@drawable/bg_qa_blue" android:layout_marginEnd="14dp">
+                                <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+                                    android:text="📍" android:textSize="18sp" android:gravity="center"/>
+                            </FrameLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="محافظتي وإشعاراتي" android:textSize="14sp"
+                                    android:textStyle="bold" android:textColor="#1a1a1a"/>
+                                <TextView android:id="@+id/tv_user_governorate"
+                                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="اضغط لاختيار" android:textSize="12sp"
+                                    android:textColor="#888888" android:layout_marginTop="2dp"/>
+                            </LinearLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="›" android:textSize="18sp" android:textColor="#CCCCCC"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+<View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F5F5F5" android:layout_marginStart="68dp"/>
+
+                    <LinearLayout android:id="@+id/btn_settings_profile" android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground">
+                        <FrameLayout android:layout_width="38dp" android:layout_height="38dp" android:background="@drawable/bg_qa_blue" android:layout_marginEnd="14dp">
+                            <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:text="⚙️" android:textSize="18sp" android:gravity="center"/>
+                        </FrameLayout>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="الإعدادات" android:textSize="14sp" android:textColor="#1a1a1a" android:textStyle="bold"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="18sp" android:textColor="#CCCCCC"/>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

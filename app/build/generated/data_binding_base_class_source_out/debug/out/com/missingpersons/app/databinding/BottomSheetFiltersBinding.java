@@ -4,6 +4,7 @@ package com.missingpersons.app.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -23,6 +24,9 @@ public final class BottomSheetFiltersBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
+  public final AutoCompleteTextView actvGovernorate;
+
+  @NonNull
   public final Button btnApplyFilters;
 
   @NonNull
@@ -35,26 +39,28 @@ public final class BottomSheetFiltersBinding implements ViewBinding {
   public final RadioGroup radioGroupSort;
 
   @NonNull
-  public final RadioButton radioNearest;
-
-  @NonNull
   public final RadioButton radioNewest;
 
   @NonNull
   public final RadioButton radioSmart;
 
-  private BottomSheetFiltersBinding(@NonNull LinearLayout rootView, @NonNull Button btnApplyFilters,
+  @NonNull
+  public final RadioButton radioSortNearest;
+
+  private BottomSheetFiltersBinding(@NonNull LinearLayout rootView,
+      @NonNull AutoCompleteTextView actvGovernorate, @NonNull Button btnApplyFilters,
       @NonNull Button btnResetFilters, @NonNull ChipGroup chipGroupGovernorate,
-      @NonNull RadioGroup radioGroupSort, @NonNull RadioButton radioNearest,
-      @NonNull RadioButton radioNewest, @NonNull RadioButton radioSmart) {
+      @NonNull RadioGroup radioGroupSort, @NonNull RadioButton radioNewest,
+      @NonNull RadioButton radioSmart, @NonNull RadioButton radioSortNearest) {
     this.rootView = rootView;
+    this.actvGovernorate = actvGovernorate;
     this.btnApplyFilters = btnApplyFilters;
     this.btnResetFilters = btnResetFilters;
     this.chipGroupGovernorate = chipGroupGovernorate;
     this.radioGroupSort = radioGroupSort;
-    this.radioNearest = radioNearest;
     this.radioNewest = radioNewest;
     this.radioSmart = radioSmart;
+    this.radioSortNearest = radioSortNearest;
   }
 
   @Override
@@ -84,6 +90,12 @@ public final class BottomSheetFiltersBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.actv_governorate;
+      AutoCompleteTextView actvGovernorate = ViewBindings.findChildViewById(rootView, id);
+      if (actvGovernorate == null) {
+        break missingId;
+      }
+
       id = R.id.btn_apply_filters;
       Button btnApplyFilters = ViewBindings.findChildViewById(rootView, id);
       if (btnApplyFilters == null) {
@@ -108,12 +120,6 @@ public final class BottomSheetFiltersBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.radio_nearest;
-      RadioButton radioNearest = ViewBindings.findChildViewById(rootView, id);
-      if (radioNearest == null) {
-        break missingId;
-      }
-
       id = R.id.radio_newest;
       RadioButton radioNewest = ViewBindings.findChildViewById(rootView, id);
       if (radioNewest == null) {
@@ -126,9 +132,15 @@ public final class BottomSheetFiltersBinding implements ViewBinding {
         break missingId;
       }
 
-      return new BottomSheetFiltersBinding((LinearLayout) rootView, btnApplyFilters,
-          btnResetFilters, chipGroupGovernorate, radioGroupSort, radioNearest, radioNewest,
-          radioSmart);
+      id = R.id.radio_sort_nearest;
+      RadioButton radioSortNearest = ViewBindings.findChildViewById(rootView, id);
+      if (radioSortNearest == null) {
+        break missingId;
+      }
+
+      return new BottomSheetFiltersBinding((LinearLayout) rootView, actvGovernorate,
+          btnApplyFilters, btnResetFilters, chipGroupGovernorate, radioGroupSort, radioNewest,
+          radioSmart, radioSortNearest);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

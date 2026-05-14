@@ -41,6 +41,33 @@ public final class WidgetMissingPersonsBinding implements ViewBinding {
   public final TextView widgetDate3;
 
   @NonNull
+  public final TextView widgetFoundAddr1;
+
+  @NonNull
+  public final TextView widgetFoundAddr2;
+
+  @NonNull
+  public final TextView widgetFoundAddr3;
+
+  @NonNull
+  public final TextView widgetFoundDate1;
+
+  @NonNull
+  public final TextView widgetFoundDate2;
+
+  @NonNull
+  public final TextView widgetFoundDate3;
+
+  @NonNull
+  public final TextView widgetFoundName1;
+
+  @NonNull
+  public final TextView widgetFoundName2;
+
+  @NonNull
+  public final TextView widgetFoundName3;
+
+  @NonNull
   public final TextView widgetName1;
 
   @NonNull
@@ -58,12 +85,27 @@ public final class WidgetMissingPersonsBinding implements ViewBinding {
   @NonNull
   public final LinearLayout widgetRow3;
 
+  @NonNull
+  public final LinearLayout widgetRowFound1;
+
+  @NonNull
+  public final LinearLayout widgetRowFound2;
+
+  @NonNull
+  public final LinearLayout widgetRowFound3;
+
   private WidgetMissingPersonsBinding(@NonNull LinearLayout rootView, @NonNull TextView widgetAddr1,
       @NonNull TextView widgetAddr2, @NonNull TextView widgetAddr3, @NonNull TextView widgetBtnAll,
       @NonNull TextView widgetDate1, @NonNull TextView widgetDate2, @NonNull TextView widgetDate3,
-      @NonNull TextView widgetName1, @NonNull TextView widgetName2, @NonNull TextView widgetName3,
+      @NonNull TextView widgetFoundAddr1, @NonNull TextView widgetFoundAddr2,
+      @NonNull TextView widgetFoundAddr3, @NonNull TextView widgetFoundDate1,
+      @NonNull TextView widgetFoundDate2, @NonNull TextView widgetFoundDate3,
+      @NonNull TextView widgetFoundName1, @NonNull TextView widgetFoundName2,
+      @NonNull TextView widgetFoundName3, @NonNull TextView widgetName1,
+      @NonNull TextView widgetName2, @NonNull TextView widgetName3,
       @NonNull LinearLayout widgetRow1, @NonNull LinearLayout widgetRow2,
-      @NonNull LinearLayout widgetRow3) {
+      @NonNull LinearLayout widgetRow3, @NonNull LinearLayout widgetRowFound1,
+      @NonNull LinearLayout widgetRowFound2, @NonNull LinearLayout widgetRowFound3) {
     this.rootView = rootView;
     this.widgetAddr1 = widgetAddr1;
     this.widgetAddr2 = widgetAddr2;
@@ -72,12 +114,24 @@ public final class WidgetMissingPersonsBinding implements ViewBinding {
     this.widgetDate1 = widgetDate1;
     this.widgetDate2 = widgetDate2;
     this.widgetDate3 = widgetDate3;
+    this.widgetFoundAddr1 = widgetFoundAddr1;
+    this.widgetFoundAddr2 = widgetFoundAddr2;
+    this.widgetFoundAddr3 = widgetFoundAddr3;
+    this.widgetFoundDate1 = widgetFoundDate1;
+    this.widgetFoundDate2 = widgetFoundDate2;
+    this.widgetFoundDate3 = widgetFoundDate3;
+    this.widgetFoundName1 = widgetFoundName1;
+    this.widgetFoundName2 = widgetFoundName2;
+    this.widgetFoundName3 = widgetFoundName3;
     this.widgetName1 = widgetName1;
     this.widgetName2 = widgetName2;
     this.widgetName3 = widgetName3;
     this.widgetRow1 = widgetRow1;
     this.widgetRow2 = widgetRow2;
     this.widgetRow3 = widgetRow3;
+    this.widgetRowFound1 = widgetRowFound1;
+    this.widgetRowFound2 = widgetRowFound2;
+    this.widgetRowFound3 = widgetRowFound3;
   }
 
   @Override
@@ -149,6 +203,60 @@ public final class WidgetMissingPersonsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.widget_found_addr1;
+      TextView widgetFoundAddr1 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetFoundAddr1 == null) {
+        break missingId;
+      }
+
+      id = R.id.widget_found_addr2;
+      TextView widgetFoundAddr2 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetFoundAddr2 == null) {
+        break missingId;
+      }
+
+      id = R.id.widget_found_addr3;
+      TextView widgetFoundAddr3 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetFoundAddr3 == null) {
+        break missingId;
+      }
+
+      id = R.id.widget_found_date1;
+      TextView widgetFoundDate1 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetFoundDate1 == null) {
+        break missingId;
+      }
+
+      id = R.id.widget_found_date2;
+      TextView widgetFoundDate2 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetFoundDate2 == null) {
+        break missingId;
+      }
+
+      id = R.id.widget_found_date3;
+      TextView widgetFoundDate3 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetFoundDate3 == null) {
+        break missingId;
+      }
+
+      id = R.id.widget_found_name1;
+      TextView widgetFoundName1 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetFoundName1 == null) {
+        break missingId;
+      }
+
+      id = R.id.widget_found_name2;
+      TextView widgetFoundName2 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetFoundName2 == null) {
+        break missingId;
+      }
+
+      id = R.id.widget_found_name3;
+      TextView widgetFoundName3 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetFoundName3 == null) {
+        break missingId;
+      }
+
       id = R.id.widget_name1;
       TextView widgetName1 = ViewBindings.findChildViewById(rootView, id);
       if (widgetName1 == null) {
@@ -185,9 +293,30 @@ public final class WidgetMissingPersonsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.widget_row_found1;
+      LinearLayout widgetRowFound1 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetRowFound1 == null) {
+        break missingId;
+      }
+
+      id = R.id.widget_row_found2;
+      LinearLayout widgetRowFound2 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetRowFound2 == null) {
+        break missingId;
+      }
+
+      id = R.id.widget_row_found3;
+      LinearLayout widgetRowFound3 = ViewBindings.findChildViewById(rootView, id);
+      if (widgetRowFound3 == null) {
+        break missingId;
+      }
+
       return new WidgetMissingPersonsBinding((LinearLayout) rootView, widgetAddr1, widgetAddr2,
-          widgetAddr3, widgetBtnAll, widgetDate1, widgetDate2, widgetDate3, widgetName1,
-          widgetName2, widgetName3, widgetRow1, widgetRow2, widgetRow3);
+          widgetAddr3, widgetBtnAll, widgetDate1, widgetDate2, widgetDate3, widgetFoundAddr1,
+          widgetFoundAddr2, widgetFoundAddr3, widgetFoundDate1, widgetFoundDate2, widgetFoundDate3,
+          widgetFoundName1, widgetFoundName2, widgetFoundName3, widgetName1, widgetName2,
+          widgetName3, widgetRow1, widgetRow2, widgetRow3, widgetRowFound1, widgetRowFound2,
+          widgetRowFound3);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -538,7 +538,7 @@ public final class ReportDao_Impl implements ReportDao {
   @Override
   public LiveData<List<ReportEntity>> getFilteredReports(final String type, final String gov,
       final String q, final String status) {
-    final String _sql = "SELECT * FROM reports WHERE approved = 1 AND status != 'resolved' AND (? = 'all' OR reportType = ?) AND (? = 'all' OR governorate = ?) AND (? = 'all' OR status = ?) AND (? = '' OR personName LIKE '%' || ? || '%'      OR reportId LIKE '%' || ? || '%'      OR manualAddress LIKE '%' || ? || '%') ORDER BY timestamp DESC";
+    final String _sql = "SELECT * FROM reports WHERE approved = 1 AND status != 'resolved' AND status != 'deleted' AND (? = 'all' OR reportType = ?) AND (? = 'all' OR governorate = ?) AND (? = 'all' OR status = ?) AND (? = '' OR personName LIKE '%' || ? || '%'      OR reportId LIKE '%' || ? || '%'      OR manualAddress LIKE '%' || ? || '%') ORDER BY timestamp DESC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 10);
     int _argIndex = 1;
     if (type == null) {
@@ -716,7 +716,7 @@ public final class ReportDao_Impl implements ReportDao {
   @Override
   public List<ReportEntity> getFilteredReportsPaged(final String type, final String gov,
       final String q, final String status, final long cursor, final int pageSize) {
-    final String _sql = "SELECT * FROM reports WHERE approved = 1 AND status != 'resolved' AND (? = 'all' OR reportType = ?) AND (? = 'all' OR governorate = ?) AND (? = 'all' OR status = ?) AND (? = '' OR personName LIKE '%' || ? || '%'      OR reportId LIKE '%' || ? || '%'      OR manualAddress LIKE '%' || ? || '%') AND (? = 0 OR timestamp < ?) ORDER BY timestamp DESC LIMIT ?";
+    final String _sql = "SELECT * FROM reports WHERE approved = 1 AND status != 'resolved' AND status != 'deleted' AND (? = 'all' OR reportType = ?) AND (? = 'all' OR governorate = ?) AND (? = 'all' OR status = ?) AND (? = '' OR personName LIKE '%' || ? || '%'      OR reportId LIKE '%' || ? || '%'      OR manualAddress LIKE '%' || ? || '%') AND (? = 0 OR timestamp < ?) ORDER BY timestamp DESC LIMIT ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 13);
     int _argIndex = 1;
     if (type == null) {
@@ -1447,6 +1447,122 @@ public final class ReportDao_Impl implements ReportDao {
     final String _sql = "SELECT * FROM reports WHERE approved = 1 ORDER BY timestamp DESC LIMIT ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
+    _statement.bindLong(_argIndex, n);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfReportId = CursorUtil.getColumnIndexOrThrow(_cursor, "reportId");
+      final int _cursorIndexOfPersonName = CursorUtil.getColumnIndexOrThrow(_cursor, "personName");
+      final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+      final int _cursorIndexOfPersonAge = CursorUtil.getColumnIndexOrThrow(_cursor, "personAge");
+      final int _cursorIndexOfPersonGender = CursorUtil.getColumnIndexOrThrow(_cursor, "personGender");
+      final int _cursorIndexOfGovernorate = CursorUtil.getColumnIndexOrThrow(_cursor, "governorate");
+      final int _cursorIndexOfManualAddress = CursorUtil.getColumnIndexOrThrow(_cursor, "manualAddress");
+      final int _cursorIndexOfLat = CursorUtil.getColumnIndexOrThrow(_cursor, "lat");
+      final int _cursorIndexOfLng = CursorUtil.getColumnIndexOrThrow(_cursor, "lng");
+      final int _cursorIndexOfImageUrl = CursorUtil.getColumnIndexOrThrow(_cursor, "imageUrl");
+      final int _cursorIndexOfReportType = CursorUtil.getColumnIndexOrThrow(_cursor, "reportType");
+      final int _cursorIndexOfStatus = CursorUtil.getColumnIndexOrThrow(_cursor, "status");
+      final int _cursorIndexOfApproved = CursorUtil.getColumnIndexOrThrow(_cursor, "approved");
+      final int _cursorIndexOfReporterId = CursorUtil.getColumnIndexOrThrow(_cursor, "reporterId");
+      final int _cursorIndexOfTimestamp = CursorUtil.getColumnIndexOrThrow(_cursor, "timestamp");
+      final int _cursorIndexOfFaceEmbedding = CursorUtil.getColumnIndexOrThrow(_cursor, "faceEmbedding");
+      final int _cursorIndexOfSynced = CursorUtil.getColumnIndexOrThrow(_cursor, "synced");
+      final int _cursorIndexOfLastUpdated = CursorUtil.getColumnIndexOrThrow(_cursor, "lastUpdated");
+      final List<ReportEntity> _result = new ArrayList<ReportEntity>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final ReportEntity _item;
+        _item = new ReportEntity();
+        if (_cursor.isNull(_cursorIndexOfReportId)) {
+          _item.reportId = null;
+        } else {
+          _item.reportId = _cursor.getString(_cursorIndexOfReportId);
+        }
+        if (_cursor.isNull(_cursorIndexOfPersonName)) {
+          _item.personName = null;
+        } else {
+          _item.personName = _cursor.getString(_cursorIndexOfPersonName);
+        }
+        if (_cursor.isNull(_cursorIndexOfDescription)) {
+          _item.description = null;
+        } else {
+          _item.description = _cursor.getString(_cursorIndexOfDescription);
+        }
+        if (_cursor.isNull(_cursorIndexOfPersonAge)) {
+          _item.personAge = null;
+        } else {
+          _item.personAge = _cursor.getString(_cursorIndexOfPersonAge);
+        }
+        if (_cursor.isNull(_cursorIndexOfPersonGender)) {
+          _item.personGender = null;
+        } else {
+          _item.personGender = _cursor.getString(_cursorIndexOfPersonGender);
+        }
+        if (_cursor.isNull(_cursorIndexOfGovernorate)) {
+          _item.governorate = null;
+        } else {
+          _item.governorate = _cursor.getString(_cursorIndexOfGovernorate);
+        }
+        if (_cursor.isNull(_cursorIndexOfManualAddress)) {
+          _item.manualAddress = null;
+        } else {
+          _item.manualAddress = _cursor.getString(_cursorIndexOfManualAddress);
+        }
+        _item.lat = _cursor.getDouble(_cursorIndexOfLat);
+        _item.lng = _cursor.getDouble(_cursorIndexOfLng);
+        if (_cursor.isNull(_cursorIndexOfImageUrl)) {
+          _item.imageUrl = null;
+        } else {
+          _item.imageUrl = _cursor.getString(_cursorIndexOfImageUrl);
+        }
+        if (_cursor.isNull(_cursorIndexOfReportType)) {
+          _item.reportType = null;
+        } else {
+          _item.reportType = _cursor.getString(_cursorIndexOfReportType);
+        }
+        if (_cursor.isNull(_cursorIndexOfStatus)) {
+          _item.status = null;
+        } else {
+          _item.status = _cursor.getString(_cursorIndexOfStatus);
+        }
+        final int _tmp;
+        _tmp = _cursor.getInt(_cursorIndexOfApproved);
+        _item.approved = _tmp != 0;
+        if (_cursor.isNull(_cursorIndexOfReporterId)) {
+          _item.reporterId = null;
+        } else {
+          _item.reporterId = _cursor.getString(_cursorIndexOfReporterId);
+        }
+        _item.timestamp = _cursor.getLong(_cursorIndexOfTimestamp);
+        if (_cursor.isNull(_cursorIndexOfFaceEmbedding)) {
+          _item.faceEmbedding = null;
+        } else {
+          _item.faceEmbedding = _cursor.getString(_cursorIndexOfFaceEmbedding);
+        }
+        final int _tmp_1;
+        _tmp_1 = _cursor.getInt(_cursorIndexOfSynced);
+        _item.synced = _tmp_1 != 0;
+        _item.lastUpdated = _cursor.getLong(_cursorIndexOfLastUpdated);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
+  @Override
+  public List<ReportEntity> getLatestByType(final String type, final int n) {
+    final String _sql = "SELECT * FROM reports WHERE approved = 1 AND reportType = ? ORDER BY timestamp DESC LIMIT ?";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
+    int _argIndex = 1;
+    if (type == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, type);
+    }
+    _argIndex = 2;
     _statement.bindLong(_argIndex, n);
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);

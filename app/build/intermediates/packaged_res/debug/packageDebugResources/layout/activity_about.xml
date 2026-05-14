@@ -18,122 +18,156 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="?attr/colorSurface">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp"
-            android:paddingBottom="48dp">
+            android:padding="16dp">
 
-            <!-- بطاقة الهوية -->
+            <!-- بطاقة الهوية الرئيسية -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
-                android:layout_marginBottom="16dp">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                android:layout_marginBottom="12dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🔍 المفقودون"
-                        style="?attr/textAppearanceTitleLarge"
-                        android:textColor="?attr/colorOnSurface"
-                        android:layout_marginBottom="8dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:gravity="center">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="🔍" android:textSize="48sp" android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="تطبيق سند"
+                        android:textColor="?attr/colorSurface" android:textSize="24sp" android:textStyle="bold"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                         android:text="منصة مصرية لمساعدة الأسر في إيجاد ذويهم المفقودين"
-                        style="?attr/textAppearanceBodyMedium"
-                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                        android:textColor="?attr/colorOnPrimary" style="?attr/textAppearanceBodyMedium"
+                        android:gravity="center" android:layout_marginTop="4dp"/>
+                    <TextView android:id="@+id/tv_about_version"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnPrimary" android:textSize="11sp"
+                        android:gravity="center" android:layout_marginTop="4dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- محتوى النص الرئيسي -->
+            <!-- رسالة التطبيق -->
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardBackgroundColor="?attr/colorSurface"
-                android:layout_marginBottom="16dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="الهدف"
-                        style="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorPrimary"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp" app:cardElevation="2dp" android:layout_marginBottom="12dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="🌟 رسالتنا" style="?attr/textAppearanceTitleMedium"
+                        android:textStyle="bold" android:textColor="?attr/colorPrimary"
                         android:layout_marginBottom="8dp"/>
-                    <TextView
-                        android:id="@+id/tv_about_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="?attr/textAppearanceBodyMedium"
-                        android:textColor="?attr/colorOnSurface"
-                        android:lineSpacingMultiplier="1.6"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="تطبيق سند منصة إنسانية غير ربحية تهدف إلى المساعدة في إيجاد الأشخاص المفقودين، بما في ذلك:\n\n• الأطفال التائهون أو المخطوفون\n• ضحايا الحوادث والكوارث غير المعرّفين\n• المحتجزون أو المفقودون في ظروف غامضة\n• كبار السن المصابون بالنسيان\n\nجميع الخدمات مجانية بالكامل ولا تهدف إلى الربح."
+                        style="?attr/textAppearanceBodyMedium" android:textColor="?attr/colorOnSurface"
+                        android:lineSpacingExtra="4dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- معلومات المطور -->
+            <!-- المميزات -->
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/md_primary_container"
-                android:layout_marginBottom="8dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="👨‍💻"
-                        android:textSize="28sp"
-                        android:layout_marginEnd="12dp"/>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="الإصدار الحالي"
-                            style="?attr/textAppearanceLabelMedium"
-                            android:textColor="@color/md_on_primary_container"
-                            android:alpha="0.75"/>
-                        <TextView
-                            android:id="@+id/tv_about_version"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/app_version_name"
-                            style="?attr/textAppearanceTitleSmall"
-                            android:textColor="@color/md_on_primary_container"/>
-                    </LinearLayout>
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp" app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/md_secondary_container" android:layout_marginBottom="12dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="✨ ما يقدمه التطبيق" style="?attr/textAppearanceTitleMedium"
+                        android:textStyle="bold" android:textColor="@color/md_secondary"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="✓ نشر صور وبيانات المفقودين بشكل آمن\n✓ بحث ذكي بالصورة عبر الذكاء الاصطناعي\n✓ تطابق تلقائي بين بلاغات المفقودين والمعثور عليهم\n✓ تواصل مباشر مع أسر المفقودين\n✓ عرض المواقع الجغرافية على الخريطة\n✓ إشعارات فورية عند وجود تطابق\n✓ قصص النجاح لتعزيز الأمل"
+                        style="?attr/textAppearanceBodyMedium" android:textColor="?attr/colorOnSurface"
+                        android:lineSpacingExtra="4dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- الخصوصية والأمان -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp" app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/md_tertiary_container" android:layout_marginBottom="12dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="🔒 الخصوصية والأمان" style="?attr/textAppearanceTitleMedium"
+                        android:textStyle="bold" android:textColor="@color/md_tertiary"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="• بياناتك محمية بتشفير كامل عبر Firebase\n• صور الوجوه تُعالَج محلياً على الجهاز\n• لا تُباع بياناتك ولا تُشارك مع أطراف ثالثة إلا بأمر قضائي\n• يمكنك حذف حسابك وبياناتك في أي وقت\n• الإعلانات مجهولة الهوية وتحترم خصوصيتك"
+                        style="?attr/textAppearanceBodyMedium" android:textColor="?attr/colorOnSurface"
+                        android:lineSpacingExtra="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- حدود المسؤولية -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp" app:cardElevation="2dp" android:layout_marginBottom="12dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="⚖️ حدود المسؤولية" style="?attr/textAppearanceTitleMedium"
+                        android:textStyle="bold" android:textColor="?attr/colorPrimary"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="التطبيق منصة وسيطة فقط — لا يتحمل المسؤولية عن:\n\n• صحة المعلومات المُدرجة من قِبل المستخدمين\n• نتائج اللقاءات بين المستخدمين\n• أي ضرر ناتج عن سوء الاستخدام\n\nبنشر بيانات أو صورة لأي شخص، يُقرّ الناشر بأن لديه الصلاحية القانونية للنشر."
+                        style="?attr/textAppearanceBodyMedium" android:textColor="?attr/colorOnSurface"
+                        android:lineSpacingExtra="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- تنبيه أمني -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp" app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/md_error_container" android:layout_marginBottom="12dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="🚨 تنبيه مهم" style="?attr/textAppearanceTitleMedium"
+                        android:textStyle="bold" android:textColor="?attr/colorError"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="🚫 لا تلتقِ بأشخاص مجهولين في أماكن منعزلة\n🚫 لا تدفع أموالاً مقابل معلومات\n🚫 أبلغ الشرطة فوراً عن أي محاولة ابتزاز\n\nالتطبيق مجاني تماماً — أي شخص يطلب منك مالاً هو محتال."
+                        style="?attr/textAppearanceBodyMedium" android:textColor="?attr/colorOnSurface"
+                        android:lineSpacingExtra="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- التواصل -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp" app:cardElevation="2dp" android:layout_marginBottom="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="📞 تواصل معنا" style="?attr/textAppearanceTitleMedium"
+                        android:textStyle="bold" android:textColor="?attr/colorPrimary"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="للإبلاغ عن سوء استخدام أو للاستفسار:\nalbaramost@gmail.com\n\nللإبلاغ عن خلل تقني، استخدم زر الإبلاغ في القائمة."
+                        style="?attr/textAppearanceBodyMedium" android:textColor="?attr/colorOnSurface"
+                        android:lineSpacingExtra="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="جميع الحقوق محفوظة © 2025 — تطبيق سند"
+                android:textSize="11sp" android:textColor="?attr/colorOnSurfaceVariant"
+                android:gravity="center" android:layout_marginBottom="24dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

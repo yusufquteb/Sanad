@@ -57,11 +57,11 @@ com.missingpersons.app-jetified-datastore-1.0.0-55 C:\Users\m_a_2\.gradle\caches
 com.missingpersons.app-jetified-tracing-ktx-1.2.0-56 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\efea0bc66ac25e930b2279a97b9556c5\transformed\jetified-tracing-ktx-1.2.0\res
 com.missingpersons.app-jetified-play-services-auth-21.3.0-57 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f2885ab282cf5f13c815a2c435c4186d\transformed\jetified-play-services-auth-21.3.0\res
 com.missingpersons.app-jetified-play-services-ads-23.6.0-58 C:\Users\m_a_2\.gradle\caches\8.11.1\transforms\f49a405ba9085034c23777665228f8a6\transformed\jetified-play-services-ads-23.6.0\res
-com.missingpersons.app-res-59 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\generated\res\injectCrashlyticsMappingFileIdDebug
-com.missingpersons.app-res-60 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\generated\res\processDebugGoogleServices
-com.missingpersons.app-resValues-61 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\generated\res\resValues\debug
-com.missingpersons.app-packageDebugResources-62 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.missingpersons.app-packageDebugResources-63 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.missingpersons.app-debug-64 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\build\intermediates\merged_res\debug\mergeDebugResources
-com.missingpersons.app-debug-65 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\debug\res
-com.missingpersons.app-main-66 C:\Users\m_a_2\OneDrive\Desktop\error\error\Sanad_1.1\uid fix 2\sanad_full\sanad_full\app\src\main\res
+com.missingpersons.app-res-59 C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\build\generated\res\injectCrashlyticsMappingFileIdDebug
+com.missingpersons.app-res-60 C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\build\generated\res\processDebugGoogleServices
+com.missingpersons.app-resValues-61 C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\build\generated\res\resValues\debug
+com.missingpersons.app-packageDebugResources-62 C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.missingpersons.app-packageDebugResources-63 C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.missingpersons.app-debug-64 C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.missingpersons.app-debug-65 C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\debug\res
+com.missingpersons.app-main-66 C:\Users\m_a_2\OneDrive\Desktop\Sanad\app\src\main\res

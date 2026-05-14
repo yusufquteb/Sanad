@@ -5,13 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.missingpersons.app.R;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -28,14 +28,14 @@ public final class ActivityLoginV2Binding implements ViewBinding {
   public final MaterialButton btnGuest;
 
   @NonNull
-  public final ProgressBar progressBar;
+  public final CircularProgressIndicator progressBar;
 
   @NonNull
   public final TextView tvDisclaimerLink;
 
   private ActivityLoginV2Binding(@NonNull LinearLayout rootView,
       @NonNull MaterialButton btnGoogleSignin, @NonNull MaterialButton btnGuest,
-      @NonNull ProgressBar progressBar, @NonNull TextView tvDisclaimerLink) {
+      @NonNull CircularProgressIndicator progressBar, @NonNull TextView tvDisclaimerLink) {
     this.rootView = rootView;
     this.btnGoogleSignin = btnGoogleSignin;
     this.btnGuest = btnGuest;
@@ -83,7 +83,7 @@ public final class ActivityLoginV2Binding implements ViewBinding {
       }
 
       id = R.id.progress_bar;
-      ProgressBar progressBar = ViewBindings.findChildViewById(rootView, id);
+      CircularProgressIndicator progressBar = ViewBindings.findChildViewById(rootView, id);
       if (progressBar == null) {
         break missingId;
       }

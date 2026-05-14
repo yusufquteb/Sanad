@@ -1,5 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="http://schemas.android.com/tools">
+    <string-array name="education_levels">
+        <item>بدون مؤهل</item>
+        <item>ابتدائي</item>
+        <item>إعدادي</item>
+        <item>ثانوي</item>
+        <item>دبلوم</item>
+        <item>بكالوريوس</item>
+        <item>ماجستير</item>
+        <item>دكتوراه</item>
+        <item>غير معروف</item>
+    </string-array>
+    <string-array name="gender_options">
+        <item>ذكر</item>
+        <item>أنثى</item>
+    </string-array>
+    <string-array name="mental_states">
+        <item>طبيعي</item>
+        <item>يعاني من اضطراب نفسي</item>
+        <item>يعاني من فقدان الذاكرة</item>
+        <item>يعاني من إعاقة ذهنية</item>
+        <item>يعاني من الزهايمر</item>
+        <item>غير معروف</item>
+    </string-array>
+    <string-array name="relation_options">
+        <item>أب</item>
+        <item>أم</item>
+        <item>ابن</item>
+        <item>ابنة</item>
+        <item>أخ</item>
+        <item>أخت</item>
+        <item>زوج</item>
+        <item>زوجة</item>
+        <item>جد</item>
+        <item>جدة</item>
+        <item>عم</item>
+        <item>عمة</item>
+        <item>خال</item>
+        <item>خالة</item>
+        <item>ابن عم / ابن خال</item>
+        <item>صديق</item>
+        <item>جار</item>
+        <item>مسؤول رعاية</item>
+        <item>أخرى</item>
+    </string-array>
     <attr format="reference" name="shapeAppearanceOverride"/>
     <color name="background">#F7F9FC</color>
     <color name="black">#000000</color>
@@ -14,6 +58,7 @@
     <color name="color_login_surface">#0D2144</color>
     <color name="color_search">#1565C0</color>
     <color name="color_warning">#E65100</color>
+    <color name="green_600">#43A047</color>
     <color name="green_dark">#1B5E20</color>
     <color name="green_light">#E8F5E9</color>
     <color name="md_background">#F7F9FC</color>
@@ -67,6 +112,8 @@
     <color name="md_theme_light_surfaceVariant">#F0F4F8</color>
     <color name="md_theme_light_tertiary">#4F6EBC</color>
     <color name="md_theme_light_tertiaryContainer">#F0F4FF</color>
+    <color name="orange_100">#FFE0B2</color>
+    <color name="orange_500">#FF9800</color>
     <color name="primary">#1565C0</color>
     <color name="primary_dark">#0D47A1</color>
     <color name="search_color">#1565C0</color>

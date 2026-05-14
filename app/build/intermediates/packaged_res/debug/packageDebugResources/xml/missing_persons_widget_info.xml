@@ -8,4 +8,5 @@
     android:initialLayout="@layout/widget_missing_persons"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
+    android:previewLayout="@layout/widget_missing_persons"
     android:description="@string/widget_description"/>

@@ -137,7 +137,24 @@
         <!-- [مرحلة 1.1] HomeActivity موقوفة — SplashActivity تتجه لـ NewHomeActivity مباشرة -->
         <activity
             android:name="com.missingpersons.app.activities.ReportActivity"
-            android:exported="false" />
+            android:exported="true" >
+
+            <!-- مشاركة صورة من تطبيقات أخرى → فتح صفحة بلاغ مباشرة -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.missingpersons.app.activities.BrowseActivity"
             android:exported="false" />
@@ -164,6 +181,9 @@
             android:exported="false" />
         <activity
             android:name="com.missingpersons.app.activities.AdminDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.missingpersons.app.activities.EnhancedAdminDashboardActivity"
             android:exported="false" />
         <activity
             android:name="com.missingpersons.app.activities.MembersActivity"
@@ -244,6 +264,11 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name="com.missingpersons.app.activities.SettingsActivity"
+            android:exported="false" />
+
         <service
             android:name="com.google.firebase.components.ComponentDiscoveryService"
             android:directBootAware="true"

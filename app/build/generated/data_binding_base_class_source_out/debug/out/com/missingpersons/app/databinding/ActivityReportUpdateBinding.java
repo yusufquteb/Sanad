@@ -4,9 +4,11 @@ package com.missingpersons.app.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -25,16 +27,28 @@ public final class ActivityReportUpdateBinding implements ViewBinding {
   private final CoordinatorLayout rootView;
 
   @NonNull
+  public final MaterialButton btnChangePhoto;
+
+  @NonNull
   public final MaterialButton btnPickEventTime;
 
   @NonNull
   public final MaterialButton btnSubmitUpdate;
 
   @NonNull
+  public final MaterialButton btnUpdatePhoto;
+
+  @NonNull
   public final TextInputEditText etEventTime;
 
   @NonNull
   public final TextInputEditText etUpdateText;
+
+  @NonNull
+  public final ImageView ivCurrentPhoto;
+
+  @NonNull
+  public final LinearLayout layoutPhotoUpdate;
 
   @NonNull
   public final LinearLayout layoutPrevUpdates;
@@ -48,20 +62,30 @@ public final class ActivityReportUpdateBinding implements ViewBinding {
   @NonNull
   public final Toolbar toolbar;
 
+  @NonNull
+  public final TextView tvPhotoStatus;
+
   private ActivityReportUpdateBinding(@NonNull CoordinatorLayout rootView,
-      @NonNull MaterialButton btnPickEventTime, @NonNull MaterialButton btnSubmitUpdate,
+      @NonNull MaterialButton btnChangePhoto, @NonNull MaterialButton btnPickEventTime,
+      @NonNull MaterialButton btnSubmitUpdate, @NonNull MaterialButton btnUpdatePhoto,
       @NonNull TextInputEditText etEventTime, @NonNull TextInputEditText etUpdateText,
+      @NonNull ImageView ivCurrentPhoto, @NonNull LinearLayout layoutPhotoUpdate,
       @NonNull LinearLayout layoutPrevUpdates, @NonNull ProgressBar progressUpdate,
-      @NonNull Spinner spUpdateType, @NonNull Toolbar toolbar) {
+      @NonNull Spinner spUpdateType, @NonNull Toolbar toolbar, @NonNull TextView tvPhotoStatus) {
     this.rootView = rootView;
+    this.btnChangePhoto = btnChangePhoto;
     this.btnPickEventTime = btnPickEventTime;
     this.btnSubmitUpdate = btnSubmitUpdate;
+    this.btnUpdatePhoto = btnUpdatePhoto;
     this.etEventTime = etEventTime;
     this.etUpdateText = etUpdateText;
+    this.ivCurrentPhoto = ivCurrentPhoto;
+    this.layoutPhotoUpdate = layoutPhotoUpdate;
     this.layoutPrevUpdates = layoutPrevUpdates;
     this.progressUpdate = progressUpdate;
     this.spUpdateType = spUpdateType;
     this.toolbar = toolbar;
+    this.tvPhotoStatus = tvPhotoStatus;
   }
 
   @Override
@@ -91,6 +115,12 @@ public final class ActivityReportUpdateBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btn_change_photo;
+      MaterialButton btnChangePhoto = ViewBindings.findChildViewById(rootView, id);
+      if (btnChangePhoto == null) {
+        break missingId;
+      }
+
       id = R.id.btn_pick_event_time;
       MaterialButton btnPickEventTime = ViewBindings.findChildViewById(rootView, id);
       if (btnPickEventTime == null) {
@@ -103,6 +133,12 @@ public final class ActivityReportUpdateBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btn_update_photo;
+      MaterialButton btnUpdatePhoto = ViewBindings.findChildViewById(rootView, id);
+      if (btnUpdatePhoto == null) {
+        break missingId;
+      }
+
       id = R.id.et_event_time;
       TextInputEditText etEventTime = ViewBindings.findChildViewById(rootView, id);
       if (etEventTime == null) {
@@ -112,6 +148,18 @@ public final class ActivityReportUpdateBinding implements ViewBinding {
       id = R.id.et_update_text;
       TextInputEditText etUpdateText = ViewBindings.findChildViewById(rootView, id);
       if (etUpdateText == null) {
+        break missingId;
+      }
+
+      id = R.id.iv_current_photo;
+      ImageView ivCurrentPhoto = ViewBindings.findChildViewById(rootView, id);
+      if (ivCurrentPhoto == null) {
+        break missingId;
+      }
+
+      id = R.id.layout_photo_update;
+      LinearLayout layoutPhotoUpdate = ViewBindings.findChildViewById(rootView, id);
+      if (layoutPhotoUpdate == null) {
         break missingId;
       }
 
@@ -139,9 +187,16 @@ public final class ActivityReportUpdateBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityReportUpdateBinding((CoordinatorLayout) rootView, btnPickEventTime,
-          btnSubmitUpdate, etEventTime, etUpdateText, layoutPrevUpdates, progressUpdate,
-          spUpdateType, toolbar);
+      id = R.id.tv_photo_status;
+      TextView tvPhotoStatus = ViewBindings.findChildViewById(rootView, id);
+      if (tvPhotoStatus == null) {
+        break missingId;
+      }
+
+      return new ActivityReportUpdateBinding((CoordinatorLayout) rootView, btnChangePhoto,
+          btnPickEventTime, btnSubmitUpdate, btnUpdatePhoto, etEventTime, etUpdateText,
+          ivCurrentPhoto, layoutPhotoUpdate, layoutPrevUpdates, progressUpdate, spUpdateType,
+          toolbar, tvPhotoStatus);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
