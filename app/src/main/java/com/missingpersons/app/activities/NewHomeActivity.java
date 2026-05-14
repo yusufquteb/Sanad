@@ -391,12 +391,17 @@ public class NewHomeActivity extends AppCompatActivity {
     /**
      * يحسب الإحصائيات مباشرة من reports/ و found_persons/
      * بدون الاعتماد على stats/ cache.
+     *
+     * [إصلاح تعارض الحالات النشطة]
+     * تعريف "نشط" موحّد الآن مع StatisticsActivity:
+     *   نشط = status == "approved"
+     * (الـ boolean flag "approved" هو نفسه ما يُعيّن status="approved"
+     *  لذلك الشرطان متكافئان — نستخدم status فقط للبساطة)
      */
     private void loadStatsFromNodes() {
         final long[] active   = {0};
         final long[] resolved = {0};
         final long[] found    = {0};
-        // نستخدم AtomicInteger لمعرفة متى انتهى الـ 2 queries
         final int[] done = {0};
 
         ValueEventListener reportsListener = new ValueEventListener() {
@@ -404,6 +409,7 @@ public class NewHomeActivity extends AppCompatActivity {
                 long a = 0, r = 0;
                 for (DataSnapshot c : snap.getChildren()) {
                     String status = c.child("status").getValue(String.class);
+                    // [إصلاح] نفس تعريف StatisticsActivity — status=="approved"
                     if ("approved".equals(status)) a++;
                     if ("resolved".equals(status)) r++;
                 }
@@ -560,6 +566,56 @@ public class NewHomeActivity extends AppCompatActivity {
                     final int f = unread;
                     runOnUiThread(() -> updateBadge(badgeChats, f));
                 }
+                @Override public void onCancelled(@NonNull DatabaseError e) {}
+            });
+
+        // [إصلاح] استقبال الإشعارات الجماعية من الأدمن
+        // AdminDashboardActivity يكتب لـ notifications/{uid} مباشرة
+        // هذا الـ listener يعرضها كـ local notification فوراً للمستخدمين المتصلين
+        listenBroadcastNotifications(uid);
+    }
+
+    /**
+     * يستمع للإشعارات الجماعية من الأدمن في notifications/{uid}
+     * ويعرضها كـ local notification
+     */
+    private long lastBroadcastTs = 0;
+
+    private void listenBroadcastNotifications(String uid) {
+        db.child("notifications").child(uid)
+            .orderByChild("type").equalTo("broadcast")
+            .addChildEventListener(new com.google.firebase.database.ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snap, String prev) {
+                    Boolean isRead = snap.child("read").getValue(Boolean.class);
+                    if (Boolean.TRUE.equals(isRead)) return;
+
+                    Long ts = snap.child("timestamp").getValue(Long.class);
+                    if (ts == null || ts <= lastBroadcastTs) return;
+                    lastBroadcastTs = ts;
+
+                    String title = snap.child("title").getValue(String.class);
+                    String msg   = snap.child("message").getValue(String.class);
+                    if (title == null) title = "📢 إشعار من الإدارة";
+                    if (msg == null || msg.isEmpty()) return;
+
+                    final String fTitle = title;
+                    final String fMsg   = msg;
+
+                    runOnUiThread(() -> {
+                        com.missingpersons.app.utils.NotificationHelper
+                            .showGeneralNotification(NewHomeActivity.this, fTitle, fMsg);
+                        // تحديث badge الإشعارات
+                        if (badgeNotifications != null)
+                            badgeNotifications.setVisibility(View.VISIBLE);
+                    });
+
+                    // عَلِّم كمقروء
+                    snap.getRef().child("read").setValue(true);
+                }
+                @Override public void onChildChanged(@NonNull DataSnapshot s, String p) {}
+                @Override public void onChildRemoved(@NonNull DataSnapshot s) {}
+                @Override public void onChildMoved(@NonNull DataSnapshot s, String p) {}
                 @Override public void onCancelled(@NonNull DatabaseError e) {}
             });
     }

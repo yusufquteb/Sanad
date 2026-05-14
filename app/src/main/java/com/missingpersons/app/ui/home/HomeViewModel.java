@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.database.*;
 import com.missingpersons.app.data.repository.ReportRepository;
 import com.missingpersons.app.data.repository.UserRepository;
-import com.missingpersons.app.domain.usecase.GetReportsUseCase;
 import com.missingpersons.app.models.ReportEntity;
 
 import java.util.*;
@@ -34,7 +33,6 @@ public class HomeViewModel extends ViewModel {
 
     private final ReportRepository  reportRepository;
     private final UserRepository    userRepository;
-    private final GetReportsUseCase getReportsUseCase;
 
     // ── LiveData ────────────────────────────────────────────
     private final MutableLiveData<Boolean>            isLoading        = new MutableLiveData<>(false);
@@ -60,7 +58,6 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel(ReportRepository reportRepository, UserRepository userRepository) {
         this.reportRepository  = reportRepository;
         this.userRepository    = userRepository;
-        this.getReportsUseCase = new GetReportsUseCase(reportRepository);
     }
 
     // ════════════════════════════════════════════════════════
@@ -82,12 +79,12 @@ public class HomeViewModel extends ViewModel {
     public LiveData<Integer> unreadCount() { return unreadNotif; }
 
     public LiveData<List<ReportEntity>> getApprovedReports() {
-        return getReportsUseCase.execute();
+        return reportRepository.getApprovedReports();
     }
 
     public LiveData<List<ReportEntity>> getFilteredReports(
             String type, String gov, String q, String status) {
-        return getReportsUseCase.execute(type, gov, q, status);
+        return reportRepository.getFilteredReports(type, gov, q, status);
     }
 
     // ════════════════════════════════════════════════════════
@@ -389,7 +386,7 @@ public class HomeViewModel extends ViewModel {
 
     public void syncReports(String type, String gov, String status) {
         isLoading.setValue(true);
-        getReportsUseCase.sync(type, gov, status, () -> {
+        reportRepository.syncInitial(type, gov, status, () -> {
             isLoading.setValue(false);
             loadStats();
         });
@@ -397,7 +394,7 @@ public class HomeViewModel extends ViewModel {
 
     public void loadMore(String type, String gov, String status, long cursor,
                           ReportRepository.OnLoadMoreCallback callback) {
-        getReportsUseCase.loadMore(type, gov, status, cursor, callback);
+        reportRepository.loadMore(type, gov, status, cursor, callback);
     }
 
     /** للتوافق القديم */

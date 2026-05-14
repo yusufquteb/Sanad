@@ -161,7 +161,8 @@ public class FoundSightingActivity extends AppCompatActivity {
     }
 
     private void setupGovernorates() {
-        String[] govs = EgyptAddressHelper.getGovernorates();
+List<String> govsList = EgyptAddressHelper.getGovernorates();
+String[] govs = govsList.toArray(new String[0]);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
             android.R.layout.simple_spinner_item, govs);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -110,6 +110,26 @@ public class ReportRepository {
         AtomicInteger pending   = new AtomicInteger(NODES.length);
         Set<String>   activeIds = Collections.synchronizedSet(new HashSet<>());
 
+        // [إصلاح] مزامنة بلاغات المستخدم الحالي (pending + approved) لتظهر فوراً
+        String myUid = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser() != null
+            ? com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
+        if (myUid != null && !myUid.isEmpty()) {
+            FirebaseDatabase.getInstance().getReference("reports")
+                .orderByChild("reporterId").equalTo(myUid).limitToLast(20)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override public void onDataChange(@NonNull DataSnapshot snap) {
+                        List<ReportEntity> mine = new ArrayList<>();
+                        for (DataSnapshot c : snap.getChildren()) {
+                            ReportEntity e = fromSnapshot(c, "reports");
+                            if (e != null) { e.approved = true; mine.add(e); }
+                        }
+                        if (!mine.isEmpty())
+                            executor.execute(() -> dao.insertAll(mine));
+                    }
+                    @Override public void onCancelled(@NonNull DatabaseError e) {}
+                });
+        }
+
         for (String node : NODES) {
             Query query = FirebaseDatabase.getInstance()
                     .getReference(node)

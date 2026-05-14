@@ -138,4 +138,8 @@
     <color name="status_matched_container">#FFF8E1</color>
     <color name="status_matched_on_container">#E65100</color>
 
+    <!-- إضافات لوحة التحكم المحسّنة -->
+    <color name="orange_500">#FF9800</color>
+    <color name="orange_100">#FFE0B2</color>
+    <color name="green_600">#43A047</color>
 </resources>

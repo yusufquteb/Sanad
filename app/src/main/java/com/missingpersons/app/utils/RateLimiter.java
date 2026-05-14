@@ -67,10 +67,16 @@ public class RateLimiter {
     }
 
     /** يُستدعى من AdminDashboard لتغيير الحد لكل الأعضاء */
-    public static void setGlobalDailyLimit(int newLimit) {
+    public static void setGlobalDailyLimit(Context ctx, int newLimit) {
+        // [إصلاح] حفظ في Firebase + تحديث الـ cache المحلي فورًا
         FirebaseDatabase.getInstance().getReference("settings/daily_report_limit")
-            .setValue(newLimit);
-        Log.d(TAG, "Admin set global daily limit to: " + newLimit);
+            .setValue(newLimit)
+            .addOnSuccessListener(aVoid -> Log.d(TAG, "Firebase limit updated: " + newLimit))
+            .addOnFailureListener(e -> Log.e(TAG, "Firebase limit update failed", e));
+        // تحديث الـ cache المحلي فورًا حتى يسري التغيير دون إعادة تشغيل
+        ctx.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+            .edit().putInt("cached_daily_limit", newLimit).apply();
+        Log.d(TAG, "Local cache updated to: " + newLimit);
     }
 
     private static int getDailyLimit(Context ctx) {

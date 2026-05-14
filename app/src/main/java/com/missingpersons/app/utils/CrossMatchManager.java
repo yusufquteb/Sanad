@@ -9,19 +9,41 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * CrossMatchManager — مقارنة تلقائية ثنائية الاتجاه
  *
- * [إصلاح بناء] استُعيد notifySightingMatch() الذي كان موجوداً
- *   في النسخة الأصلية واستدعته FoundSightingActivity.
+ * [إصلاح جذري]
  *
- * [إصلاح خطأ-02] Debug logs شاملة في كل دالة:
- *   - عدد candidates المتاحة
- *   - كل score قبل الـ threshold
- *   - سبب عدم المقارنة (embedding null)
+ * المشاكل التي تم إصلاحها:
+ *
+ * 🔴 كان MATCH_THRESHOLD يُقرأ من FaceEmbeddingManager.MATCH_THRESHOLD
+ *    التي كانت = 0.60f، وهي عتبة منخفضة جداً.
+ *    الآن يُقرأ من TFLiteFaceRecognizer.MATCH_THRESHOLD (0.82f).
+ *
+ * 🔴 تم إضافة فحص أبعاد الـ embedding:
+ *    إذا كان الـ embedding المخزن أبعاده != 128 → يُتجاهل تماماً.
+ *    (البيانات القديمة في Firebase قد تحتوي على embeddings وهمية
+ *    من النسخة السابقة التي كانت تضع Math.random())
+ *
+ * 🔴 تم رفع حد الـ similarity المعروض في اللوج للتمييز الواضح.
  */
 public class CrossMatchManager {
 
     private static final String TAG = "CrossMatchManager";
 
-    private static final CopyOnWriteArrayList<DatabaseReference> activeRefs      =
+    /**
+     * عتبة المطابقة الموحدة — مرتبطة بـ TFLiteFaceRecognizer
+     * لا تُغيَّر هنا، غيِّرها في TFLiteFaceRecognizer.MATCH_THRESHOLD فقط.
+     */
+    private static float getMatchThreshold() {
+        return TFLiteFaceRecognizer.MATCH_THRESHOLD; // 0.82f
+    }
+
+    /**
+     * الحد الأدنى لأبعاد الـ embedding المقبول.
+     * TFLite MobileFaceNet ينتج 128 float.
+     * أي embedding بأبعاد أقل = وهمي من النسخة القديمة → يُرفض.
+     */
+    private static final int MIN_EMBEDDING_DIM = 128;
+
+    private static final CopyOnWriteArrayList<DatabaseReference> activeRefs =
         new CopyOnWriteArrayList<>();
     private static final CopyOnWriteArrayList<ValueEventListener> activeListeners =
         new CopyOnWriteArrayList<>();
@@ -43,12 +65,19 @@ public class CrossMatchManager {
             Log.w(TAG, "⚠️ embedding فارغة — لن يحدث match");
             return;
         }
+
         float[] reportVec = FaceEmbeddingManager.stringToEmbedding(embedding);
         if (reportVec == null) {
             Log.w(TAG, "⚠️ فشل parse embedding");
             return;
         }
-        Log.d(TAG, "✅ reportVec dim=" + reportVec.length);
+        if (reportVec.length < MIN_EMBEDDING_DIM) {
+            Log.w(TAG, "⚠️ embedding أبعاده " + reportVec.length
+                    + " < " + MIN_EMBEDDING_DIM + " — يبدو وهمياً من نسخة قديمة، تجاهل");
+            return;
+        }
+        Log.d(TAG, "✅ reportVec dim=" + reportVec.length
+                + " threshold=" + getMatchThreshold());
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("found_persons");
 
@@ -60,20 +89,30 @@ public class CrossMatchManager {
                 Log.d(TAG, "🔍 found_persons candidates: " + total);
                 if (total == 0) { Log.w(TAG, "⚠️ لا candidates"); return; }
 
-                int compared = 0, matched = 0;
+                int compared = 0, skipped = 0, matched = 0;
                 for (DataSnapshot child : snapshot.getChildren()) {
                     String storedEmb = child.child("faceEmbedding").getValue(String.class);
-                    if (storedEmb == null || storedEmb.isEmpty()) continue;
+                    if (storedEmb == null || storedEmb.isEmpty()) { skipped++; continue; }
+
                     float[] storedVec = FaceEmbeddingManager.stringToEmbedding(storedEmb);
-                    if (storedVec == null) continue;
+                    if (storedVec == null) { skipped++; continue; }
+
+                    // ← الإصلاح الجذري: رفض embeddings الوهمية القديمة
+                    if (storedVec.length < MIN_EMBEDDING_DIM) {
+                        Log.w(TAG, "  [" + child.getKey() + "] dim=" + storedVec.length
+                                + " < " + MIN_EMBEDDING_DIM + " → مُتجاهَل (embedding وهمي)");
+                        skipped++;
+                        continue;
+                    }
 
                     float sim = FaceEmbeddingManager.cosineSimilarity(reportVec, storedVec);
                     compared++;
-                    Log.d(TAG, "  [" + child.getKey() + "] score=" +
-                            String.format("%.3f", sim) + " threshold=" +
-                            FaceEmbeddingManager.MATCH_THRESHOLD);
+                    Log.d(TAG, "  [" + child.getKey() + "] score="
+                            + String.format("%.3f", sim)
+                            + " threshold=" + getMatchThreshold()
+                            + (sim >= getMatchThreshold() ? " ✅ MATCH" : " ❌"));
 
-                    if (sim >= FaceEmbeddingManager.MATCH_THRESHOLD) {
+                    if (sim >= getMatchThreshold()) {
                         matched++;
                         String foundReporterId = child.child("reporterId").getValue(String.class);
                         String foundId         = child.getKey();
@@ -94,7 +133,8 @@ public class CrossMatchManager {
                         saveMatchRecord(reportId, foundId, sim, reporterUid, foundReporterId);
                     }
                 }
-                Log.d(TAG, "done: compared=" + compared + " matched=" + matched);
+                Log.d(TAG, "done: compared=" + compared
+                        + " skipped=" + skipped + " matched=" + matched);
             }
 
             @Override
@@ -119,12 +159,19 @@ public class CrossMatchManager {
             Log.w(TAG, "⚠️ embedding فارغة");
             return;
         }
+
         float[] foundVec = FaceEmbeddingManager.stringToEmbedding(embedding);
         if (foundVec == null) {
             Log.w(TAG, "⚠️ فشل parse embedding");
             return;
         }
-        Log.d(TAG, "✅ foundVec dim=" + foundVec.length);
+        if (foundVec.length < MIN_EMBEDDING_DIM) {
+            Log.w(TAG, "⚠️ embedding أبعاده " + foundVec.length
+                    + " < " + MIN_EMBEDDING_DIM + " — يبدو وهمياً، تجاهل");
+            return;
+        }
+        Log.d(TAG, "✅ foundVec dim=" + foundVec.length
+                + " threshold=" + getMatchThreshold());
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("reports");
         Query query = ref.orderByChild("status").equalTo("approved");
@@ -137,20 +184,30 @@ public class CrossMatchManager {
                 Log.d(TAG, "🔍 approved reports candidates: " + total);
                 if (total == 0) { Log.w(TAG, "⚠️ لا candidates"); return; }
 
-                int compared = 0, matched = 0;
+                int compared = 0, skipped = 0, matched = 0;
                 for (DataSnapshot child : snapshot.getChildren()) {
                     String storedEmb = child.child("faceEmbedding").getValue(String.class);
-                    if (storedEmb == null || storedEmb.isEmpty()) continue;
+                    if (storedEmb == null || storedEmb.isEmpty()) { skipped++; continue; }
+
                     float[] storedVec = FaceEmbeddingManager.stringToEmbedding(storedEmb);
-                    if (storedVec == null) continue;
+                    if (storedVec == null) { skipped++; continue; }
+
+                    // ← الإصلاح الجذري: رفض embeddings الوهمية القديمة
+                    if (storedVec.length < MIN_EMBEDDING_DIM) {
+                        Log.w(TAG, "  [" + child.getKey() + "] dim=" + storedVec.length
+                                + " < " + MIN_EMBEDDING_DIM + " → مُتجاهَل");
+                        skipped++;
+                        continue;
+                    }
 
                     float sim = FaceEmbeddingManager.cosineSimilarity(foundVec, storedVec);
                     compared++;
-                    Log.d(TAG, "  [" + child.getKey() + "] score=" +
-                            String.format("%.3f", sim) + " threshold=" +
-                            FaceEmbeddingManager.MATCH_THRESHOLD);
+                    Log.d(TAG, "  [" + child.getKey() + "] score="
+                            + String.format("%.3f", sim)
+                            + " threshold=" + getMatchThreshold()
+                            + (sim >= getMatchThreshold() ? " ✅ MATCH" : " ❌"));
 
-                    if (sim >= FaceEmbeddingManager.MATCH_THRESHOLD) {
+                    if (sim >= getMatchThreshold()) {
                         matched++;
                         String originalReporterId = child.child("reporterId").getValue(String.class);
                         String reportId           = child.getKey();
@@ -173,7 +230,8 @@ public class CrossMatchManager {
                         saveMatchRecord(reportId, foundId, sim, originalReporterId, finderUid);
                     }
                 }
-                Log.d(TAG, "done: compared=" + compared + " matched=" + matched);
+                Log.d(TAG, "done: compared=" + compared
+                        + " skipped=" + skipped + " matched=" + matched);
             }
 
             @Override
@@ -186,8 +244,7 @@ public class CrossMatchManager {
     }
 
     // ════════════════════════════════════════════════════════
-    //  [إصلاح بناء] notifySightingMatch — مُستدعاة من FoundSightingActivity
-    //  كانت موجودة في النسخة الأصلية وحُذفت خطأً في المرحلة السابقة
+    //  notifySightingMatch
     // ════════════════════════════════════════════════════════
 
     public static void notifySightingMatch(String reporterUid, String personName,
@@ -197,7 +254,6 @@ public class CrossMatchManager {
 
         if (reporterUid == null || reporterUid.isEmpty()) return;
 
-        // إشعار لصاحب البلاغ الأصلي
         HashMap<String, Object> notif = new HashMap<>();
         notif.put("type",       "sighting_match");
         notif.put("reportId",   reportId);
@@ -214,7 +270,6 @@ public class CrossMatchManager {
             .addOnSuccessListener(v -> Log.d(TAG, "✅ sighting notif sent"))
             .addOnFailureListener(e -> Log.w(TAG, "sighting notif failed: " + e.getMessage()));
 
-        // سجل التطابق
         HashMap<String, Object> sightingMatch = new HashMap<>();
         sightingMatch.put("type",       "sighting");
         sightingMatch.put("reportId",   reportId);
@@ -261,22 +316,64 @@ public class CrossMatchManager {
     private static void saveMatchRecord(String reportId, String foundId,
                                          float similarity, String reporterUid,
                                          String finderUid) {
-        Map<String, Object> match = new HashMap<>();
-        match.put("reportId",    reportId);
-        match.put("foundId",     foundId);
-        match.put("similarity",  similarity);
-        match.put("reporterUid", reporterUid);
-        match.put("finderUid",   finderUid);
-        match.put("status",      "pending_review");
-        match.put("timestamp",   System.currentTimeMillis());
+        FirebaseDatabase.getInstance().getReference("reports").child(reportId)
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override public void onDataChange(@NonNull DataSnapshot rSnap) {
+                    String reportPhoto  = strVal(rSnap, "photoUrl");
+                    String personName   = strVal(rSnap, "personName");
+                    String shortReportId = reportId.length() > 4
+                        ? "SND-" + reportId.substring(reportId.length() - 4).toUpperCase()
+                        : reportId;
 
-        String key = FirebaseDatabase.getInstance().getReference("matches").push().getKey();
-        if (key != null) {
-            FirebaseDatabase.getInstance().getReference("matches").child(key)
-                    .setValue(match)
-                    .addOnSuccessListener(v -> Log.d(TAG, "✅ match record: " + key))
-                    .addOnFailureListener(e -> Log.e(TAG, "match record failed: " + e.getMessage()));
-        }
+                    FirebaseDatabase.getInstance()
+                        .getReference("found_persons").child(foundId)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override public void onDataChange(@NonNull DataSnapshot fSnap) {
+                                String foundPhoto  = strVal(fSnap, "photoUrl");
+                                String finderName  = strVal(fSnap, "name");
+                                String shortFoundId = foundId.length() > 4
+                                    ? "SND-" + foundId.substring(foundId.length() - 4).toUpperCase()
+                                    : foundId;
+
+                                Map<String, Object> match = new HashMap<>();
+                                match.put("reportId",       reportId);
+                                match.put("foundId",        foundId);
+                                match.put("similarity",     similarity);
+                                match.put("reporterUid",    reporterUid);
+                                match.put("finderUid",      finderUid);
+                                match.put("status",         "pending_review");
+                                match.put("timestamp",      System.currentTimeMillis());
+                                match.put("reportPhotoUrl", reportPhoto);
+                                match.put("foundPhotoUrl",  foundPhoto);
+                                match.put("personName",     personName);
+                                match.put("finderName",     finderName.isEmpty() ? "معثور" : finderName);
+                                match.put("shortReportId",  shortReportId);
+                                match.put("shortFoundId",   shortFoundId);
+
+                                String key = FirebaseDatabase.getInstance()
+                                    .getReference("matches").push().getKey();
+                                if (key != null) {
+                                    FirebaseDatabase.getInstance()
+                                        .getReference("matches").child(key)
+                                        .setValue(match)
+                                        .addOnSuccessListener(v -> Log.d(TAG, "✅ match record: " + key))
+                                        .addOnFailureListener(e -> Log.e(TAG, "match record failed: " + e.getMessage()));
+                                }
+                            }
+                            @Override public void onCancelled(@NonNull DatabaseError e) {
+                                Log.w(TAG, "saveMatchRecord: found_persons read failed");
+                            }
+                        });
+                }
+                @Override public void onCancelled(@NonNull DatabaseError e) {
+                    Log.w(TAG, "saveMatchRecord: reports read failed");
+                }
+            });
+    }
+
+    private static String strVal(DataSnapshot snap, String key) {
+        Object v = snap.child(key).getValue();
+        return (v instanceof String) ? (String) v : "";
     }
 
     private static void sendMatchNotif(String uid, String message, String personName,

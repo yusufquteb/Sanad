@@ -118,12 +118,15 @@ public class BrowseViewModel extends AndroidViewModel {
         if (Boolean.TRUE.equals(isSyncing.getValue())) return;
         isSyncing.setValue(true);
         isOffline.setValue(false);
+        // [Phase 4] إعادة ضبط الـ pagination عند أول تحميل
+        currentCursor = 0L;
+        hasMore.setValue(true);
 
         repository.syncInitial(
             str(typeFilter,   "all"),
             str(govFilter,    "all"),
             str(statusFilter, "all"),
-            () -> isSyncing.setValue(false)
+            () -> isSyncing.postValue(false)
         );
     }
 
@@ -146,14 +149,15 @@ public class BrowseViewModel extends AndroidViewModel {
             if (oldest < Long.MAX_VALUE) currentCursor = oldest;
         }
 
+        // [Phase 4 Fix] passar os filtros corretos ao loadMore
         repository.loadMore(
             str(typeFilter,   "all"),
             str(govFilter,    "all"),
             str(statusFilter, "all"),
             currentCursor,
             moreAvailable -> {
-                isLoadingMore.setValue(false);
-                hasMore.setValue(moreAvailable);
+                isLoadingMore.postValue(false);
+                hasMore.postValue(moreAvailable);
             }
         );
     }

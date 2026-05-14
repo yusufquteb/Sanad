@@ -6,10 +6,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.work.*;
 
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.*;
 import com.missingpersons.app.utils.FaceEmbeddingManager;
 import com.missingpersons.app.utils.NotificationHelper;
+import com.missingpersons.app.utils.TFLiteFaceRecognizer;
 
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
@@ -18,17 +18,20 @@ import java.util.concurrent.TimeUnit;
 /**
  * BackgroundMatchWorker — مطابقة خلفية يومية
  *
- * يشغّله WorkManager مرة يومياً لمقارنة
- * البلاغات الجديدة (آخر 24 ساعة) مع كل found_persons.
+ * [إصلاح جذري]
  *
- * [إصلاح خطأ-09 بيانات وهمية] تمت مزامنة THRESHOLD مع
- * FaceEmbeddingManager.MATCH_THRESHOLD (0.70f) بدلاً من
- * قيمة مختلفة مبرمجة بشكل ثابت (0.65f كان hardcoded).
+ * المشاكل التي تم إصلاحها:
  *
- * ═══════════════════════════════════════
- * جدولة التشغيل من MyApplication.onCreate():
- *   BackgroundMatchWorker.scheduleDailyMatch(this);
- * ═══════════════════════════════════════
+ * 🔴 كان getThreshold() يُعيد FaceEmbeddingManager.MATCH_THRESHOLD = 0.60f
+ *    الآن يُعيد TFLiteFaceRecognizer.MATCH_THRESHOLD = 0.82f
+ *
+ * 🔴 لم يكن يتحقق من أبعاد الـ embedding قبل المقارنة.
+ *    البيانات القديمة في Firebase تحتوي embeddings وهمية (9 قيم حقيقية
+ *    + 119 عشوائية). الآن يُرفض أي embedding بأبعاد < 128.
+ *
+ * 🔴 تمت مزامنة العتبة عبر كل نقاط المقارنة في التطبيق:
+ *    FaceMatcher، CrossMatchManager، BackgroundMatchWorker
+ *    جميعها تستخدم TFLiteFaceRecognizer.MATCH_THRESHOLD (0.82f)
  */
 public class BackgroundMatchWorker extends Worker {
 
@@ -36,13 +39,16 @@ public class BackgroundMatchWorker extends Worker {
     private static final long   TIMEOUT = 30L; // ثواني
 
     /**
-     * [إصلاح بيانات وهمية] كان THRESHOLD = 0.65f hardcoded — مختلف عن
-     * FaceEmbeddingManager.MATCH_THRESHOLD (0.70f) مما يسبب عدم اتساق.
-     * الآن يُقرأ من FaceEmbeddingManager مباشرةً لضمان الاتساق.
+     * العتبة الموحدة — مصدر الحقيقة الوحيد هو TFLiteFaceRecognizer
      */
     private static float getThreshold() {
-        return FaceEmbeddingManager.MATCH_THRESHOLD;
+        return TFLiteFaceRecognizer.MATCH_THRESHOLD; // 0.82f
     }
+
+    /**
+     * الحد الأدنى لأبعاد embedding مقبول (TFLite MobileFaceNet = 128)
+     */
+    private static final int MIN_EMBEDDING_DIM = 128;
 
     public BackgroundMatchWorker(@NonNull Context ctx, @NonNull WorkerParameters params) {
         super(ctx, params);
@@ -63,36 +69,49 @@ public class BackgroundMatchWorker extends Worker {
 
             float threshold = getThreshold();
             int matchCount = 0;
+            int skippedInvalid = 0;
 
             for (Map<String, String> report : newReports) {
                 String reportEmb = report.get("faceEmbedding");
                 if (reportEmb == null || reportEmb.isEmpty()) continue;
+
                 float[] reportVec = FaceEmbeddingManager.stringToEmbedding(reportEmb);
-                if (reportVec == null) continue;
+                if (reportVec == null || reportVec.length < MIN_EMBEDDING_DIM) {
+                    Log.w(TAG, "report [" + report.get("id") + "] embedding وهمي (dim="
+                            + (reportVec != null ? reportVec.length : 0) + ") — تجاهل");
+                    skippedInvalid++;
+                    continue;
+                }
 
                 for (Map<String, String> found : foundPersons) {
                     String foundEmb = found.get("faceEmbedding");
                     if (foundEmb == null || foundEmb.isEmpty()) continue;
+
                     float[] foundVec = FaceEmbeddingManager.stringToEmbedding(foundEmb);
-                    if (foundVec == null) continue;
+                    if (foundVec == null || foundVec.length < MIN_EMBEDDING_DIM) {
+                        skippedInvalid++;
+                        continue;
+                    }
 
                     float sim = FaceEmbeddingManager.cosineSimilarity(reportVec, foundVec);
+                    Log.d(TAG, "  report[" + report.get("id") + "] ↔ found["
+                            + found.get("id") + "] sim=" + String.format("%.3f", sim)
+                            + (sim >= threshold ? " ✅" : " ❌"));
+
                     if (sim >= threshold) {
                         int    percent    = (int)(sim * 100);
                         String reportId   = report.get("id");
                         String personName = report.get("personName");
                         if (personName == null) personName = "مفقود";
 
-                        Log.d(TAG, "✅ تطابق: " + reportId + " = " + percent + "%");
+                        Log.i(TAG, "🎉 تطابق: " + reportId + " = " + percent + "%");
 
-                        // إشعار محلي
                         NotificationHelper.showMatchNotification(
                             getApplicationContext(),
                             personName,
                             percent,
                             reportId != null ? reportId : "");
 
-                        // حفظ سجل التطابق في Firebase
                         saveMatchRecord(reportId, found.get("id"), sim,
                             report.get("reporterId"), found.get("reporterId"));
 
@@ -101,7 +120,8 @@ public class BackgroundMatchWorker extends Worker {
                 }
             }
 
-            Log.i(TAG, "✅ انتهت المطابقة — " + matchCount + " تطابق/ات");
+            Log.i(TAG, "✅ انتهت المطابقة — " + matchCount + " تطابق/ات"
+                    + " | " + skippedInvalid + " embedding وهمي مُتجاهَل");
             return Result.success();
 
         } catch (Exception e) {
@@ -189,7 +209,7 @@ public class BackgroundMatchWorker extends Worker {
         return v != null ? v : "";
     }
 
-    // ─── Static Scheduling Helpers ────────────────────────────────
+    // ─── Scheduling ────────────────────────────────────────
 
     public static void runOnce(Context context) {
         OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(BackgroundMatchWorker.class)

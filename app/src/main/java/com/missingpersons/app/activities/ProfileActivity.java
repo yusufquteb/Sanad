@@ -34,7 +34,9 @@ import com.missingpersons.app.ui.common.AppViewModelFactory;
 import com.missingpersons.app.ui.profile.ProfileViewModel;
 import com.missingpersons.app.utils.CoilImageLoader;
 import com.missingpersons.app.utils.LanguageHelper;
+import com.missingpersons.app.activities.SettingsActivity;
 import com.missingpersons.app.utils.RoleManager;
+import com.missingpersons.app.utils.GovernorateManager;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,8 +46,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * [إصلاح 2.1] تعديل الاسم بـ dialog
  * [إصلاح 2.3] card_admin_access مخفية حتى تأكيد Firebase
  * [إصلاح 2.4] switch_notifications مرتبط بـ FCM
- * [مرحلة 7.5] Rank progress bar — يعرض التقدم نحو الرتبة التالية
- *             مع إحصائيات: بلاغاتي / تطابقات / مُحلّة
+ * [إصلاح] تبديل اللغة يعمل الآن
+ * [إصلاح] محادثاتي يفتح ChatsListActivity
+ * [إصلاح] تعارض "مدير النظام" و"عضو":
+ *         RANK_LABELS[0] = "مبتدئ" بدل "عضو" حتى لا يتعارض مع دور "عضو" في الكارد
+ *         tvRole لا يُعيَّن من الـ cache — ينتظر Firebase فقط
+ * [مرحلة 7.5] Rank progress bar
  */
 public class ProfileActivity extends AppCompatActivity {
 
@@ -55,10 +61,11 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String PLAY_STORE_LINK =
         "https://play.google.com/store/apps/details?id=com.missingpersons.app";
 
-    // Rank thresholds
-    private static final int[] RANK_THRESHOLDS = {0, 500, 2000, 5000};
-    private static final String[] RANK_LABELS  = {"عضو", "نشط", "متميز", "بطل"};
-    private static final String[] RANK_EMOJIS  = {"🟢", "🔵", "⭐", "🏆"};
+    // ── رتب المجتمع (بالنقاط) ── مختلفة عن أدوار النظام ──
+    // "مبتدئ" بدل "عضو" لمنع التعارض البصري مع badge الدور الوظيفي
+    private static final int[]    RANK_THRESHOLDS = {0, 500, 2000, 5000};
+    private static final String[] RANK_LABELS     = {"مبتدئ", "نشط", "متميز", "بطل"};
+    private static final String[] RANK_EMOJIS     = {"🟢", "🔵", "⭐", "🏆"};
 
     private ProfileViewModel viewModel;
 
@@ -112,6 +119,8 @@ public class ProfileActivity extends AppCompatActivity {
         initViews();
         observeViewModel();
         viewModel.loadProfile(currentUser.getUid());
+        // [إصلاح] لا نعرض الدور من cache — ننتظر Firebase لتجنب "مبتدئ ← مدير النظام"
+        // applyCachedRole() يُستخدم فقط لإبقاء cardAdmin مخفياً حتى التأكيد
         applyCachedRole();
         setupActions();
     }
@@ -135,19 +144,18 @@ public class ProfileActivity extends AppCompatActivity {
                         ? (currentUser.getEmail() != null ? currentUser.getEmail() : "")
                         : data.email);
 
+            // [إصلاح] tvRole يُعيَّن من Firebase فقط — لا من cache
             if (tvRole != null) { tvRole.setText(data.role); cacheRole(data.rawRole); }
 
             if (tvPoints != null) tvPoints.setText(String.valueOf(data.points));
             if (tvReportsCount != null) tvReportsCount.setText(String.valueOf(data.totalReports));
 
-            // تاريخ الانضمام
             if (tvJoinDate != null && data.joinDate > 0) {
                 java.text.SimpleDateFormat sdf =
                     new java.text.SimpleDateFormat("dd MMM yyyy", new java.util.Locale("ar"));
                 tvJoinDate.setText("انضم في " + sdf.format(new java.util.Date(data.joinDate)));
             }
 
-            // صورة الأفاتار
             if (ivAvatar != null) {
                 String photoUrl = data.photoUrl;
                 if (photoUrl != null && !photoUrl.isEmpty())
@@ -161,7 +169,7 @@ public class ProfileActivity extends AppCompatActivity {
                 cardAdmin.setVisibility(
                     (data.isAdmin() || data.isManager()) ? View.VISIBLE : View.GONE);
 
-            // [7.5] تحديث Rank card
+            // [7.5] تحديث Rank card — يعرض رتبة المجتمع (نقاط)، مختلفة عن دور النظام
             updateRankCard(data);
         });
 
@@ -172,13 +180,15 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     // ════════════════════════════════════════════════════
-    //  [7.5] Rank Card
+    //  [7.5] Rank Card — رتبة المجتمع (بالنقاط)
+    //  ملاحظة: هذا مختلف تماماً عن دور النظام (مدير/عضو/أدمن)
+    //  الدور الوظيفي يظهر في tv_profile_role في الكارد العلوي
+    //  رتبة المجتمع تظهر هنا في بطاقة التقدم
     // ════════════════════════════════════════════════════
 
     private void updateRankCard(ProfileViewModel.ProfileData data) {
         int pts = data.points;
 
-        // تحديد الرتبة الحالية والتالية
         int rankIdx = 0;
         for (int i = RANK_THRESHOLDS.length - 1; i >= 0; i--) {
             if (pts >= RANK_THRESHOLDS[i]) { rankIdx = i; break; }
@@ -189,16 +199,14 @@ public class ProfileActivity extends AppCompatActivity {
         int nextTarget   = RANK_THRESHOLDS[nextIdx];
         boolean maxRank  = (rankIdx == RANK_THRESHOLDS.length - 1);
 
-        // Emoji + Label
         if (tvRankEmoji != null) tvRankEmoji.setText(RANK_EMOJIS[rankIdx]);
-        if (tvRankLabel != null) tvRankLabel.setText(RANK_LABELS[rankIdx]);
+        // [إصلاح] نضيف "رتبة:" قبل الاسم لتمييزه بصرياً عن دور النظام في الكارد العلوي
+        if (tvRankLabel != null) tvRankLabel.setText("رتبة: " + RANK_LABELS[rankIdx]);
         if (tvRankPoints != null)
             tvRankPoints.setText(pts + " نقطة" + (maxRank ? " — الرتبة الأعلى! 🎉" : ""));
 
-        // Chip
         if (chipPointsBadge != null) chipPointsBadge.setText(pts + " pts");
 
-        // Progress bar
         if (progressRank != null) {
             if (maxRank) {
                 progressRank.setProgress(100);
@@ -210,12 +218,10 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
 
-        // Labels تحت الـ progress bar
         if (tvRankCurrentPts != null) tvRankCurrentPts.setText(String.valueOf(pts));
         if (tvRankTargetPts  != null)
             tvRankTargetPts.setText(maxRank ? "MAX" : String.valueOf(nextTarget));
 
-        // Next rank label
         if (tvRankNextLabel != null) {
             if (maxRank) {
                 tvRankNextLabel.setText("🏆 وصلت للرتبة الأعلى!");
@@ -227,7 +233,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
 
-        // إحصائيات
         if (tvStatMyReports != null) tvStatMyReports.setText(String.valueOf(data.totalReports));
         if (tvStatMatched   != null) tvStatMatched.setText(String.valueOf(data.matchedReports));
         if (tvStatResolved  != null) tvStatResolved.setText(String.valueOf(data.resolvedReports));
@@ -248,10 +253,10 @@ public class ProfileActivity extends AppCompatActivity {
         cardAdmin           = findViewById(R.id.card_admin_access);
         switchNotifications = findViewById(R.id.switch_notifications);
 
-        // [إصلاح 2.3] إخفاء cardAdmin افتراضياً
+        // [إصلاح 2.3] إخفاء cardAdmin افتراضياً — يظهر بعد تأكيد Firebase فقط
         if (cardAdmin != null) cardAdmin.setVisibility(View.GONE);
 
-        // [7.5] Rank card views (في layout_profile_rank_card المُضمَّن)
+        // [7.5] Rank card views
         tvRankEmoji     = findViewById(R.id.tv_rank_emoji);
         tvRankLabel     = findViewById(R.id.tv_rank_label);
         tvRankPoints    = findViewById(R.id.tv_rank_points);
@@ -279,11 +284,15 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(this, AdminDashboardActivity.class)));
 
         setClick(R.id.btn_edit_profile_main, this::showEditNameDialog);
+
         setClick(R.id.btn_my_reports,
             () -> startActivity(new Intent(this, MyReportsActivity.class)));
 
+        // [إصلاح] تشغيل محادثاتي — كان مفقوداً تماماً
+        setClick(R.id.btn_my_chats,
+            () -> startActivity(new Intent(this, ChatsListActivity.class)));
+
         setClick(R.id.btn_share_app, () -> {
-            // [7.6] مشاركة التطبيق
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("text/plain");
             share.putExtra(Intent.EXTRA_SUBJECT, "تطبيق سند — للبحث عن المفقودين");
@@ -297,6 +306,21 @@ public class ProfileActivity extends AppCompatActivity {
             () -> startActivity(new Intent(this, AboutActivity.class)));
         setClick(R.id.btn_disclaimer,
             () -> startActivity(new Intent(this, DisclaimerActivity.class)));
+
+        // [إصلاح] تبديل اللغة — كان مفقوداً تماماً
+        setClick(R.id.btn_language, this::showLanguageDialog);
+        // [Phase 5] زر الإعدادات → SettingsActivity
+        setClick(R.id.btn_settings_profile, () ->
+            startActivity(new android.content.Intent(this, SettingsActivity.class)));
+
+        // [Phase 5] زر تعديل المحافظة
+        View btnEditGov = findViewById(R.id.btn_edit_governorate);
+        if (btnEditGov != null) {
+            // عرض المحافظات المختارة
+            updateGovernorateLabel();
+            btnEditGov.setOnClickListener(v ->
+                GovernorateManager.showEditDialog(this, this::updateGovernorateLabel));
+        }
 
         setClick(R.id.btn_logout, () -> new AlertDialog.Builder(this)
             .setTitle("تسجيل الخروج")
@@ -331,6 +355,31 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    // ════════════════════════════════════════════════════
+    //  [إصلاح] Language Dialog — كان مفقوداً
+    // ════════════════════════════════════════════════════
+
+    private void showLanguageDialog() {
+        String currentLang = LanguageHelper.getLanguage(this);
+        boolean isArabic   = LanguageHelper.ARABIC.equals(currentLang);
+
+        String[] options = {"🇸🇦 العربية", "🇺🇸 English"};
+        int checkedItem  = isArabic ? 0 : 1;
+
+        new AlertDialog.Builder(this)
+            .setTitle("اختر اللغة / Choose Language")
+            .setSingleChoiceItems(options, checkedItem, (dialog, which) -> {
+                dialog.dismiss();
+                String newLang = (which == 0) ? LanguageHelper.ARABIC : LanguageHelper.ENGLISH;
+                if (!newLang.equals(currentLang)) {
+                    // LanguageHelper.setLanguage يُعيد تشغيل الـ Activity بالـ locale الجديد
+                    LanguageHelper.setLanguage(this, newLang);
+                }
+            })
+            .setNegativeButton("إلغاء", null)
+            .show();
     }
 
     // ════════════════════════════════════════════════════
@@ -409,25 +458,22 @@ public class ProfileActivity extends AppCompatActivity {
     //  Helpers
     // ════════════════════════════════════════════════════
 
+    /**
+     * [إصلاح] applyCachedRole لا يعرض tvRole من الـ cache
+     * لأن ذلك كان يتسبب في رؤية "عضو" (cache) ثم "مدير النظام" (Firebase)
+     * للمدير على أول تسجيل دخول.
+     * الآن tvRole يُعيَّن فقط من Firebase عبر observeViewModel.
+     * الدالة تبقى هنا فقط للتأكد أن cardAdmin مخفي افتراضياً.
+     */
     private void applyCachedRole() {
-        SharedPreferences p = getSharedPreferences(PREF_PROFILE, MODE_PRIVATE);
-        String cached = p.getString(KEY_ROLE, "member");
-        if (tvRole != null && !cached.isEmpty()) tvRole.setText(mapRoleToArabic(cached));
-        // لا تُظهر cardAdmin من الـ cache — انتظر Firebase
+        // cardAdmin مخفي بالفعل من initViews()
+        // tvRole يبقى على النص الافتراضي "عضو" من الـ layout حتى يصل Firebase
+        // هذا أفضل من عرض قيمة cache قد تكون منتهية الصلاحية
     }
 
     private void cacheRole(String role) {
         getSharedPreferences(PREF_PROFILE, MODE_PRIVATE).edit()
                 .putString(KEY_ROLE, role).apply();
-    }
-
-    private String mapRoleToArabic(String r) {
-        if (r == null) return "عضو";
-        switch (r) {
-            case "admin":   return "مدير النظام";
-            case "manager": return "مدير";
-            default:        return "عضو";
-        }
     }
 
     private void setClick(int id, Runnable a) {
@@ -447,4 +493,18 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     @Override public boolean onSupportNavigateUp() { finish(); return true; }
+
+    /** [Phase 5] تحديث عرض المحافظات المختارة في البروفايل */
+    private void updateGovernorateLabel() {
+        android.widget.TextView tvGov = findViewById(R.id.tv_user_governorate);
+        if (tvGov == null) return;
+        java.util.Set<String> govs = GovernorateManager.getSelectedGovs(this);
+        if (govs.isEmpty()) {
+            tvGov.setText("اضغط لاختيار المحافظة");
+        } else {
+            tvGov.setText("📍 " + android.text.TextUtils.join(" · ", govs));
+        }
+    }
+
+
 }

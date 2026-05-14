@@ -51,7 +51,19 @@
         <activity android:name=".activities.OnboardingActivity"       android:exported="false"/>
         <activity android:name=".activities.LoginActivity"            android:exported="false"/>
         <!-- [مرحلة 1.1] HomeActivity موقوفة — SplashActivity تتجه لـ NewHomeActivity مباشرة -->
-        <activity android:name=".activities.ReportActivity"           android:exported="false"/>
+        <activity android:name=".activities.ReportActivity" android:exported="true">
+            <!-- مشاركة صورة من تطبيقات أخرى → فتح صفحة بلاغ مباشرة -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.BrowseActivity"           android:exported="false"/>
         <activity android:name=".activities.SearchActivity"           android:exported="false"/>
         <activity android:name=".activities.CaseDetailActivity"       android:exported="false"/>
@@ -61,6 +73,7 @@
         <activity android:name=".activities.AboutActivity"            android:exported="false"/>
         <activity android:name=".activities.AdminActivity"            android:exported="false"/>
         <activity android:name=".activities.AdminDashboardActivity"   android:exported="false"/>
+        <activity android:name=".activities.EnhancedAdminDashboardActivity" android:exported="false"/>
         <activity android:name=".activities.MembersActivity"          android:exported="false"/>
         <activity android:name=".activities.ManagersActivity"         android:exported="false"/>
         <activity android:name=".activities.DisclaimerActivity"       android:exported="false"/>
@@ -109,5 +122,6 @@
             </intent-filter>
         </service>
 
+            <activity android:name=".activities.SettingsActivity" android:exported="false"/>
     </application>
 </manifest>

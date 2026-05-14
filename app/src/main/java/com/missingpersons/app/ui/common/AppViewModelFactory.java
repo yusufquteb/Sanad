@@ -13,6 +13,7 @@ import com.missingpersons.app.ui.auth.AuthViewModel;
 import com.missingpersons.app.ui.home.HomeViewModel;
 import com.missingpersons.app.ui.profile.ProfileViewModel;
 import com.missingpersons.app.ui.report.ReportViewModel;
+import com.missingpersons.app.viewmodel.AdminDashboardViewModel;
 
 /**
  * AppViewModelFactory — المصنع المركزي لكل الـ ViewModels
@@ -58,6 +59,10 @@ public class AppViewModelFactory implements ViewModelProvider.Factory {
 
         if (modelClass.isAssignableFrom(ReportViewModel.class)) {
             return (T) new ReportViewModel(ReportRepository.getInstance(context));
+        }
+
+        if (modelClass.isAssignableFrom(AdminDashboardViewModel.class)) {
+            return (T) new AdminDashboardViewModel();
         }
 
         throw new IllegalArgumentException(

@@ -154,12 +154,15 @@ public class RoleManager {
         handler.postDelayed(() -> {
             if (!answered[0]) {
                 answered[0] = true;
-                role = ROLE_MEMBER;
+                // [إصلاح] عند timeout: استخدم الـ cache المحلي إن وُجد، لا تُجبر "member"
+                if (!loadFromPrefs(uid)) {
+                    role = ROLE_MEMBER;
+                }
                 loaded = true;
-                fromCache = false;
-                callback.onLoaded(false); // ← لا نُغلِق التطبيق
+                fromCache = true;
+                callback.onLoaded(isAdminOrManager());
             }
-        }, 5000);
+        }, 10000);
 
         FirebaseDatabase.getInstance()
             .getReference("users").child(uid)

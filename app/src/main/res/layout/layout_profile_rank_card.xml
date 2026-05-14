@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    layout_profile_rank_card.xml
-    [مرحلة 7.5] بطاقة الرتبة والنقاط مع progress bar
-    تُضاف في activity_profile.xml بعد بطاقة الإحصائيات.
-
-    الاستخدام في ProfileActivity:
-      <include layout="@layout/layout_profile_rank_card"
-               android:id="@+id/rank_card"/>
-
-    في الكود يُحدَّث عبر ProfileActivity.updateRankCard()
+    layout_profile_rank_card.xml  [Phase 3 - إعادة تصميم]
+    ─────────────────────────────────────────────────────
+    الكارد الثاني في البروفايل — مطابق لتصميم الكروت التالية:
+    • نفس الـ corners (16dp) والـ elevation (0dp)
+    • نفس الـ margin (16dp أفقي + 8dp فوق)
+    • border لطيف مثل الكروت الأخرى
+    • مسافة 8dp فوقه لإبعاده عن الكارد الأول
 -->
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
-    app:strokeColor="?attr/colorOutlineVariant"
+    app:cardBackgroundColor="#FFFFFF"
+    app:strokeColor="#E8E8E8"
     app:strokeWidth="1dp"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp">
+    android:layout_marginTop="12dp"
+    android:layout_marginBottom="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,21 +28,33 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- عنوان القسم -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="الرتبة والنقاط"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#888888"
+            android:layout_marginBottom="12dp"/>
+
         <!-- الرتبة الحالية -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+            android:paddingHorizontal="4dp">
 
             <TextView
                 android:id="@+id/tv_rank_emoji"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
                 android:text="🟢"
-                android:textSize="28sp"
-                android:layout_marginEnd="12dp"/>
+                android:textSize="22sp"
+                android:gravity="center"
+                android:background="@drawable/bg_qa_blue"
+                android:layout_marginEnd="14dp"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -56,9 +68,8 @@
                     android:layout_height="wrap_content"
                     android:text="عضو"
                     android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:textColor="?attr/colorOnSurface"
-                    style="?attr/textAppearanceTitleSmall"/>
+                    android:textSize="14sp"
+                    android:textColor="#1a1a1a"/>
 
                 <TextView
                     android:id="@+id/tv_rank_points"
@@ -66,11 +77,10 @@
                     android:layout_height="wrap_content"
                     android:text="0 نقطة"
                     android:textSize="12sp"
-                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textColor="#888888"
                     android:layout_marginTop="2dp"/>
             </LinearLayout>
 
-            <!-- شارة النقاط -->
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_points_badge"
                 android:layout_width="wrap_content"
@@ -78,11 +88,14 @@
                 android:text="0 pts"
                 android:textStyle="bold"
                 android:textSize="12sp"
-                app:chipBackgroundColor="?attr/colorPrimaryContainer"
-                android:textColor="?attr/colorOnPrimaryContainer"
+                app:chipBackgroundColor="#EEF2FF"
+                android:textColor="#1565C0"
                 app:chipMinTouchTargetSize="0dp"
                 app:chipCornerRadius="16dp"/>
         </LinearLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="#F5F5F5" android:layout_marginVertical="8dp"/>
 
         <!-- Progress bar نحو الرتبة التالية -->
         <TextView
@@ -91,7 +104,7 @@
             android:layout_height="wrap_content"
             android:text="التقدم نحو الرتبة التالية"
             android:textSize="11sp"
-            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textColor="#888888"
             android:layout_marginBottom="6dp"/>
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -101,14 +114,15 @@
             android:max="100"
             android:progress="0"
             app:trackCornerRadius="4dp"
-            app:trackColor="?attr/colorSurfaceVariant"
-            app:indicatorColor="?attr/colorPrimary"
-            android:layout_marginBottom="6dp"/>
+            app:trackColor="#F0F0F0"
+            app:indicatorColor="#1565C0"
+            android:layout_marginBottom="4dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
 
             <TextView
                 android:id="@+id/tv_rank_current_pts"
@@ -117,7 +131,7 @@
                 android:layout_weight="1"
                 android:text="0"
                 android:textSize="10sp"
-                android:textColor="?attr/colorOnSurfaceVariant"/>
+                android:textColor="#AAAAAA"/>
 
             <TextView
                 android:id="@+id/tv_rank_target_pts"
@@ -125,17 +139,18 @@
                 android:layout_height="wrap_content"
                 android:text="500"
                 android:textSize="10sp"
-                android:textColor="?attr/colorOnSurfaceVariant"/>
+                android:textColor="#AAAAAA"/>
         </LinearLayout>
 
-        <!-- إحصائيات سريعة -->
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="#F5F5F5" android:layout_marginBottom="12dp"/>
+
+        <!-- إحصائيات سريعة — نفس تصميم باقي الأقسام -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:orientation="horizontal">
 
-            <!-- بلاغاتي -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -147,23 +162,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="?attr/colorPrimary"/>
+                    android:textColor="#1565C0"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="بلاغاتي"
                     android:textSize="11sp"
-                    android:textColor="?attr/colorOnSurfaceVariant"/>
+                    android:textColor="#888888"/>
             </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="36dp"
-                android:background="?attr/colorOutlineVariant"/>
+            <View android:layout_width="1dp" android:layout_height="36dp"
+                android:background="#F0F0F0"/>
 
-            <!-- تطابقات مؤكدة -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -175,23 +187,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/status_found"/>
+                    android:textColor="#2E7D32"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="تطابقات"
                     android:textSize="11sp"
-                    android:textColor="?attr/colorOnSurfaceVariant"/>
+                    android:textColor="#888888"/>
             </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="36dp"
-                android:background="?attr/colorOutlineVariant"/>
+            <View android:layout_width="1dp" android:layout_height="36dp"
+                android:background="#F0F0F0"/>
 
-            <!-- حالات مغلقة -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -203,15 +212,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/status_resolved"/>
+                    android:textColor="#F57C00"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="مُحلّة"
                     android:textSize="11sp"
-                    android:textColor="?attr/colorOnSurfaceVariant"/>
+                    android:textColor="#888888"/>
             </LinearLayout>
         </LinearLayout>
 

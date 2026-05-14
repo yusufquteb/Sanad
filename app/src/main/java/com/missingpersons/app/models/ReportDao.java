@@ -39,6 +39,7 @@ public interface ReportDao {
     @Query("SELECT * FROM reports " +
            "WHERE approved = 1 " +
            "AND status != 'resolved' " +
+           "AND status != 'deleted' " +
            "AND (:type = 'all' OR reportType = :type) " +
            "AND (:gov = 'all' OR governorate = :gov) " +
            "AND (:status = 'all' OR status = :status) " +
@@ -54,6 +55,7 @@ public interface ReportDao {
     @Query("SELECT * FROM reports " +
            "WHERE approved = 1 " +
            "AND status != 'resolved' " +
+           "AND status != 'deleted' " +
            "AND (:type = 'all' OR reportType = :type) " +
            "AND (:gov = 'all' OR governorate = :gov) " +
            "AND (:status = 'all' OR status = :status) " +
@@ -103,6 +105,10 @@ public interface ReportDao {
     /** آخر N بلاغ (للـ Widget) */
     @Query("SELECT * FROM reports WHERE approved = 1 ORDER BY timestamp DESC LIMIT :n")
     List<ReportEntity> getLatestN(int n);
+
+    /** آخر N بلاغ حسب النوع (missing/found/sighting) — للـ Widget */
+    @Query("SELECT * FROM reports WHERE approved = 1 AND reportType = :type ORDER BY timestamp DESC LIMIT :n")
+    List<ReportEntity> getLatestByType(String type, int n);
 
     // ─── تحديث ────────────────────────────────────────────────
 

@@ -35,12 +35,14 @@ import java.util.*;
 /**
  * AdminDashboardActivity — لوحة التحكم الرئيسية
  *
- * ✅ يعمل للأدمن والمديرين (كل حسب صلاحيته)
- * ✅ يخفي الأقسام التي لا يملك المدير صلاحيتها
- * ✅ Real-time listener (addValueEventListener)
- * ✅ Counter animation للأرقام
- * ✅ RecyclerView لآخر 5 بلاغات
- * ✅ إشعار فوري عند وصول بلاغ جديد
+ * [إصلاح] الإشعار الجماعي:
+ *   - السبب السابق: كتابة إلى broadcast_notifications ثم نسيانها — لا listener للمستخدمين
+ *   - الإصلاح:
+ *     1. الكتابة إلى notifications/{uid} لكل مستخدم نشط (last24h)
+ *     2. وأيضاً إلى broadcast_notifications للسجل
+ *     3. NewHomeActivity يقرأ notifications/{uid} وهو ما يعرض الإشعارات للمستخدمين
+ *   - خطأ "❌ فشل" كان بسبب: rules تمنع الكتابة لـ broadcast_notifications من client
+ *     الحل: نكتب مباشرة لـ notifications/{uid} التي تسمح بها الـ rules للأدمن
  */
 public class AdminDashboardActivity extends AppCompatActivity {
 
@@ -56,15 +58,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private TextView tvNewNotifCount;
 
     // ── Admin-only panels ──────────────────────────────────
-    private View sectionAdminControls;   // حد يومي / تعطيل / إشعار جماعي
-    private View sectionManagers;        // إدارة المديرين (أدمن فقط)
-    private View cardPendingAction;      // الموافقة على البلاغات
-    private View cardMembers;            // إدارة الأعضاء
-    private View btnBroadcast;           // إشعار جماعي
-    private View btnLimit;               // الحد اليومي
-    private View btnDisable;             // تعطيل مستخدم
+    private View sectionAdminControls;
+    private View sectionManagers;
+    private View cardPendingAction;
+    private View cardMembers;
+    private View btnBroadcast;
+    private View btnLimit;
+    private View btnDisable;
 
-    // ── صلاحيات لوحة المدير المخصصة ─────────────────────
     private ChipGroup chipGroupPerms;
 
     // ── Data ────────────────────────────────────────────────
@@ -91,7 +92,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // تحقق من تسجيل الدخول أولاً
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             finish();
             return;
@@ -99,7 +99,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_admin_dashboard);
 
-        // [إصلاح 5 - Edge-to-Edge]
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         ViewCompat.setOnApplyWindowInsetsListener(
                 findViewById(android.R.id.content), (v, insets) -> {
@@ -109,7 +108,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
             return insets;
         });
 
-        // ── Toolbar ──
         MaterialToolbar toolbar = findViewById(R.id.toolbar_admin_dashboard);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -122,7 +120,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
         bindViews();
         showLoading(true);
 
-        // ── تحميل الدور من Firebase ──
         RoleManager.get().load(new RoleManager.LoadCallback() {
             @Override
             public void onLoaded(boolean isAdminOrManager) {
@@ -135,7 +132,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     showLoading(false);
                     setupHeader();
-                    applyPermissions();      // ← إخفاء/إظهار الأقسام
+                    applyPermissions();
                     setupQuickLinks();
                     setupRecyclerView();
                     startRealtimeListener();
@@ -182,7 +179,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
         tvNewNotifCount     = findViewById(R.id.tv_new_notif_count);
         cardRealtimeBadge   = findViewById(R.id.card_realtime_badge);
 
-        // أقسام خاصة بالصلاحيات
         sectionAdminControls = findViewById(R.id.layout_admin_controls);
         sectionManagers      = findViewById(R.id.card_dash_managers);
         cardPendingAction    = findViewById(R.id.card_dash_pending_action);
@@ -204,13 +200,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     // ────────────────────────────────────────────────────────
-    //  🔐 تطبيق الصلاحيات — إخفاء أو إظهار الأقسام
+    //  🔐 تطبيق الصلاحيات
     // ────────────────────────────────────────────────────────
 
     private void applyPermissions() {
         RoleManager role = RoleManager.get();
 
-        // ── بادج الدور ───────────────────────────────────
         if (tvRoleBadge != null) {
             if (role.isAdmin()) {
                 tvRoleBadge.setText("👑 أدمن");
@@ -221,24 +216,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
             }
         }
 
-        // ── إدارة المديرين: الأدمن فقط ──────────────────
         setVisible(sectionManagers, role.isAdmin());
-
-        // ── أدوات الأدمن (حد يومي / تعطيل): الأدمن فقط ─
         setVisible(sectionAdminControls, role.isAdmin());
         setVisible(btnLimit,   role.isAdmin());
         setVisible(btnDisable, role.isAdmin());
-
-        // ── إشعار جماعي: أدمن أو مدير لديه canSendNotifications ──
         setVisible(btnBroadcast, role.canSendNotifications());
-
-        // ── الموافقة على البلاغات ────────────────────────
         setVisible(cardPendingAction, role.canApproveReports());
-
-        // ── إدارة الأعضاء ────────────────────────────────
         setVisible(cardMembers, role.canManageMembers());
 
-        // ── شريحة الصلاحيات (للمدير فقط) ────────────────
         if (chipGroupPerms != null) {
             if (role.isManager()) {
                 chipGroupPerms.setVisibility(View.VISIBLE);
@@ -249,7 +234,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
         }
     }
 
-    /** بناء chips تعرض صلاحيات المدير الحالي للمراجعة */
     private void buildPermChips(RoleManager role) {
         if (chipGroupPerms == null) return;
         chipGroupPerms.removeAllViews();
@@ -278,7 +262,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     // ────────────────────────────────────────────────────────
-    //  RecyclerView Setup
+    //  RecyclerView
     // ────────────────────────────────────────────────────────
 
     private void setupRecyclerView() {
@@ -290,7 +274,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     // ────────────────────────────────────────────────────────
-    //  Header Setup
+    //  Header
     // ────────────────────────────────────────────────────────
 
     private void setupHeader() {
@@ -397,7 +381,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     // ────────────────────────────────────────────────────────
-    //  إشعارات الأدمن والمديرين
+    //  إشعارات الأدمن
     // ────────────────────────────────────────────────────────
 
     private void listenForAdminNotifications() {
@@ -509,41 +493,34 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     // ────────────────────────────────────────────────────────
-    //  Quick Links (حسب الصلاحية)
+    //  Quick Links
     // ────────────────────────────────────────────────────────
 
     private void setupQuickLinks() {
         RoleManager role = RoleManager.get();
 
-        // البلاغات: الأدمن وأي مدير
         setClick(R.id.card_dash_pending_action, () ->
             startActivity(new Intent(this, AdminActivity.class)));
 
-        // الأعضاء: لمن لديه canManageMembers
         if (role.canManageMembers()) {
             setClick(R.id.card_dash_members, () ->
                 startActivity(new Intent(this, MembersActivity.class)));
         }
 
-        // المديرون: الأدمن فقط
         if (role.isAdmin()) {
             setClick(R.id.card_dash_managers, () ->
                 startActivity(new Intent(this, ManagersActivity.class)));
         }
 
-        // الإحصائيات: الجميع
         setClick(R.id.card_dash_stats, () ->
             startActivity(new Intent(this, StatisticsActivity.class)));
 
-        // قصص النجاح: الجميع
         setClick(R.id.card_dash_stories_action, () ->
             startActivity(new Intent(this, SuccessStoriesActivity.class)));
 
-        // أدوات الأدمن
         if (role.isAdmin()) {
-            if (btnLimit    != null) btnLimit.setOnClickListener(v -> showDailyLimitDialog());
-            if (btnDisable  != null) btnDisable.setOnClickListener(v -> showDisableUserDialog());
-            // [جديد] زر التحكم في مدة احتفاظ الشات
+            if (btnLimit   != null) btnLimit.setOnClickListener(v -> showDailyLimitDialog());
+            if (btnDisable != null) btnDisable.setOnClickListener(v -> showDisableUserDialog());
             View btnChatTtl = findViewById(R.id.btn_chat_ttl);
             if (btnChatTtl != null) btnChatTtl.setOnClickListener(v -> showChatTtlDialog());
         }
@@ -573,22 +550,36 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         .setPositiveButton("حفظ", (d, w) -> {
                             String val = et.getText().toString().trim();
                             if (!val.isEmpty()) {
-                                RateLimiter.setGlobalDailyLimit(Integer.parseInt(val));
-                                Toast.makeText(AdminDashboardActivity.this,
-                                    "✅ تم التحديث", Toast.LENGTH_SHORT).show();
+                                int newLimit = Integer.parseInt(val);
+                                if (newLimit < 1 || newLimit > 100) {
+                                    Toast.makeText(AdminDashboardActivity.this,
+                                        "⚠️ القيمة يجب أن تكون بين 1 و100",
+                                        Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                RateLimiter.setGlobalDailyLimit(AdminDashboardActivity.this, newLimit);
+                                // [إصلاح] حفظ في Firebase مع callback
+                                FirebaseDatabase.getInstance()
+                                    .getReference("settings/daily_report_limit")
+                                    .setValue(newLimit)
+                                    .addOnSuccessListener(v2 -> Toast.makeText(AdminDashboardActivity.this,
+                                        "✅ تم التحديث إلى " + newLimit + " بلاغ/يوم",
+                                        Toast.LENGTH_SHORT).show())
+                                    .addOnFailureListener(e2 -> Toast.makeText(AdminDashboardActivity.this,
+                                        "⚠️ تم التحديث محلياً فقط: " + e2.getMessage(),
+                                        Toast.LENGTH_LONG).show());
                             }
                         })
                         .setNegativeButton("إلغاء", null).show();
                 }
-                @Override public void onCancelled(@NonNull DatabaseError e) {}
+                @Override public void onCancelled(@NonNull DatabaseError e) {
+                    Toast.makeText(AdminDashboardActivity.this,
+                        "❌ تعذر قراءة الإعدادات: " + e.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+                }
             });
     }
 
-    /**
-     * [جديد] نافذة تحكم الأدمن في مدة احتفاظ رسائل الشات.
-     * يكتب القيمة في Firebase: settings/chat_ttl_days
-     * يقرأها ChatCleanupWorker تلقائياً في كل دورة تنظيف.
-     */
     private void showChatTtlDialog() {
         FirebaseDatabase.getInstance().getReference("settings/chat_ttl_days")
             .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -610,7 +601,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                             String val = et.getText().toString().trim();
                             if (val.isEmpty()) return;
                             long days = Long.parseLong(val);
-                            if (days < 1) { days = 1; }
+                            if (days < 1) days = 1;
                             long finalDays = days;
                             FirebaseDatabase.getInstance()
                                 .getReference("settings/chat_ttl_days")
@@ -633,6 +624,21 @@ public class AdminDashboardActivity extends AppCompatActivity {
             });
     }
 
+    /**
+     * [إصلاح] الإشعار الجماعي
+     *
+     * المشكلة السابقة:
+     *   الكود يكتب إلى broadcast_notifications/ لكن:
+     *   1. Firebase Rules قد تمنع الكتابة من الـ client
+     *   2. لا يوجد listener في أي شاشة للمستخدمين يقرأ هذا المسار
+     *
+     * الحل الجديد:
+     *   - نقرأ أولاً قائمة الـ users النشطين (آخر 7 أيام)
+     *   - نكتب لكل user في notifications/{uid} مباشرة
+     *   - هذا المسار مسموح للأدمن بالكتابة إليه وفق الـ rules المعيارية
+     *   - NewHomeActivity يستمع لـ notifications/{uid} بالفعل عبر listenBadges()
+     *   - نكتب أيضاً لـ broadcast_notifications كسجل للأرشفة
+     */
     private void showBroadcastDialog() {
         EditText et = new EditText(this);
         et.setHint("نص الإشعار...");
@@ -640,23 +646,148 @@ public class AdminDashboardActivity extends AppCompatActivity {
         et.setPadding(40, 20, 40, 20);
         new AlertDialog.Builder(this)
             .setTitle("📢 إشعار جماعي")
+            .setMessage("سيصل الإشعار لجميع المستخدمين النشطين")
             .setView(et)
             .setPositiveButton("إرسال", (d, w) -> {
                 String msg = et.getText().toString().trim();
-                if (msg.isEmpty()) return;
-                HashMap<String, Object> notif = new HashMap<>();
-                notif.put("type",      "broadcast");
-                notif.put("message",   msg);
-                notif.put("timestamp", System.currentTimeMillis());
-                notif.put("read",      false);
-                notif.put("fromAdmin", true);
-                FirebaseDatabase.getInstance()
-                    .getReference("broadcast_notifications")
-                    .push().setValue(notif)
-                    .addOnSuccessListener(v -> Toast.makeText(this, "✅ تم الإرسال", Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(e -> Toast.makeText(this, "❌ فشل", Toast.LENGTH_SHORT).show());
+                if (msg.isEmpty()) {
+                    Toast.makeText(this, "⚠️ النص فارغ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sendBroadcastToAllUsers(msg);
             })
             .setNegativeButton("إلغاء", null).show();
+    }
+
+    /**
+     * يرسل الإشعار الجماعي عبر كتابة إدخال في notifications/{uid}
+     * لكل مستخدم نشط (آخر 7 أيام).
+     * NewHomeActivity يستمع لهذا المسار تلقائياً.
+     */
+    private void sendBroadcastToAllUsers(String message) {
+        // أظهر loading
+        Toast.makeText(this, "⏳ جارٍ الإرسال...", Toast.LENGTH_SHORT).show();
+
+        long now = System.currentTimeMillis();
+        long sevenDaysAgo = now - (7L * 24 * 60 * 60 * 1000);
+
+        // اقرأ المستخدمين النشطين (آخر 7 أيام بناءً على lastSeen أو joinDate)
+        FirebaseDatabase.getInstance().getReference("users")
+            .orderByChild("lastSeen")
+            .startAt(sevenDaysAgo)
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snap) {
+                    if (!snap.hasChildren()) {
+                        // fallback: ارسل لكل المستخدمين إن لم يكن lastSeen متاحاً
+                        sendBroadcastFallback(message, now);
+                        return;
+                    }
+
+                    final int total = (int) snap.getChildrenCount();
+                    final int[] sent = {0};
+                    final int[] failed = {0};
+
+                    DatabaseReference notifRoot = FirebaseDatabase.getInstance()
+                            .getReference("notifications");
+
+                    for (DataSnapshot userSnap : snap.getChildren()) {
+                        String uid = userSnap.getKey();
+                        if (uid == null) continue;
+
+                        Map<String, Object> notif = new HashMap<>();
+                        notif.put("type",      "broadcast");
+                        notif.put("title",     "📢 إشعار من الإدارة");
+                        notif.put("message",   message);
+                        notif.put("timestamp", now);
+                        notif.put("read",      false);
+                        notif.put("fromAdmin", true);
+
+                        notifRoot.child(uid).push().setValue(notif)
+                            .addOnSuccessListener(v -> {
+                                sent[0]++;
+                                if (sent[0] + failed[0] >= total) {
+                                    runOnUiThread(() -> showBroadcastResult(sent[0], failed[0]));
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                failed[0]++;
+                                if (sent[0] + failed[0] >= total) {
+                                    runOnUiThread(() -> showBroadcastResult(sent[0], failed[0]));
+                                }
+                            });
+                    }
+
+                    // سجّل في broadcast_notifications كأرشيف
+                    Map<String, Object> archiveEntry = new HashMap<>();
+                    archiveEntry.put("message",   message);
+                    archiveEntry.put("timestamp", now);
+                    archiveEntry.put("sentBy",    FirebaseAuth.getInstance().getCurrentUser() != null
+                            ? FirebaseAuth.getInstance().getCurrentUser().getUid() : "admin");
+                    archiveEntry.put("targetCount", total);
+                    FirebaseDatabase.getInstance()
+                        .getReference("broadcast_notifications")
+                        .push().setValue(archiveEntry);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError e) {
+                    Toast.makeText(AdminDashboardActivity.this,
+                        "❌ فشل قراءة المستخدمين: " + e.getMessage(),
+                        Toast.LENGTH_LONG).show();
+                }
+            });
+    }
+
+    /** Fallback: أرسل للكل بدون فلتر lastSeen */
+    private void sendBroadcastFallback(String message, long now) {
+        FirebaseDatabase.getInstance().getReference("users")
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snap) {
+                    int total   = (int) snap.getChildrenCount();
+                    int[] sent  = {0};
+                    int[] failed = {0};
+
+                    DatabaseReference notifRoot = FirebaseDatabase.getInstance()
+                            .getReference("notifications");
+
+                    for (DataSnapshot userSnap : snap.getChildren()) {
+                        String uid = userSnap.getKey();
+                        if (uid == null) continue;
+
+                        Map<String, Object> notif = new HashMap<>();
+                        notif.put("type",      "broadcast");
+                        notif.put("title",     "📢 إشعار من الإدارة");
+                        notif.put("message",   message);
+                        notif.put("timestamp", now);
+                        notif.put("read",      false);
+                        notif.put("fromAdmin", true);
+
+                        notifRoot.child(uid).push().setValue(notif)
+                            .addOnSuccessListener(v -> {
+                                sent[0]++;
+                                if (sent[0] + failed[0] >= total)
+                                    runOnUiThread(() -> showBroadcastResult(sent[0], failed[0]));
+                            })
+                            .addOnFailureListener(e -> {
+                                failed[0]++;
+                                if (sent[0] + failed[0] >= total)
+                                    runOnUiThread(() -> showBroadcastResult(sent[0], failed[0]));
+                            });
+                    }
+                }
+                @Override public void onCancelled(@NonNull DatabaseError e) {
+                    Toast.makeText(AdminDashboardActivity.this,
+                        "❌ فشل الإرسال: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+    }
+
+    private void showBroadcastResult(int sent, int failed) {
+        String msg = "✅ تم الإرسال لـ " + sent + " مستخدم";
+        if (failed > 0) msg += " (فشل: " + failed + ")";
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
     private void showDisableUserDialog() {
@@ -687,7 +818,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 days > 0 ? "🚫 تم التعطيل لـ " + days + " أيام" : "🚫 تم التعطيل بشكل دائم",
                 Toast.LENGTH_LONG).show())
             .addOnFailureListener(e -> Toast.makeText(this,
-                "❌ UID غير صحيح", Toast.LENGTH_SHORT).show());
+                "❌ UID غير صحيح أو لا توجد صلاحية", Toast.LENGTH_SHORT).show());
     }
 
     // ────────────────────────────────────────────────────────

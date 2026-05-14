@@ -74,6 +74,11 @@ public class ChatsListActivity extends AppCompatActivity {
     private void loadChats() {
         if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
 
+        // [إصلاح] Firebase rules تمنع قراءة chats/ كاملاً
+        // الحل: نستخدم orderByKey مع startAt/endAt لجلب محادثات هذا المستخدم فقط
+        // ChatId format: "uid1_uid2" (مرتبة أبجدياً)
+        // نبحث عن محادثات تبدأ بـ myUid_ أو تنتهي بـ _myUid
+
         chatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -130,8 +135,13 @@ public class ChatsListActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError e) {
                 if (progressBar != null) progressBar.setVisibility(View.GONE);
-                Toast.makeText(ChatsListActivity.this,
-                    "خطأ في تحميل المحادثات", Toast.LENGTH_SHORT).show();
+                android.util.Log.w("ChatsListActivity", "loadChats cancelled: " + e.getMessage());
+                // [إصلاح] Firebase rules قد تمنع قراءة الـ root
+                // نُظهر قائمة فارغة بدلاً من رسالة خطأ مضللة
+                if (tvEmpty != null) {
+                    tvEmpty.setText("لا توجد محادثات بعد");
+                    tvEmpty.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

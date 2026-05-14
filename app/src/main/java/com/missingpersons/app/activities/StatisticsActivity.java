@@ -153,9 +153,8 @@ public class StatisticsActivity extends AppCompatActivity {
             if (gender.isEmpty()) gender = safeStr(c, "gender");
             Long   timestamp   = c.child("timestamp").getValue(Long.class);
 
-            // FIX #1 + #10: تعريف موحد — نشطة = status=="approved" && approved==true
-            Boolean approvedFlag = c.child("approved").getValue(Boolean.class);
-            boolean isActive = "approved".equals(status) && Boolean.TRUE.equals(approvedFlag);
+            // [إصلاح] تعريف موحد مع NewHomeActivity — نشطة = status=="approved"
+            boolean isActive = "approved".equals(status);
 
             if ("resolved".equals(status)) {
                 resolvedTotal++;

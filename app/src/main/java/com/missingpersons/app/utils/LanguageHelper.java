@@ -2,27 +2,37 @@ package com.missingpersons.app.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import java.util.Locale;
 
 /**
- * LanguageHelper — تبديل اللغة (عربي ↔ إنجليزي)
+ * LanguageHelper — تبديل اللغة [إصلاح Phase 5]
  *
- * يحفظ اختيار المستخدم في SharedPreferences
- * ويُطبَّق في كل Activity عبر attachBaseContext
+ * مشاكل النسخة السابقة:
+ *  1. setApplicationLocales قد لا يُعيد تشغيل Activity على بعض الأجهزة
+ *  2. attachBaseContext يتعارض مع LocaleListCompat على API < 33
+ *  3. اللغة لا تنطبق على Activity المفتوحة حالياً
+ *
+ * الحل: طبقة مزدوجة:
+ *  - SharedPreferences للحفظ الدائم
+ *  - Intent.FLAG_ACTIVITY_CLEAR_TASK لإعادة تشغيل كل الـ Activities
  */
 public class LanguageHelper {
 
     private static final String PREF_NAME = "language_prefs";
-    private static final String KEY_LANG = "app_language";
+    private static final String KEY_LANG  = "app_language";
 
     public static final String ARABIC  = "ar";
     public static final String ENGLISH = "en";
 
     /**
-     * يُستدعى في كل Activity.attachBaseContext()
+     * تطبيق اللغة على الـ Context — يُستدعى في attachBaseContext() لكل Activity
      */
     public static Context applyLanguage(Context context) {
         String lang = getLanguage(context);
@@ -30,55 +40,85 @@ public class LanguageHelper {
     }
 
     /**
-     * تغيير اللغة وإعادة تشغيل Activity
+     * تغيير اللغة — يعمل على جميع إصدارات Android
      *
-     * ملاحظة: activity.recreate() لا يُعيد تطبيق الـ locale على Android 13+
-     * بسبب تغييرات في نظام Configuration — نستخدم Intent صريح بدلاً منه.
+     * [إصلاح] الاستراتيجية:
+     *  1. حفظ في SharedPreferences
+     *  2. تطبيق عبر AppCompatDelegate (API 33+)
+     *  3. إعادة تشغيل Activity عبر Intent.FLAG_ACTIVITY_CLEAR_TASK
+     *     (يضمن أن كل الـ stack يُعاد تشغيله بالـ locale الجديد)
      */
     public static void setLanguage(Activity activity, String lang) {
-        SharedPreferences prefs = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        // 1. حفظ في SharedPreferences — يُقرأ في كل attachBaseContext
+        SharedPreferences prefs =
+            activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putString(KEY_LANG, lang).apply();
 
-        // إعادة تشغيل صحيحة على Android 13+ (API 33)
-        android.content.Intent intent = new android.content.Intent(
-                activity, activity.getClass());
-        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+        // 2. AppCompatDelegate — للأجهزة التي تدعمه
+        try {
+            LocaleListCompat locales = LocaleListCompat.forLanguageTags(lang);
+            AppCompatDelegate.setApplicationLocales(locales);
+        } catch (Exception ignored) {}
+
+        // 3. إعادة تشغيل Activity الحالية مع مسح الـ back stack
+        //    هذا يضمن تطبيق اللغة فوراً على كل الـ Activities
+        Intent intent = activity.getIntent();
+        if (intent == null) intent = new Intent(activity, activity.getClass());
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP |
+            Intent.FLAG_ACTIVITY_NEW_TASK  |
+            Intent.FLAG_ACTIVITY_CLEAR_TASK
+        );
         activity.startActivity(intent);
         activity.finish();
+        // إلغاء animation للتبديل السلس
+        activity.overridePendingTransition(0, 0);
     }
 
     /**
-     * اللغة الحالية
+     * قراءة اللغة المحفوظة
      */
     public static String getLanguage(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return prefs.getString(KEY_LANG, ARABIC); // العربية افتراضياً
+        // أولاً: AppCompatDelegate (المصدر الأدق)
+        try {
+            LocaleListCompat appLocales = AppCompatDelegate.getApplicationLocales();
+            if (!appLocales.isEmpty()) {
+                Locale loc = appLocales.get(0);
+                if (loc != null) {
+                    String lang = loc.getLanguage();
+                    if (ARABIC.equals(lang) || ENGLISH.equals(lang)) return lang;
+                }
+            }
+        } catch (Exception ignored) {}
+        // ثانياً: SharedPreferences
+        SharedPreferences prefs =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getString(KEY_LANG, ARABIC); // العربية افتراضية
     }
 
-    /**
-     * هل اللغة الحالية عربية؟
-     */
+    /** هل اللغة الحالية عربية؟ */
     public static boolean isArabic(Context context) {
         return ARABIC.equals(getLanguage(context));
     }
 
-    /**
-     * اسم اللغة للعرض
-     */
+    /** اسم اللغة للعرض */
     public static String getLanguageDisplayName(Context context) {
         return isArabic(context) ? "العربية" : "English";
     }
 
+    /**
+     * تطبيق اللغة على الـ Context (للأجهزة القديمة API < 33)
+     * يُستدعى فقط من attachBaseContext
+     */
     private static Context updateResources(Context context, String lang) {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
-
         Resources res = context.getResources();
         Configuration config = new Configuration(res.getConfiguration());
         config.setLocale(locale);
-        config.setLayoutDirection(locale);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            config.setLayoutDirection(locale);
+        }
         return context.createConfigurationContext(config);
     }
 }

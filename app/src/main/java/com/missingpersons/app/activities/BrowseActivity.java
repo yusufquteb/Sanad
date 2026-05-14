@@ -57,7 +57,7 @@ import java.util.HashSet;
 
 import com.missingpersons.app.utils.AdsManager;
 
-import com.missingpersons.app.utils.ReportRepository;
+import com.missingpersons.app.data.repository.ReportRepository;
 
 /**
  * BrowseActivity — تصفح الحالات
@@ -88,6 +88,9 @@ public class BrowseActivity extends AppCompatActivity {
     private BrowseViewModel viewModel;
     private BrowseAdapter   adapter;
     private boolean isGrid = false;
+
+    // [إصلاح] مؤشر الفلتر النشط
+    private TextView tvFilterIndicator;
 
     private final Handler debounceHandler = new Handler(Looper.getMainLooper());
     private ConnectivityManager.NetworkCallback networkCallback;
@@ -172,6 +175,8 @@ public class BrowseActivity extends AppCompatActivity {
         tvCount          = findViewById(R.id.tv_count);
         llOfflineBanner  = findViewById(R.id.ll_offline_banner);
         cgType           = findViewById(R.id.cg_type);
+        // [إصلاح] مؤشر الفلتر النشط
+        tvFilterIndicator = findViewById(R.id.tv_active_filter);
     }
 
     private void setupBackButton() {
@@ -194,6 +199,8 @@ public class BrowseActivity extends AppCompatActivity {
                 if (cgType != null) cgType.check(R.id.chip_all);
                 TextInputEditText et = findViewById(R.id.et_search);
                 if (et != null) et.setText("");
+                // [إصلاح] إخفاء مؤشر الفلتر عند الإعادة
+                updateFilterIndicator(null, null);
             });
         }
     }
@@ -230,10 +237,75 @@ public class BrowseActivity extends AppCompatActivity {
     private void setupFilterButton() {
         View btnFilter = findViewById(R.id.btn_filter);
         if (btnFilter == null) return;
-        btnFilter.setOnClickListener(v ->
-            FilterBottomSheetFragment.newInstance()
-                .show(getSupportFragmentManager(), "filter_sheet")
-        );
+        btnFilter.setOnClickListener(v -> {
+            // [إصلاح] تمرير الفلتر الحالي للـ fragment ليعرضه
+            String curGov  = viewModel.govFilter.getValue();
+            int    curSort = viewModel.sortMode.getValue() != null ? viewModel.sortMode.getValue() : 0;
+            String curSortStr = curSort == BrowseViewModel.SORT_SMART ? "smart"
+                              : curSort == BrowseViewModel.SORT_NEAREST ? "nearest" : "newest";
+            FilterBottomSheetFragment sheet = FilterBottomSheetFragment.newInstance(
+                curGov != null && !curGov.equals("all") ? curGov : "الكل", curSortStr);
+
+            // [إصلاح] ربط الـ listener — كان مفقوداً تماماً، ولهذا الفلترة لا تعمل
+            sheet.setOnFiltersAppliedListener(new FilterBottomSheetFragment.OnFiltersAppliedListener() {
+                @Override
+                public void onFiltersApplied(String governorate, String sortOrder) {
+                    // تطبيق فلتر المحافظة
+                    viewModel.setGov(governorate != null ? governorate : "all");
+
+                    // تحويل sortOrder String → int constant
+                    if ("newest".equals(sortOrder)) {
+                        viewModel.setSort(BrowseViewModel.SORT_NEWEST);
+                    } else if ("nearest".equals(sortOrder)) {
+                        viewModel.setSort(BrowseViewModel.SORT_NEAREST);
+                    } else {
+                        viewModel.setSort(BrowseViewModel.SORT_SMART);
+                    }
+
+                    // تحديث مؤشر الفلتر في الـ header
+                    updateFilterIndicator(governorate, sortOrder);
+                    runLayoutAnimation();
+                }
+
+                @Override
+                public void onFiltersReset() {
+                    viewModel.resetFilters();
+                    updateFilterIndicator(null, null);
+                    if (cgType != null) cgType.check(R.id.chip_all);
+                    TextInputEditText et = findViewById(R.id.et_search);
+                    if (et != null) et.setText("");
+                    runLayoutAnimation();
+                }
+            });
+
+            sheet.show(getSupportFragmentManager(), "filter_sheet");
+        });
+    }
+
+    /**
+     * [إصلاح] يعرض مؤشراً في الـ header يوضح الفلتر النشط
+     * مثال: "📍 القاهرة | ترتيب: الأحدث"
+     */
+    private void updateFilterIndicator(String governorate, String sortOrder) {
+        if (tvFilterIndicator == null) return;
+
+        boolean hasGov  = (governorate != null && !governorate.isEmpty());
+        boolean hasSort = (sortOrder != null && !"smart".equals(sortOrder));
+
+        if (!hasGov && !hasSort) {
+            tvFilterIndicator.setVisibility(View.GONE);
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        if (hasGov)  sb.append("📍 ").append(governorate);
+        if (hasGov && hasSort) sb.append("  ·  ");
+        if (hasSort) {
+            sb.append("newest".equals(sortOrder) ? "🕒 الأحدث" : "📏 الأقرب");
+        }
+
+        tvFilterIndicator.setText(sb.toString());
+        tvFilterIndicator.setVisibility(View.VISIBLE);
     }
 
     private void setupToggleView() {
@@ -574,10 +646,10 @@ public class BrowseActivity extends AppCompatActivity {
             return items + adSlots;
         }
 
-        private int realIndex(int pos) {
-            if (loadedAds.isEmpty()) return pos;
-            int adCount = pos / AD_INTERVAL;
-            return pos - adCount;
+        private int realIndex(int selfPos) {
+            if (loadedAds.isEmpty()) return selfPos;
+            int adCount = selfPos / AD_INTERVAL;
+            return selfPos - adCount;
         }
 
         @NonNull @Override
@@ -593,9 +665,9 @@ public class BrowseActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int pos) {
             if (holder instanceof SkeletonVH) return;
-          if (holder instanceof AdVH) {
-    if (loadedAds.isEmpty()) return;  // ← أضف هذا السطر
-    int adIdx = (pos / AD_INTERVAL) % loadedAds.size();
+            if (holder instanceof AdVH) {
+                if (loadedAds.isEmpty()) return;
+                int adIdx = (pos / AD_INTERVAL) % loadedAds.size();
                 if (adIdx < loadedAds.size())
                     ((AdVH) holder).bind(loadedAds.get(adIdx));
                 return;
@@ -606,7 +678,7 @@ public class BrowseActivity extends AppCompatActivity {
         }
 
         private void bindItem(ItemVH h, ReportEntity r) {
-            Context ctx = h.itemView.getContext();
+            Context context = h.itemView.getContext();
 
             h.tvName.setText(!empty(r.personName) ? r.personName : "مجهول");
 
@@ -621,11 +693,11 @@ public class BrowseActivity extends AppCompatActivity {
                 h.tvTime.setText(new SimpleDateFormat("dd/MM/yy", new Locale("ar"))
                     .format(new Date(r.timestamp)));
 
-            bindTypeBadge(ctx, h.tvTypeBadge, r.reportType);
-            bindStatusChip(ctx, h.chipStatus, r.status, r.reportType);
+            bindTypeBadge(context, h.tvTypeBadge, r.reportType);
+            bindStatusChip(context, h.chipStatus, r.status, r.reportType);
 
             if (!empty(r.imageUrl))
-                CoilImageLoader.loadRounded(ctx, r.imageUrl,
+                CoilImageLoader.loadRounded(context, r.imageUrl,
                     h.ivPhoto, R.drawable.ic_face_placeholder, 0f);
             else
                 h.ivPhoto.setImageResource(R.drawable.ic_face_placeholder);

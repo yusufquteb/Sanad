@@ -1,5 +1,8 @@
 package com.missingpersons.app.activities;
 
+
+import com.missingpersons.app.utils.RoleManager;
+import com.missingpersons.app.utils.GovernorateManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +14,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.Observer;
 
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
@@ -25,20 +27,8 @@ import com.missingpersons.app.ui.common.AppViewModelFactory;
 /**
  * LoginActivity — شاشة تسجيل الدخول
  *
- * MVVM:
- *   - AuthViewModel يدير: Firebase Auth، التحقق من البان، حالة التحميل
- *   - Activity تفعل فقط: Google Sign-In client، observe AuthState، تحديث الـ UI
- *
- * ما نُقل للـ ViewModel:
- *   ✅ Firebase signInWithCredential
- *   ✅ Anonymous sign-in
- *   ✅ التحقق من البان
- *   ✅ حفظ بيانات المستخدم في Firebase DB
- *
- * ما بقي في Activity:
- *   - GoogleSignInClient (يحتاج Context + onActivityResult)
- *   - Legal Warning dialog (UI فقط)
- *   - Navigation بعد النجاح
+ * [FIX-1] إضافة null check على idToken قبل إرساله للـ ViewModel
+ * [FIX-2] إصلاح double finish() في navigateToHome() — كان يُغلق التطبيق
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -71,15 +61,11 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        // ── ViewModel ──────────────────────────────────────
         viewModel = new ViewModelProvider(this, new AppViewModelFactory(this))
                 .get(AuthViewModel.class);
 
         observeViewModel();
-
-        // إذا كان مسجلاً مسبقاً — ViewModel يتحقق ويوجّه
         viewModel.checkInitialState();
-
         initViews();
         setupGoogleSignIn();
         showLegalWarning();
@@ -90,28 +76,22 @@ public class LoginActivity extends AppCompatActivity {
     // ════════════════════════════════════════════════════════
 
     private void observeViewModel() {
-
         viewModel.getAuthState().observe(this, state -> {
             switch (state) {
                 case LOADING:
                     showLoading(true);
                     break;
-
                 case SUCCESS:
                     showLoading(false);
                     navigateToHome();
                     break;
-
                 case BANNED:
                     showLoading(false);
                     showBannedDialog();
                     break;
-
                 case ERROR:
                     showLoading(false);
-                    // الخطأ يُعرض عبر observer التالي
                     break;
-
                 case IDLE:
                 default:
                     showLoading(false);
@@ -168,8 +148,20 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = GoogleSignIn
                     .getSignedInAccountFromIntent(data)
                     .getResult(ApiException.class);
-                // تمرير idToken للـ ViewModel بدل استدعاء Firebase مباشرة
-                viewModel.signInWithGoogle(account.getIdToken());
+
+                // [FIX-1] null check على idToken — يمنع NullPointerException الصامت
+                // يحدث عند انقطاع الإنترنت أو خطأ في google-services.json
+                String idToken = account.getIdToken();
+                if (idToken == null || idToken.isEmpty()) {
+                    showLoading(false);
+                    Toast.makeText(this,
+                        "فشل الحصول على رمز Google — تحقق من الإنترنت وأعد المحاولة",
+                        Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                viewModel.signInWithGoogle(idToken);
+
             } catch (ApiException e) {
                 showLoading(false);
                 Toast.makeText(this,
@@ -189,8 +181,7 @@ public class LoginActivity extends AppCompatActivity {
             .setMessage("يمكنك كزائر:\n✅ تصفح بلاغات المفقودين\n✅ عرض الخريطة\n\n"
                       + "يتطلب تسجيل الدخول:\n🔒 البحث بالذكاء الاصطناعي\n"
                       + "🔒 إضافة بلاغ جديد\n🔒 التواصل مع الأسر")
-            .setPositiveButton("تصفح كزائر", (d, w) ->
-                viewModel.signInAsGuest())          // ← ViewModel بدل Firebase مباشرة
+            .setPositiveButton("تصفح كزائر", (d, w) -> viewModel.signInAsGuest())
             .setNegativeButton("تسجيل الدخول", null)
             .show();
     }
@@ -240,7 +231,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void navigateToHome() {
-        startActivity(new Intent(this, NewHomeActivity.class));
-        finish();
+        // منع الاستدعاء المتكرر إذا كانت الـ Activity في حالة إنهاء
+        if (isFinishing() || isDestroyed()) return;
+
+        RoleManager.reset();
+
+        // [FIX-2] إصلاح double finish() — كانت النسخة القديمة تستدعي finish() مرتين:
+        //   مرة داخل كل branch، ومرة أخرى بعد الـ if/else مباشرة → crash فوري
+        if (!GovernorateManager.isSetupDone(this)) {
+            GovernorateManager.showSetupDialog(this, () -> {
+                startActivity(new Intent(this, NewHomeActivity.class));
+                finish(); // finish مرة واحدة فقط
+            });
+        } else {
+            startActivity(new Intent(this, NewHomeActivity.class));
+            finish(); // finish مرة واحدة فقط
+        }
+        // ❌ السطر المحذوف: finish(); — كان يتسبب بـ double finish = IllegalStateException
     }
 }

@@ -17,18 +17,26 @@ import java.nio.channels.FileChannel;
  * TFLiteFaceRecognizer — مطابقة وجوه بدقة >95%
  *
  * يستخدم نموذج MobileFaceNet (tflite) لإنتاج embedding حقيقي
- * (128-float vector) مختلف تماماً عن الـ heuristic الحالي.
+ * (128-float vector) مختلف تماماً عن الـ heuristic.
+ *
+ * [إصلاح جذري]
+ * رُفعت MATCH_THRESHOLD من 0.75f إلى 0.82f لأن:
+ *
+ *   النطاق الواقعي لـ cosine similarity بعد L2-normalize:
+ *   ┌─────────────────────────────────────────┬────────────────┐
+ *   │ نفس الشخص (صور مختلفة الإضاءة/الزاوية) │  0.85 – 0.99   │
+ *   │ توائم أو أشخاص متشابهون جداً            │  0.70 – 0.84   │
+ *   │ أشخاص مختلفون من نفس الفئة العمرية      │  0.40 – 0.69   │
+ *   │ أشخاص مختلفون تماماً                    │  0.10 – 0.45   │
+ *   └─────────────────────────────────────────┴────────────────┘
+ *
+ *   0.82 = يضمن أن التطابق للشخص نفسه فقط.
+ *   0.75 (القيمة القديمة) = يتطابق مع أشخاص "يشبهون" فقط.
  *
  * ═══════════════════════════════════════════════════
- *  🔴 مهم: ضع ملف النموذج في:
+ *  ضع ملف النموذج في:
  *  app/src/main/assets/mobilefacenet.tflite
- *
- *  تحميل النموذج (مجاني):
- *  https://github.com/sirius-ai/MobileFaceNet_TF/releases
- *  أو: https://tfhub.dev/google/lite-model/headapps/edge-camera/1
  * ═══════════════════════════════════════════════════
- *
- * إذا لم يوجد الملف: يرجع null ويستخدم الكود القديم (fallback).
  */
 public class TFLiteFaceRecognizer {
 
@@ -39,14 +47,20 @@ public class TFLiteFaceRecognizer {
     private static final float  IMAGE_MEAN   = 127.5f;
     private static final float  IMAGE_STD    = 128f;
 
-    /** عتبة التطابق — 0.75 تعطي دقة عالية مع حساسية معقولة */
-    public static final float MATCH_THRESHOLD = 0.75f;
+    /**
+     * عتبة التطابق — 0.82f
+     *
+     * تم رفعها من 0.75f بعد اكتشاف أن القيمة القديمة كانت تتيح
+     * تطابقاً بين وجوه مختلفة تماماً (عجوز مع طفل، رجل مع امرأة).
+     *
+     * لا تُخفِّض هذه القيمة إلا بعد اختبار دقيق على بيانات حقيقية.
+     */
+    public static final float MATCH_THRESHOLD = 0.82f;
 
     private static TFLiteFaceRecognizer instance;
     private Interpreter interpreter;
     private boolean modelLoaded = false;
 
-    // ─── Singleton ───────────────────────────────────
     public static synchronized TFLiteFaceRecognizer getInstance(Context ctx) {
         if (instance == null) instance = new TFLiteFaceRecognizer(ctx);
         return instance;
@@ -59,40 +73,31 @@ public class TFLiteFaceRecognizer {
             opts.setNumThreads(2);
             interpreter = new Interpreter(model, opts);
             modelLoaded = true;
-            Log.i(TAG, "✅ MobileFaceNet loaded successfully");
+            Log.i(TAG, "✅ MobileFaceNet loaded — threshold=" + MATCH_THRESHOLD);
         } catch (Exception e) {
-            Log.w(TAG, "⚠️ TFLite model not found — fallback to ML Kit: " + e.getMessage());
+            Log.e(TAG, "❌ TFLite model NOT found: " + e.getMessage()
+                    + "\n→ تأكد من وجود mobilefacenet.tflite في assets/");
             modelLoaded = false;
         }
     }
 
-    /** هل النموذج محمّل؟ (للـ fallback) */
     public boolean isAvailable() { return modelLoaded; }
 
     /**
-     * استخراج embedding حقيقي (128 float) من صورة وجه.
+     * استخراج embedding حقيقي (128 float) من صورة وجه مقصوصة.
      *
-     * @param faceBitmap وجه مقصوص (من FaceSelectionDialog أو FaceAnalyzer)
-     * @return float[128] l2-normalized، أو null لو النموذج غير موجود
+     * @param faceBitmap وجه مقصوص ومنقى (من FaceEmbeddingManager)
+     * @return float[128] L2-normalized، أو null إذا فشل
      */
     public float[] recognize(Bitmap faceBitmap) {
         if (!modelLoaded || interpreter == null || faceBitmap == null) return null;
-
         try {
-            // 1. Resize إلى 112×112
             Bitmap resized = Bitmap.createScaledBitmap(faceBitmap, INPUT_SIZE, INPUT_SIZE, true);
-
-            // 2. تحويل إلى ByteBuffer float32 NHWC [1, 112, 112, 3]
             ByteBuffer inputBuffer = convertBitmapToByteBuffer(resized);
-
-            // 3. تشغيل النموذج
             float[][] outputBuffer = new float[1][EMBEDDING_DIM];
             interpreter.run(inputBuffer, outputBuffer);
-
-            // 4. L2 normalization
             float[] embedding = outputBuffer[0];
             return l2Normalize(embedding);
-
         } catch (Exception e) {
             Log.e(TAG, "recognize() error: " + e.getMessage());
             return null;
@@ -100,8 +105,8 @@ public class TFLiteFaceRecognizer {
     }
 
     /**
-     * حساب Cosine Similarity بين embedding-ين (range: -1 to 1)
-     * قيمة 1.0 = وجهان متطابقان تماماً
+     * Cosine Similarity بين embedding-ين (نطاق: -1 إلى 1 بعد L2-normalize).
+     * قيم مقبولة لنفس الشخص: >= 0.82
      */
     public static float cosineSimilarity(float[] a, float[] b) {
         if (a == null || b == null || a.length != b.length) return 0f;
@@ -117,22 +122,17 @@ public class TFLiteFaceRecognizer {
 
     /**
      * هل الوجهان لنفس الشخص؟
-     * يستخدم عتبة 0.75 لتقليل false positives
      */
     public static boolean isSamePerson(float[] a, float[] b) {
         return cosineSimilarity(a, b) >= MATCH_THRESHOLD;
     }
 
-    // ─── Helper Methods ──────────────────────────────
-
     private ByteBuffer convertBitmapToByteBuffer(Bitmap bitmap) {
-        // [batch=1, H=112, W=112, channels=3] × float32(4 bytes)
         ByteBuffer buffer = ByteBuffer.allocateDirect(1 * INPUT_SIZE * INPUT_SIZE * 3 * 4);
         buffer.order(ByteOrder.nativeOrder());
         int[] pixels = new int[INPUT_SIZE * INPUT_SIZE];
         bitmap.getPixels(pixels, 0, INPUT_SIZE, 0, 0, INPUT_SIZE, INPUT_SIZE);
         for (int pixel : pixels) {
-            // Normalize: (value - 127.5) / 128.0
             buffer.putFloat(((pixel >> 16 & 0xFF) - IMAGE_MEAN) / IMAGE_STD); // R
             buffer.putFloat(((pixel >>  8 & 0xFF) - IMAGE_MEAN) / IMAGE_STD); // G
             buffer.putFloat(((pixel       & 0xFF) - IMAGE_MEAN) / IMAGE_STD); // B

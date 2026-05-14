@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.*;
 import com.google.firebase.database.*;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -11,14 +12,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 /**
  * AuthRepository — عمليات Firebase Auth
  *
- * يُستخدم في:
- * - AuthViewModel
- *
- * يتعامل مع:
- * - تسجيل الدخول بـ Google
- * - الدخول كزائر (anonymous)
- * - تسجيل الخروج
- * - التحقق من الحالة الحالية
+ * [FIX-3] إضافة معالجة خاصة لـ FirebaseNetworkException
+ * [FIX-3] حماية من null في رسائل الخطأ
  */
 public class AuthRepository {
 
@@ -36,6 +31,13 @@ public class AuthRepository {
 
     public void signInWithGoogle(String idToken, OnSuccessCallback onSuccess,
                                   OnErrorCallback onError) {
+        // [FIX-3] idToken مضمون غير null هنا (تم التحقق في LoginActivity)
+        // لكن نضيف حماية إضافية دفاعياً
+        if (idToken == null || idToken.isEmpty()) {
+            mainHandler.post(() -> onError.onError("رمز Google غير صالح — أعد المحاولة"));
+            return;
+        }
+
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnSuccessListener(result -> {
@@ -45,12 +47,14 @@ public class AuthRepository {
                             mainHandler.post(() -> onSuccess.onSuccess(user.getUid()));
                         });
                     } else {
-                        mainHandler.post(() -> onError.onError("فشل تسجيل الدخول"));
+                        mainHandler.post(() -> onError.onError("فشل تسجيل الدخول — لم تُسترجع بيانات المستخدم"));
                     }
                 })
                 .addOnFailureListener(e -> {
                     Log.w(TAG, "signInWithGoogle failed: " + e.getMessage());
-                    mainHandler.post(() -> onError.onError(e.getMessage()));
+                    // [FIX-3] رسائل خطأ واضحة حسب نوع الاستثناء
+                    String errorMessage = resolveFirebaseError(e);
+                    mainHandler.post(() -> onError.onError(errorMessage));
                 });
     }
 
@@ -67,7 +71,8 @@ public class AuthRepository {
                 })
                 .addOnFailureListener(e -> {
                     Log.w(TAG, "signInAnonymously failed: " + e.getMessage());
-                    mainHandler.post(() -> onError.onError(e.getMessage()));
+                    String errorMessage = resolveFirebaseError(e);
+                    mainHandler.post(() -> onError.onError(errorMessage));
                 });
     }
 
@@ -136,7 +141,6 @@ public class AuthRepository {
                     ref.child("fcmToken").setValue(token);
                     ref.child("lastLogin").setValue(System.currentTimeMillis());
 
-                    // تعيين الدور إن لم يكن موجوداً
                     ref.child("role").get().addOnSuccessListener(snap -> {
                         String existingRole = snap.getValue(String.class);
                         if (existingRole == null || existingRole.isEmpty()) {
@@ -145,6 +149,27 @@ public class AuthRepository {
                         if (onDone != null) onDone.run();
                     }).addOnFailureListener(e -> { if (onDone != null) onDone.run(); });
                 });
+    }
+
+    // ════════════════════════════════════════════════════════
+    //  [FIX-3] Error Resolution — رسائل خطأ واضحة باللغة العربية
+    // ════════════════════════════════════════════════════════
+
+    private String resolveFirebaseError(Exception e) {
+        if (e instanceof FirebaseNetworkException) {
+            return "لا يوجد اتصال بالإنترنت — تحقق من الاتصال وأعد المحاولة";
+        } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
+            return "بيانات Google غير صالحة — أعد تسجيل الدخول";
+        } else if (e instanceof FirebaseAuthUserCollisionException) {
+            return "هذا الحساب مسجل بطريقة أخرى";
+        } else if (e instanceof FirebaseAuthException) {
+            String code = ((FirebaseAuthException) e).getErrorCode();
+            return "خطأ في المصادقة [" + code + "] — أعد المحاولة";
+        } else {
+            // [FIX-3] حماية من null في getMessage()
+            String msg = e.getMessage();
+            return (msg != null && !msg.isEmpty()) ? msg : "خطأ غير معروف — أعد المحاولة";
+        }
     }
 
     // ════════════════════════════════════════════════════════

@@ -131,7 +131,10 @@ public class CaseDetailActivity extends AppCompatActivity {
             TextView     tvTime      = findViewById(R.id.tv_detail_time);
             ImageView    ivMain      = findViewById(R.id.iv_detail_main);
             LinearLayout llPhotos    = findViewById(R.id.ll_detail_photos);
-            MaterialButton btnChat   = findViewById(R.id.btn_open_chat);
+            // [تصميم جديد] btn_open_chat هو ExtendedFloatingActionButton
+            com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton btnChatFab =
+                findViewById(R.id.btn_open_chat);
+            android.view.View btnChat = btnChatFab; // للتوافق مع كود الأسفل
             TextView     tvWarning   = findViewById(R.id.tv_safety_warning);
             TextView     tvChatStatus = findViewById(R.id.tv_chat_status);
             MaterialButton btnShare  = findViewById(R.id.btn_share_report);
@@ -157,11 +160,14 @@ public class CaseDetailActivity extends AppCompatActivity {
                 location = manual;
             }
 
-            // personAge يُخزَّن Long أو String
+            // [إصلاح] personAge يُخزَّن Long أو Integer أو String
             Object ageRaw = snap.child("personAge").getValue();
             if (ageRaw instanceof Long)         personAge = ((Long) ageRaw).intValue();
             else if (ageRaw instanceof Integer) personAge = (Integer) ageRaw;
-            else                                personAge = 0;
+            else if (ageRaw instanceof String) {
+                try { personAge = Integer.parseInt(((String) ageRaw).trim()); }
+                catch (Exception ignored) { personAge = 0; }
+            } else                              personAge = 0;
 
             Long ts = snap.child("timestamp").getValue(Long.class);
             timestamp = ts != null ? ts : 0;
@@ -206,8 +212,16 @@ public class CaseDetailActivity extends AppCompatActivity {
                             lp.setMargins(4, 0, 4, 0);
                             iv.setLayoutParams(lp);
                             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                            CoilImageLoader.loadRounded(this, urls.get(i).toString(),
+                            final String stripUrl = urls.get(i).toString();
+                            CoilImageLoader.loadRounded(this, stripUrl,
                                 iv, R.drawable.ic_face_placeholder, 12f);
+                            // tap strip photo → zoom
+                            iv.setOnClickListener(sv -> showPhotoZoomDialog(stripUrl));
+                            // tap strip photo → set as main
+                            iv.setOnLongClickListener(sv -> {
+                                CoilImageLoader.loadRounded(this, stripUrl, ivMain, R.drawable.ic_face_placeholder, 12f);
+                                return true;
+                            });
                             llPhotos.addView(iv);
                         }
                     }
@@ -218,6 +232,8 @@ public class CaseDetailActivity extends AppCompatActivity {
                     CoilImageLoader.loadRounded(this, firstUrl,
                         ivMain, R.drawable.ic_face_placeholder, 12f);
                     final String finalUrl = firstUrl;
+                    // tap to zoom
+                    ivMain.setOnClickListener(vv -> showPhotoZoomDialog(finalUrl));
                     new Thread(() -> {
                         try {
                             java.net.URL url = new java.net.URL(finalUrl);
@@ -310,39 +326,56 @@ public class CaseDetailActivity extends AppCompatActivity {
             Boolean chatEnabled  = snap.child("chatEnabled").getValue(Boolean.class);
             boolean isChatAllowed = chatEnabled == null || chatEnabled;
 
-            if (reporterId != null && !reporterId.equals(myUid)) {
-                if (isChatAllowed) {
+            // [إصلاح] تحقق أيضاً من reporterUid كحقل بديل
+            if (reporterId == null || reporterId.isEmpty()) {
+                reporterId = snap.child("reporterUid").getValue(String.class);
+            }
+            String reporterName = snap.child("reporterName").getValue(String.class);
+            if (reporterName == null || reporterName.isEmpty())
+                reporterName = snap.child("uploaderName").getValue(String.class);
+            final String finalReporterName = reporterName != null ? reporterName : "صاحب البلاغ";
+            final String finalReporterId   = reporterId;
+
+            // عرض الشات لأي شخص ليس صاحب البلاغ (حتى لو reporterId null — ليس أنا)
+            boolean isMyReport = reporterId != null && !reporterId.isEmpty()
+                && reporterId.equals(myUid);
+
+            if (!isMyReport) {
+                if (isChatAllowed && reporterId != null && !reporterId.isEmpty()) {
                     if (btnChat != null) {
                         btnChat.setVisibility(View.VISIBLE);
                         btnChat.setEnabled(true);
-                        btnChat.setText("💬 تواصل مع صاحب البلاغ");
-                    }
-                    if (tvChatStatus != null) tvChatStatus.setVisibility(View.GONE);
-                    String reporterName = snap.child("reporterName").getValue(String.class);
-                    if (btnChat != null) {
+                        if (btnChatFab != null) btnChatFab.setText("💬 تواصل الآن");
                         btnChat.setOnClickListener(v -> {
                             Intent intent = new Intent(this, ChatActivity.class);
-                            intent.putExtra("otherUid", reporterId);
-                            intent.putExtra("otherName",
-                                reporterName != null ? reporterName : "صاحب البلاغ");
+                            intent.putExtra("otherUid",  finalReporterId);
+                            intent.putExtra("otherName", finalReporterName);
                             startActivity(intent);
                         });
                     }
-                } else {
+                    if (tvChatStatus != null) tvChatStatus.setVisibility(View.GONE);
+                } else if (!isChatAllowed) {
                     if (btnChat != null) {
                         btnChat.setVisibility(View.VISIBLE);
                         btnChat.setEnabled(false);
-                        btnChat.setText("🔒 الشات غير متاح");
+                        if (btnChatFab != null) btnChatFab.setText("🔒 غير متاح");
                     }
                     if (tvChatStatus != null) {
                         tvChatStatus.setVisibility(View.VISIBLE);
                         tvChatStatus.setText("ℹ️ صاحب البلاغ أغلق خاصية التواصل");
                     }
+                } else {
+                    // reporterId مجهول — إخفاء الزر
+                    if (btnChat != null) btnChat.setVisibility(View.GONE);
                 }
-            } else if (reporterId != null && reporterId.equals(myUid)) {
+            } else {
+                // أنا صاحب البلاغ
                 if (btnChat != null) btnChat.setVisibility(View.GONE);
                 addUpdateButton(reportId, reportNode(snap));
             }
+
+            // ── حالات مشابهة ──────────────────────────────────────────
+            loadSimilarCases();
 
             // ── أزرار الأدمن ──────────────────────────────────────────
             if (RateLimiter.isAdmin(this)) {
@@ -573,4 +606,233 @@ public class CaseDetailActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+    /**
+     * تحميل الحالات المتشابهة وعرضها في horizontal scroll
+     * مع نسبة التطابق على كل صورة
+     */
+    private void loadSimilarCases() {
+        android.widget.LinearLayout llSimilar = findViewById(R.id.ll_similar_cases);
+        android.widget.TextView tvCount = findViewById(R.id.tv_similar_count);
+        if (llSimilar == null) return;
+
+        llSimilar.removeAllViews();
+
+        // البحث في matches/ لهذا البلاغ — في كلا الاتجاهين
+        // يعرض جميع النسب (بما فيها أقل من 80%)
+        com.google.firebase.database.FirebaseDatabase.getInstance()
+            .getReference("matches")
+            .orderByChild("reportId").equalTo(reportId)
+            .limitToLast(20)
+            .addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                @Override public void onDataChange(@androidx.annotation.NonNull com.google.firebase.database.DataSnapshot snap) {
+                    if (!snap.exists() || snap.getChildrenCount() == 0) {
+                        runOnUiThread(() -> {
+                            if (tvCount != null) tvCount.setText("لا توجد حالات مشابهة بعد");
+                        });
+                        return;
+                    }
+                    final int[] count = {0};
+                    for (com.google.firebase.database.DataSnapshot c : snap.getChildren()) {
+                        Object simObj = c.child("similarity").getValue();
+                        float sim = 0f;
+                        if (simObj instanceof Double)  sim = ((Double)simObj).floatValue();
+                        else if (simObj instanceof Float)  sim = (Float)simObj;
+                        else if (simObj instanceof Long)   sim = ((Long)simObj)/100f;
+                        int percent = Math.min(100, (int)(sim * 100));
+
+                        String foundId = c.child("foundId").getValue(String.class);
+                        if (foundId == null || foundId.isEmpty()) continue;
+                        count[0]++;
+
+                        final float finalSim = sim;
+                        final int finalPct   = percent;
+                        final String finalFoundId = foundId;
+
+                        // جلب صورة المعثور
+                        com.google.firebase.database.FirebaseDatabase.getInstance()
+                            .getReference("found_persons").child(foundId)
+                            .addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                                @Override public void onDataChange(@androidx.annotation.NonNull com.google.firebase.database.DataSnapshot fSnap) {
+                                    String photoUrl = fSnap.child("photoUrl").getValue(String.class);
+                                    if (photoUrl == null || photoUrl.isEmpty()) {
+                                        Object arr = fSnap.child("imageUrls").getValue();
+                                        if (arr instanceof java.util.List && !((java.util.List<?>)arr).isEmpty())
+                                            photoUrl = ((java.util.List<?>)arr).get(0).toString();
+                                    }
+                                    final String finalUrl = photoUrl;
+                                    final String foundName = fSnap.child("name").getValue(String.class);
+
+                                    runOnUiThread(() -> {
+                                        // بناء كارد صغير في الـ horizontal scroll
+                                        android.widget.FrameLayout card = new android.widget.FrameLayout(CaseDetailActivity.this);
+                                        android.widget.LinearLayout.LayoutParams clp =
+                                            new android.widget.LinearLayout.LayoutParams(120, 150);
+                                        clp.setMargins(0, 0, 10, 0);
+                                        card.setLayoutParams(clp);
+                                        card.setBackgroundResource(R.drawable.bg_card_rounded);
+                                        card.setClipToOutline(true);
+
+                                        // صورة
+                                        android.widget.ImageView iv = new android.widget.ImageView(CaseDetailActivity.this);
+                                        android.widget.FrameLayout.LayoutParams ilp =
+                                            new android.widget.FrameLayout.LayoutParams(
+                                                android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                                                android.widget.FrameLayout.LayoutParams.MATCH_PARENT);
+                                        iv.setLayoutParams(ilp);
+                                        iv.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
+                                        if (finalUrl != null && !finalUrl.isEmpty()) {
+                                            CoilImageLoader.load(CaseDetailActivity.this, finalUrl, iv);
+                                        } else {
+                                            iv.setImageResource(R.drawable.ic_face_placeholder);
+                                        }
+                                        card.addView(iv);
+
+                                        // badge نسبة التطابق
+                                        android.widget.TextView badge = new android.widget.TextView(CaseDetailActivity.this);
+                                        android.widget.FrameLayout.LayoutParams blp =
+                                            new android.widget.FrameLayout.LayoutParams(
+                                                android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
+                                                android.widget.FrameLayout.LayoutParams.WRAP_CONTENT);
+                                        blp.gravity = android.view.Gravity.TOP | android.view.Gravity.START;
+                                        blp.setMargins(6, 6, 0, 0);
+                                        badge.setLayoutParams(blp);
+                                        badge.setText(finalPct + "%");
+                                        badge.setTextSize(10f);
+                                        badge.setTextColor(0xFFFFFFFF);
+                                        badge.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
+                                        badge.setBackgroundColor(finalPct >= 80 ? 0xCC2E7D32 : finalPct >= 60 ? 0xCC1565C0 : 0xCCF57C00);
+                                        badge.setPadding(6, 2, 6, 2);
+                                        card.addView(badge);
+
+                                        // اسم المعثور أسفل الصورة
+                                        android.widget.TextView nameTv = new android.widget.TextView(CaseDetailActivity.this);
+                                        android.widget.FrameLayout.LayoutParams nlp =
+                                            new android.widget.FrameLayout.LayoutParams(
+                                                android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                                                android.widget.FrameLayout.LayoutParams.WRAP_CONTENT);
+                                        nlp.gravity = android.view.Gravity.BOTTOM;
+                                        nameTv.setLayoutParams(nlp);
+                                        nameTv.setText(foundName != null ? foundName : "معثور");
+                                        nameTv.setTextSize(9f);
+                                        nameTv.setTextColor(0xFFFFFFFF);
+                                        nameTv.setBackgroundColor(0x99000000);
+                                        nameTv.setPadding(4, 2, 4, 2);
+                                        nameTv.setMaxLines(1);
+                                        nameTv.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                                        card.addView(nameTv);
+
+                                        // النقر يفتح CaseDetail للمعثور
+                                        card.setOnClickListener(v -> {
+                                            android.content.Intent intent = new android.content.Intent(
+                                                CaseDetailActivity.this, CaseDetailActivity.class);
+                                            intent.putExtra("reportId", finalFoundId);
+                                            intent.putExtra("node", "found_persons");
+                                            startActivity(intent);
+                                        });
+
+                                        llSimilar.addView(card);
+                                    });
+                                }
+                                @Override public void onCancelled(@androidx.annotation.NonNull com.google.firebase.database.DatabaseError e) {}
+                            });
+                    }
+
+                    runOnUiThread(() -> {
+                        if (tvCount != null)
+                            tvCount.setText(count[0] + " حالة مطابقة");
+                    });
+                }
+                @Override public void onCancelled(@androidx.annotation.NonNull com.google.firebase.database.DatabaseError e) {}
+            });
+    }
+
+
+    /**
+     * عرض الصورة بشاشة كاملة مع pinch-to-zoom
+     */
+    private void showPhotoZoomDialog(String imageUrl) {
+        if (imageUrl == null || imageUrl.isEmpty()) return;
+
+        android.widget.ImageView iv = new android.widget.ImageView(this);
+        iv.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
+        iv.setBackgroundColor(0xFF000000);
+        iv.setPadding(8, 8, 8, 8);
+        CoilImageLoader.load(this, imageUrl, iv);
+
+        // Enable pinch zoom
+        iv.setOnTouchListener(new PinchZoomTouchListener(iv));
+
+        android.app.AlertDialog d = new android.app.AlertDialog.Builder(this,
+                android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+            .setView(iv)
+            .setCancelable(true)
+            .create();
+        if (d.getWindow() != null) {
+            d.getWindow().setLayout(
+                android.view.WindowManager.LayoutParams.MATCH_PARENT,
+                android.view.WindowManager.LayoutParams.MATCH_PARENT);
+            d.getWindow().setBackgroundDrawableResource(android.R.color.black);
+        }
+        iv.setOnClickListener(v -> d.dismiss());
+        d.show();
+    }
+
+    /**
+     * Pinch-to-zoom touch listener بدون مكتبات خارجية
+     */
+    private static class PinchZoomTouchListener implements android.view.View.OnTouchListener {
+        private final android.widget.ImageView iv;
+        private final android.graphics.Matrix matrix = new android.graphics.Matrix();
+        private final android.graphics.Matrix savedMatrix = new android.graphics.Matrix();
+        private float[] startPoint = new float[2];
+        private float savedDist = 1f;
+        private static final int NONE = 0, DRAG = 1, ZOOM = 2;
+        private int mode = NONE;
+
+        PinchZoomTouchListener(android.widget.ImageView iv) {
+            this.iv = iv;
+            iv.setScaleType(android.widget.ImageView.ScaleType.MATRIX);
+        }
+
+        @Override
+        public boolean onTouch(android.view.View v, android.view.MotionEvent e) {
+            switch (e.getAction() & android.view.MotionEvent.ACTION_MASK) {
+                case android.view.MotionEvent.ACTION_DOWN:
+                    savedMatrix.set(matrix);
+                    startPoint[0] = e.getX(); startPoint[1] = e.getY();
+                    mode = DRAG; break;
+                case android.view.MotionEvent.ACTION_POINTER_DOWN:
+                    savedDist = dist(e);
+                    if (savedDist > 10f) { savedMatrix.set(matrix); mode = ZOOM; }
+                    break;
+                case android.view.MotionEvent.ACTION_MOVE:
+                    if (mode == DRAG) {
+                        matrix.set(savedMatrix);
+                        matrix.postTranslate(e.getX() - startPoint[0], e.getY() - startPoint[1]);
+                    } else if (mode == ZOOM) {
+                        float nd = dist(e);
+                        if (nd > 10f) {
+                            matrix.set(savedMatrix);
+                            float scale = nd / savedDist;
+                            matrix.postScale(scale, scale, midPoint(e)[0], midPoint(e)[1]);
+                        }
+                    }
+                    iv.setImageMatrix(matrix);
+                    break;
+                case android.view.MotionEvent.ACTION_UP:
+                case android.view.MotionEvent.ACTION_POINTER_UP:
+                    mode = NONE; break;
+            }
+            return true;
+        }
+        private float dist(android.view.MotionEvent e) {
+            float dx = e.getX(0)-e.getX(1), dy = e.getY(0)-e.getY(1);
+            return (float)Math.sqrt(dx*dx+dy*dy);
+        }
+        private float[] midPoint(android.view.MotionEvent e) {
+            return new float[]{(e.getX(0)+e.getX(1))/2, (e.getY(0)+e.getY(1))/2};
+        }
+    }
+
+
 }

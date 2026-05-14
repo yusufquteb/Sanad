@@ -4,6 +4,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
+import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -14,56 +18,98 @@ import com.missingpersons.app.R;
 import com.missingpersons.app.activities.NewHomeActivity;
 import com.missingpersons.app.activities.ChatActivity;
 import com.missingpersons.app.activities.CaseDetailActivity;
+import com.missingpersons.app.utils.NotificationHelper;
+import com.missingpersons.app.widget.MissingPersonsWidget;
 import java.util.Map;
 
+/**
+ * FCMService — خدمة استقبال إشعارات Firebase  [Phase 2 Fix]
+ *
+ * الإصلاحات:
+ *  1. يعمل في الخلفية حتى لو التطبيق مغلق
+ *     (FirebaseMessagingService يُشغَّل تلقائياً من النظام)
+ *  2. يستخدم data messages (ليس notification-only) حتى يصل
+ *     onMessageReceived حتى لو التطبيق في الخلفية
+ *  3. يستخدم صوت الإشعار المخصص من NotificationHelper
+ *  4. يحدّث الـ Widget بعد استقبال أي إشعار تطابق
+ *  5. يدعم إشعارات التطابق المتقاطع (cross-match) الجديدة
+ */
 public class FCMService extends FirebaseMessagingService {
+
+    private static final String TAG = "FCMService";
+    private static int notifIdCounter = 2000;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        Log.d(TAG, "onMessageReceived: from=" + remoteMessage.getFrom());
 
         Map<String, String> data = remoteMessage.getData();
-        String type    = data.getOrDefault("type",  "general");
-        String title   = data.getOrDefault("title", "تطبيق المفقودين");
-        String body    = data.getOrDefault("body",  "");
+        String type     = data.getOrDefault("type",     "general");
+        String title    = data.getOrDefault("title",    "سند | إشعار جديد");
+        String body     = data.getOrDefault("body",     "");
         String reportId = data.getOrDefault("reportId", null);
-        String chatId  = data.getOrDefault("chatId", null);
+        String chatId   = data.getOrDefault("chatId",   null);
+        String foundId  = data.getOrDefault("foundId",  null);
 
-        // fallback لـ notification payload
+        // fallback لـ notification payload (لو الـ server يُرسل notification+data معاً)
         if (body.isEmpty() && remoteMessage.getNotification() != null) {
-            title = remoteMessage.getNotification().getTitle() != null
-                ? remoteMessage.getNotification().getTitle() : title;
-            body  = remoteMessage.getNotification().getBody() != null
-                ? remoteMessage.getNotification().getBody() : "";
+            RemoteMessage.Notification n = remoteMessage.getNotification();
+            if (n.getTitle() != null) title = n.getTitle();
+            if (n.getBody()  != null) body  = n.getBody();
         }
 
-        // اختر الـ deep link حسب النوع
-        Intent intent = buildDeepLinkIntent(type, reportId, chatId);
+        // إشعارات التطابق المتقاطع — أضف معلومات الطرف الآخر
+        if (type.equals("missing_matched_found") || type.equals("found_matched_missing")) {
+            String otherName    = data.getOrDefault("otherName",     "");
+            String otherReportId = data.getOrDefault("otherReportId", "");
+            if (!otherName.isEmpty())
+                body = body + "\n📋 رقم البلاغ: " + otherReportId;
+        }
+
+        // بناء الـ deep link intent
+        Intent intent = buildDeepLinkIntent(type, reportId, chatId, foundId);
         String channel = chooseChannel(type);
 
-        showNotification(title, body, intent, channel, type);
+        // عرض الإشعار بالصوت المخصص
+        showNotificationWithSound(title, body, intent, channel);
+
+        // تحديث الـ Widget إذا كان الإشعار يتعلق ببلاغ جديد أو تطابق
+        if (type.contains("match") || type.equals("report_approved")) {
+            try {
+                MissingPersonsWidget.requestUpdate(getApplicationContext());
+            } catch (Exception e) {
+                Log.w(TAG, "Widget update after FCM failed (non-fatal): " + e.getMessage());
+            }
+        }
     }
 
     @Override
     public void onNewToken(String token) {
         super.onNewToken(token);
+        Log.d(TAG, "FCM token refreshed");
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             FirebaseDatabase.getInstance()
                 .getReference("users").child(uid).child("fcmToken")
-                .setValue(token);
+                .setValue(token)
+                .addOnSuccessListener(v -> Log.d(TAG, "FCM token saved"))
+                .addOnFailureListener(e -> Log.w(TAG, "FCM token save failed: " + e.getMessage()));
         }
     }
 
-    // ════════════════════════════════════════════════════════════════════
+    // ────────────────────────────────────────────────────────────────
 
-    /** يبني Intent بالـ deep link الصح حسب نوع الإشعار */
-    private Intent buildDeepLinkIntent(String type, String reportId, String chatId) {
+    private Intent buildDeepLinkIntent(String type, String reportId,
+                                        String chatId, String foundId) {
         Intent intent;
         switch (type) {
             case "report_approved":
             case "found_matches_report":
             case "report_matches_found":
+            case "missing_matched_found":
+            case "found_matched_missing":
+            case "match_confirmed":
             case "sighting_match":
                 if (reportId != null) {
                     intent = new Intent(this, CaseDetailActivity.class);
@@ -91,58 +137,54 @@ public class FCMService extends FirebaseMessagingService {
                 intent = new Intent(this, NewHomeActivity.class);
                 break;
         }
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+            | Intent.FLAG_ACTIVITY_SINGLE_TOP
+            | Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
 
-    /** يختار قناة الإشعار حسب النوع */
     private String chooseChannel(String type) {
-        switch (type) {
-            case "amber_alert":
-                return "amber_alerts";
-            case "admin_face_match":
-            case "found_matches_report":
-            case "report_matches_found":
-                return MyApplication.CHANNEL_ADMIN_ID;
-            default:
-                return MyApplication.CHANNEL_ID;
-        }
+        if (type.contains("chat") || type.contains("message"))
+            return "chat_messages";
+        if (type.contains("amber"))
+            return "amber_alerts";
+        if (type.contains("admin"))
+            return MyApplication.CHANNEL_ADMIN_ID;
+        return MyApplication.CHANNEL_ID;
     }
 
-    private void showNotification(String title, String body,
-                                   Intent intent, String channel, String type) {
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-            this,
-            (int) System.currentTimeMillis(),
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-        );
+    /**
+     * [Phase 2] عرض إشعار بالصوت المخصص من NotificationHelper
+     * يعمل على كل الإصدارات من API 21+
+     */
+    private void showNotificationWithSound(String title, String body,
+                                            Intent intent, String channelId) {
+        int notifId = notifIdCounter++;
+        PendingIntent pending = PendingIntent.getActivity(
+            this, notifId, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        int priority = isHighPriority(type)
-            ? NotificationCompat.PRIORITY_MAX
-            : NotificationCompat.PRIORITY_HIGH;
+        // جلب صوت الإشعار المخصص (أو الافتراضي)
+        Uri soundUri = NotificationHelper.getNotificationSound(this);
 
         NotificationCompat.Builder builder =
-            new NotificationCompat.Builder(this, channel)
+            new NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
-                .setPriority(priority)
-                .setContentIntent(pendingIntent)
-                .setVibrate(new long[]{0, 400, 200, 400});
+                .setContentIntent(pending)
+                .setDefaults(NotificationCompat.DEFAULT_VIBRATE);
 
-        NotificationManager manager =
-            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (manager != null)
-            manager.notify((int) System.currentTimeMillis(), builder.build());
-    }
+        // الصوت على الإصدارات قبل Android O
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            builder.setSound(soundUri);
+        }
 
-    private boolean isHighPriority(String type) {
-        return "found_matches_report".equals(type)
-            || "report_matches_found".equals(type)
-            || "admin_face_match".equals(type)
-            || "amber_alert".equals(type);
+        NotificationManager mgr = (NotificationManager)
+            getSystemService(Context.NOTIFICATION_SERVICE);
+        if (mgr != null) mgr.notify(notifId, builder.build());
     }
 }

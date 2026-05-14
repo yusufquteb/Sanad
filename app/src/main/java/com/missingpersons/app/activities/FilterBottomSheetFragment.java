@@ -4,23 +4,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.textfield.TextInputLayout;
 import com.missingpersons.app.R;
 
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * FilterBottomSheetFragment — فلتر متطور
+ *
+ * [إصلاح] استبدال ChipGroup بـ AutoCompleteTextView للمحافظات
+ * السبب: الـ Chips تزدحم مع 28 محافظة — AutoComplete أسرع وأوضح
+ */
 public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
 
     private OnFiltersAppliedListener listener;
-    private ChipGroup chipGroupGovernorate;
+    private AutoCompleteTextView actvGovernorate;
     private RadioGroup radioGroupSort;
+
+    private String selectedGovernorate = "الكل";
+    private String currentSortArg = "newest";
 
     // قائمة المحافظات المصرية
     private final List<String> governorates = Arrays.asList(
@@ -40,6 +50,16 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
         return new FilterBottomSheetFragment();
     }
 
+    /** [إصلاح] إنشاء الـ Fragment مع الحالة الحالية للفلتر */
+    public static FilterBottomSheetFragment newInstance(String currentGov, String currentSort) {
+        FilterBottomSheetFragment f = new FilterBottomSheetFragment();
+        android.os.Bundle args = new android.os.Bundle();
+        args.putString("current_gov",  currentGov  != null ? currentGov  : "الكل");
+        args.putString("current_sort", currentSort != null ? currentSort : "newest");
+        f.setArguments(args);
+        return f;
+    }
+
     public void setOnFiltersAppliedListener(OnFiltersAppliedListener listener) {
         this.listener = listener;
     }
@@ -55,12 +75,28 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        chipGroupGovernorate = view.findViewById(R.id.chip_group_governorate);
-        radioGroupSort = view.findViewById(R.id.radio_group_sort);
+        // [إصلاح] استعادة حالة الفلتر الحالية
+        android.os.Bundle args = getArguments();
+        if (args != null) {
+            selectedGovernorate = args.getString("current_gov", "الكل");
+            currentSortArg      = args.getString("current_sort", "newest");
+        }
+
+        radioGroupSort  = view.findViewById(R.id.radio_group_sort);
         MaterialButton btnApply = view.findViewById(R.id.btn_apply_filters);
         MaterialButton btnReset = view.findViewById(R.id.btn_reset_filters);
 
-        setupGovernorateChips();
+        // تطبيق ترتيب السابق على RadioGroup
+        if (radioGroupSort != null && currentSortArg != null) {
+            if ("smart".equals(currentSortArg))
+                radioGroupSort.check(R.id.radio_smart);
+            else if ("nearest".equals(currentSortArg))
+                radioGroupSort.check(R.id.radio_sort_nearest);
+            else
+                radioGroupSort.check(R.id.radio_newest);
+        }
+
+        setupGovernorateAutocomplete(view);
 
         btnApply.setOnClickListener(v -> {
             applyFilters();
@@ -68,51 +104,70 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
         });
 
         btnReset.setOnClickListener(v -> {
+            selectedGovernorate = "الكل";
+            if (actvGovernorate != null) actvGovernorate.setText("الكل", false);
             if (listener != null) listener.onFiltersReset();
             dismiss();
         });
     }
 
-    private void setupGovernorateChips() {
-        chipGroupGovernorate.removeAllViews();
-        for (String gov : governorates) {
-            Chip chip = new Chip(requireContext());
-            chip.setText(gov);
-            chip.setCheckable(true);
-            chip.setClickable(true);
-            chip.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-            chipGroupGovernorate.addView(chip);
+    /**
+     * [إصلاح] إعداد AutoCompleteTextView بدلاً من ChipGroup
+     * يدعم البحث بالكتابة + اختيار من القائمة
+     */
+    private void setupGovernorateAutocomplete(View root) {
+        // نحاول نجد الـ AutoCompleteTextView — إن لم يوجد layout_gov_autocomplete
+        // نرجع للـ chip_group_governorate كـ fallback
+        View actvView = root.findViewById(R.id.actv_governorate);
+        if (actvView instanceof AutoCompleteTextView) {
+            actvGovernorate = (AutoCompleteTextView) actvView;
+        } else {
+            // fallback: إخفاء الـ ChipGroup وإنشاء AutoComplete برمجياً
+            View chipGroup = root.findViewById(R.id.chip_group_governorate);
+            if (chipGroup != null) {
+                ViewGroup parent = (ViewGroup) chipGroup.getParent();
+                if (parent != null) {
+                    int idx = parent.indexOfChild(chipGroup);
+                    chipGroup.setVisibility(View.GONE);
+
+                    AutoCompleteTextView actv = new AutoCompleteTextView(requireContext());
+                    actv.setHint("اختر المحافظة أو اكتب للبحث...");
+                    actv.setThreshold(1);
+                    ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                    actv.setLayoutParams(lp);
+                    actv.setPadding(32, 24, 32, 24);
+                    actv.setTextSize(14f);
+                    parent.addView(actv, idx);
+                    actvGovernorate = actv;
+                }
+            }
         }
-        // تحديد "الكل" بشكل افتراضي
-        if (chipGroupGovernorate.getChildCount() > 0) {
-            ((Chip) chipGroupGovernorate.getChildAt(0)).setChecked(true);
+
+        if (actvGovernorate != null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                governorates);
+            actvGovernorate.setAdapter(adapter);
+            actvGovernorate.setText(selectedGovernorate, false);
+            actvGovernorate.setOnItemClickListener((parent, v2, pos, id) ->
+                selectedGovernorate = governorates.get(pos));
         }
     }
 
     private void applyFilters() {
-        // الحصول على المحافظة المحددة
-        int checkedChipId = chipGroupGovernorate.getCheckedChipId();
-        String selectedGov = null;
-        if (checkedChipId != View.NO_ID) {
-            Chip chip = chipGroupGovernorate.findViewById(checkedChipId);
-            if (chip != null && !chip.getText().toString().equals("الكل")) {
-                selectedGov = chip.getText().toString();
-            }
-        }
+        if (listener == null) return;
+        String gov = (selectedGovernorate == null || selectedGovernorate.equals("الكل"))
+            ? "الكل" : selectedGovernorate;
 
-        // الحصول على ترتيب الفرز
-        int checkedRadioId = radioGroupSort.getCheckedRadioButtonId();
-        String sortOrder = "smart";
-        if (checkedRadioId == R.id.radio_newest) {
-            sortOrder = "newest";
-        } else if (checkedRadioId == R.id.radio_nearest) {
-            sortOrder = "nearest";
-        }
+        int sortId = (radioGroupSort != null) ? radioGroupSort.getCheckedRadioButtonId() : -1;
+        String sortOrder = "newest";
+        if (sortId == R.id.radio_smart)        sortOrder = "smart";
+        else if (sortId == R.id.radio_sort_nearest) sortOrder = "nearest";
+        else if (sortId == R.id.radio_newest)  sortOrder = "newest";
 
-        if (listener != null) {
-            listener.onFiltersApplied(selectedGov, sortOrder);
-        }
+        listener.onFiltersApplied(gov, sortOrder);
     }
 }

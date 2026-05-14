@@ -45,6 +45,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import com.missingpersons.app.services.ImageModerationService;
 
 public class ReportActivity extends AppCompatActivity {
 
@@ -153,8 +154,10 @@ public class ReportActivity extends AppCompatActivity {
     private final List<String> existingImageUrls = new ArrayList<>();
     private final List<Bitmap> photoBitmaps = new ArrayList<>();
     private Uri    cameraUri;
+    private java.io.File pendingCameraFile; // [إصلاح] ملف الكاميرا المعلق
     private boolean isUploading = false;
     private AtomicReference<float[]> firstFaceEmbedding = new AtomicReference<>();
+    private android.widget.TextView tvPhotoCount; // عداد الصور
 
     private FusedLocationProviderClient fusedClient;
     private AdsManager adsManager;
@@ -171,14 +174,14 @@ public class ReportActivity extends AppCompatActivity {
     };
 
     private static final String[] STEP_TITLES = {
-        "الخطوة 1 — نوع البلاغ",
+        "الخطوة 1 — الصورة ونوع البلاغ",
         "الخطوة 2 — البيانات الشخصية",
         "الخطوة 3 — الموقع والوصف",
         "الخطوة 4 — مراجعة وإرسال"
     };
     private static final String[] STEP_SUBTITLES = {
-        "اختر نوع البلاغ المناسب",
-        "الاسم والسن والصور",
+        "أضف صورة ثم اختر نوع البلاغ",    // [إصلاح] الصورة أولاً ثم النوع
+        "الاسم والسن وبقية البيانات",
         "آخر مكان شُوهد فيه",
         "راجع البيانات قبل الإرسال"
     };
@@ -292,6 +295,7 @@ public class ReportActivity extends AppCompatActivity {
         btnCamera            = findViewById(R.id.btn_camera);
         btnGallery           = findViewById(R.id.btn_gallery);
         cardPhotoPlaceholder = findViewById(R.id.card_photo_placeholder);
+        tvPhotoCount         = findViewById(R.id.tv_photo_count);
 
         // Step 4
         spGov           = findViewById(R.id.sp_governorate);
@@ -473,16 +477,10 @@ public class ReportActivity extends AppCompatActivity {
 
     private boolean validateCurrentStep() {
         switch (currentStep) {
-            case 1: return true; // type always selected
-            case 2:
-                if (!TYPE_HOMELESS.equals(currentType)) {
-                    String age = etAge.getText() != null ? etAge.getText().toString().trim() : "";
-                    if (age.isEmpty()) { showError("أدخل السن التقريبي للشخص"); etAge.requestFocus(); return false; }
-                }
-                // ✅ صورة واحدة على الأقل إلزامية لكل أنواع البلاغات
+            case 1:
+                // [Phase 5] الصورة الآن في Step1 — تحقق هنا
                 if (photoFiles.isEmpty()) {
-                    showError("⚠️ يجب إضافة صورة واحدة على الأقل\nاضغط على زر الكاميرا أو المعرض لإضافة صورة");
-                    // shake animation على منطقة الصورة لجذب الانتباه
+                    showError("⚠️ أضف صورة واضحة أولاً قبل المتابعة");
                     android.view.View photoArea = cardPhotoPlaceholder != null
                         ? cardPhotoPlaceholder : (layoutPhotos != null ? layoutPhotos : null);
                     if (photoArea != null) {
@@ -494,6 +492,12 @@ public class ReportActivity extends AppCompatActivity {
                         ).start()).start()).start()).start();
                     }
                     return false;
+                }
+                return true; // type always selected
+            case 2:
+                if (!TYPE_HOMELESS.equals(currentType)) {
+                    String age = etAge.getText() != null ? etAge.getText().toString().trim() : "";
+                    if (age.isEmpty()) { showError("أدخل السن التقريبي للشخص"); etAge.requestFocus(); return false; }
                 }
                 return true;
             case 3:
@@ -675,6 +679,11 @@ public class ReportActivity extends AppCompatActivity {
         spGov.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line,
             EgyptAddressHelper.getGovernorates()));
         spGov.setThreshold(1);
+        // [Phase 5] تعبئة مسبقة من تفضيل المستخدم
+        String savedGov = GovernorateManager.getPrimaryGov(this);
+        if (!savedGov.isEmpty() && spGov.getText().toString().trim().isEmpty()) {
+            spGov.setText(savedGov, false);
+        }
         spGov.setOnItemClickListener((p, v, pos, id) -> {
             String gov = spGov.getText().toString();
             spCity.setText("", false);
@@ -858,6 +867,41 @@ public class ReportActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * [Phase 5] اقتراح الجنس من الوجه مع إمكانية التعديل
+     * maleConf + femaleConf يجب أن يساويا 1.0
+     */
+    public void onGenderEstimated(float maleConf, float femaleConf) {
+        runOnUiThread(() -> {
+            if (chipMale == null || chipFemale == null) return;
+            // اقترح فقط إذا كانت الثقة > 60%
+            if (maleConf > 0.60f) {
+                chipMale.setChecked(true);
+                chipFemale.setChecked(false);
+                selectedGender = "male";
+                // عرض نسبة الثقة في الـ hint
+                if (tvAgeAiHint != null && cardAgeAiHint != null) {
+                    String current = tvAgeAiHint.getText().toString();
+                    int pct = Math.round(maleConf * 100);
+                    if (!current.contains("جنس"))
+                        tvAgeAiHint.setText(current + "  |  جنس مقترح: ذكر (" + pct + "%) — يمكن التعديل");
+                    cardAgeAiHint.setVisibility(View.VISIBLE);
+                }
+            } else if (femaleConf > 0.60f) {
+                chipFemale.setChecked(true);
+                chipMale.setChecked(false);
+                selectedGender = "female";
+                if (tvAgeAiHint != null && cardAgeAiHint != null) {
+                    String current = tvAgeAiHint.getText().toString();
+                    int pct = Math.round(femaleConf * 100);
+                    if (!current.contains("جنس"))
+                        tvAgeAiHint.setText(current + "  |  جنس مقترح: أنثى (" + pct + "%) — يمكن التعديل");
+                    cardAgeAiHint.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
     // ════════════════════════════════════════════════════
     //  Date Picker
     // ════════════════════════════════════════════════════
@@ -962,7 +1006,8 @@ public class ReportActivity extends AppCompatActivity {
         try {
             File f = createTempImageFile();
             cameraUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", f);
-            photoFiles.add(f);
+            // [إصلاح] لا نضيف الملف هنا — نضيفه فقط عند نجاح الالتقاط
+            pendingCameraFile = f;
             Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             i.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri);
             startActivityForResult(i, REQ_CAMERA);
@@ -977,10 +1022,22 @@ public class ReportActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int req, int res, @Nullable Intent data) {
         super.onActivityResult(req, res, data);
-        if (res != RESULT_OK) return;
+        if (res != RESULT_OK) {
+            // [إصلاح] تنظيف ملف الكاميرا المعلق إذا ألغى المستخدم
+            if (pendingCameraFile != null) {
+                pendingCameraFile.delete();
+                pendingCameraFile = null;
+            }
+            return;
+        }
         Uri uri = null;
         if (req == REQ_CAMERA) {
             uri = cameraUri;
+            // [إصلاح] أضف الملف للقائمة فقط عند نجاح الالتقاط
+            if (pendingCameraFile != null) {
+                photoFiles.add(pendingCameraFile);
+                pendingCameraFile = null;
+            }
         } else if (req == REQ_GALLERY && data != null) {
             uri = data.getData();
             try {
@@ -1073,6 +1130,35 @@ public class ReportActivity extends AppCompatActivity {
         Bitmap toStore = face != null ? face : full;
         photoBitmaps.add(toStore);
         addPhotoThumb(toStore);
+
+        // [Phase 5] مراجعة الصورة تلقائياً في الخلفية
+        final Bitmap moderationBmp = toStore;
+        new Thread(() -> {
+            ImageModerationService.ModerationReport report =
+                ImageModerationService.moderate(ReportActivity.this, moderationBmp);
+            android.util.Log.d("ReportActivity", "Moderation: " + report);
+            runOnUiThread(() -> {
+                if (tvAgeAiHint != null && cardAgeAiHint != null) {
+                    // [تعديل] لا رفض تلقائي — الأسوأ هو المراجعة البشرية
+                        switch (report.result) {
+                        case APPROVED:
+                            // ✅ آمن — لا تعليق
+                            break;
+                        case PENDING:
+                            // ⚠️ سيُراجع إدارياً قبل النشر
+                            tvAgeAiHint.setText("⚠️ ستُراجَع الصورة قبل النشر\n" + report.reason);
+                            cardAgeAiHint.setVisibility(View.VISIBLE);
+                            break;
+                        case REJECTED:
+                            // لن يُوصَل إليه بعد الآن — معالجة كـ PENDING احتياطياً
+                            tvAgeAiHint.setText("⚠️ ستُراجَع الصورة قبل النشر");
+                            cardAgeAiHint.setVisibility(View.VISIBLE);
+                            break;
+                    }
+                }
+            });
+        }).start();
+
         if (face != null && !photoFiles.isEmpty()) {
             try {
                 File f = createTempImageFile();
@@ -1094,6 +1180,11 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private void addPhotoThumb(Bitmap bmp) {
+        // [إصلاح] تحديث عداد الصور
+        if (tvPhotoCount != null)
+            tvPhotoCount.setText(photoBitmaps.size() + "/" + MAX_PHOTOS);
+        if (cardPhotoPlaceholder != null && photoBitmaps.size() > 0)
+            cardPhotoPlaceholder.setVisibility(View.GONE);
         ImageView iv = new ImageView(this);
         int size = dpToPx(80);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(size, size);
@@ -1134,6 +1225,9 @@ public class ReportActivity extends AppCompatActivity {
                 }
                 int age = FaceEmbeddingManager.estimateAge(this, bmp);
                 if (age > 0) onAgeEstimated(age);
+                // [Phase 5] تقدير الجنس من الوجه وعرضه كاقتراح
+                float[] genderConf = FaceEmbeddingManager.estimateGenderConfidence(bmp);
+                onGenderEstimated(genderConf[0], genderConf[1]);
             } catch (Exception e) {
                 android.util.Log.e("ReportActivity", "runFaceAnalysis error: " + e.getMessage());
             }
@@ -1185,15 +1279,35 @@ public class ReportActivity extends AppCompatActivity {
             if (tvStatus != null) { tvStatus.setText("🔍 فحص التكرار..."); tvStatus.setVisibility(View.VISIBLE); }
             DuplicateDetector.checkByFace(emb, (isDuplicate, existingId, similarity, reason) ->
                 runOnUiThread(() -> {
+                    if (tvStatus != null) tvStatus.setVisibility(View.GONE);
                     if (isDuplicate) {
                         int pct = (int)(similarity * 100);
+                        // [إصلاح] رسالة مختلفة حسب نوع التكرار
+                        String title, message;
+                        if ("missing_already_reported".equals(reason)) {
+                            title   = "⚠️ هذا الشخص مُبلَّغ عنه مسبقاً";
+                            message = "يوجد بلاغ مفقود مشابه بنسبة " + pct + "%"
+                                + " (رقم البلاغ: " + existingId + ").\n\n"
+                                + "هل تريد الاستمرار في رفع بلاغ جديد؟";
+                        } else if ("found_already_reported".equals(reason)) {
+                            title   = "✅ هذا الشخص مُبلَّغ عنه كمعثور مسبقاً";
+                            message = "يوجد بلاغ عثور مشابه بنسبة " + pct + "%"
+                                + " (رقم البلاغ: " + existingId + ").\n\n"
+                                + "هل تريد رفع بلاغ إضافي على أي حال؟";
+                        } else {
+                            title   = "⚠️ بلاغ مشابه موجود";
+                            message = "يوجد بلاغ مشابه بنسبة " + pct + "%. هل تريد المتابعة؟";
+                        }
                         new androidx.appcompat.app.AlertDialog.Builder(this)
-    .setTitle("⚠️ بلاغ مشابه موجود")
-    .setMessage(getString(R.string.similar_report_found, pct, existingId))
-    .setPositiveButton("متابعة الرفع", (d, w) -> doSubmit())
-    .setNegativeButton("إلغاء", (d, w) -> d.dismiss()) // Added dismiss logic
-    .show();
-
+                            .setTitle(title)
+                            .setMessage(message)
+                            .setPositiveButton("متابعة الرفع", (d, w) -> doSubmit())
+                            .setNegativeButton("إلغاء", (d, w) -> {
+                                d.dismiss();
+                                if (btnSubmit != null) btnSubmit.setEnabled(true);
+                            })
+                            .setCancelable(false)
+                            .show();
                     } else {
                         doSubmit();
                     }
@@ -1500,6 +1614,7 @@ public class ReportActivity extends AppCompatActivity {
         r.put("reporterId",    uid);
         r.put("timestamp",     System.currentTimeMillis());
         r.put("status",        "pending"); // ✅ إصلاح رئيسي: كان غائباً تماماً
+        r.put("moderation_status", "pending_review"); // [Phase 5] مراجعة تلقائية
         return r;
     }
 
@@ -1684,22 +1799,28 @@ public class ReportActivity extends AppCompatActivity {
             // اعرض dialog للمستخدم ليختار الاستمرار
             new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("📝 استكمال مسودة")
-                .setMessage("يوجد بلاغ غير مكتمل محفوظ. هل تريد استكماله؟")
+                .setMessage("يوجد بلاغ غير مكتمل محفوظ. هل تريد الاستمرار من حيث توقفت؟")
                 .setPositiveButton("استكمال", (d, w) -> {
+                    // [إصلاح] استعادة كل البيانات والانتقال للخطوة المحفوظة
+                    String draftType = prefs.getString("draft_type", "");
+                    int    draftStep = Integer.parseInt(prefs.getString("draft_step", "1"));
+                    if (!draftType.isEmpty()) setType(draftType);
                     if (etName != null && !draftName.isEmpty())
                         etName.setText(draftName);
                     if (etAge != null && !draftAge.isEmpty())
                         etAge.setText(draftAge);
                     if (etDescription != null && !draftDesc.isEmpty())
                         etDescription.setText(draftDesc);
-                    if (draftLat != 0) {
-                        lat = draftLat;
-                        lng = draftLng;
-                    }
-                    android.util.Log.d("ReportActivity", "✅ draft restored");
+                    if (draftLat != 0) { lat = draftLat; lng = draftLng; }
+                    // انتقل للخطوة المحفوظة (ليس من البداية)
+                    if (draftStep > 1 && draftStep <= 4)
+                        updateStep(draftStep);
+                    android.util.Log.d("ReportActivity", "✅ draft restored to step " + draftStep);
                 })
-                .setNegativeButton("بلاغ جديد", (d, w) ->
-                    prefs.edit().clear().apply())
+                .setNegativeButton("بلاغ جديد", (d, w) -> {
+                    prefs.edit().clear().apply();
+                    updateStep(1); // ابدأ من الأول
+                })
                 .show();
         } catch (Exception e) {
             android.util.Log.w("ReportActivity", "restoreDraft error: " + e.getMessage());
