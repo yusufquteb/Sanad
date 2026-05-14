@@ -3,7 +3,6 @@ package com.missingpersons.app.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +41,17 @@ public final class GovernorateManager {
     /** المحافظات المختارة للمستخدم الحالي */
     public static Set<String> getSelectedGovs(Context ctx) {
         return prefs(ctx).getStringSet(KEY_SELECTED, new HashSet<>());
+    }
+
+    /**
+     * المحافظة الأساسية للمستخدم (أول عنصر من المجموعة).
+     * تُستخدم في ReportActivity لتعبئة حقل المحافظة مسبقاً.
+     *
+     * @return اسم المحافظة، أو "" إذا لم يُختر شيء بعد
+     */
+    public static String getPrimaryGov(Context ctx) {
+        Set<String> govs = getSelectedGovs(ctx);
+        return govs.isEmpty() ? "" : govs.iterator().next();
     }
 
     /** حفظ مجموعة محافظات مباشرةً */
