@@ -1,8 +1,6 @@
 package com.missingpersons.app.activities;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
