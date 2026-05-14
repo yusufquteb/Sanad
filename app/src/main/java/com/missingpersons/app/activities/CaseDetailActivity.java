@@ -64,15 +64,6 @@ public class CaseDetailActivity extends AppCompatActivity {
 
         AnalyticsHelper.logScreenView("CaseDetail");
 
-        // Ads: interstitial بعد كل 5 حالات
-        android.content.SharedPreferences prefs =
-            getSharedPreferences("ads_prefs", MODE_PRIVATE);
-        int detailViews = prefs.getInt("detail_view_count", 0) + 1;
-        prefs.edit().putInt("detail_view_count", detailViews).apply();
-        if (detailViews % 5 == 0) {
-            AdsManager.getInstance(this).showInterstitialAd(this, null);
-        }
-
         ensureAuthAndLoad();
     }
 

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import com.google.firebase.database.*;
+import com.missingpersons.app.widget.MissingPersonsWidget;
 import com.missingpersons.app.models.AppDatabase;
 import com.missingpersons.app.models.ReportDao;
 import com.missingpersons.app.models.ReportEntity;
@@ -269,6 +270,7 @@ public class ReportRepository {
     private void finishNode(AtomicInteger pending, Runnable onDone) {
         if (pending.decrementAndGet() == 0) {
             Log.d(TAG, "🏁 sync done — all nodes finished");
+            MissingPersonsWidget.requestUpdate(ctx);
             mainHandler.post(() -> { if (onDone != null) onDone.run(); });
         }
     }

@@ -1,5 +1,6 @@
 package com.missingpersons.app.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.missingpersons.app.R;
+import com.missingpersons.app.utils.LanguageHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +26,11 @@ import java.util.List;
  * السبب: الـ Chips تزدحم مع 28 محافظة — AutoComplete أسرع وأوضح
  */
 public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(LanguageHelper.applyLanguage(context));
+    }
 
     private OnFiltersAppliedListener listener;
     private AutoCompleteTextView actvGovernorate;

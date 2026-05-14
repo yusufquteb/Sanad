@@ -29,6 +29,7 @@ import java.util.*;
 import androidx.lifecycle.ViewModelProvider;
 import com.missingpersons.app.ui.common.AppViewModelFactory;
 import com.missingpersons.app.ui.home.HomeViewModel;
+import com.missingpersons.app.utils.InAppUpdateManager;
 
 public class NewHomeActivity extends AppCompatActivity {
 
@@ -57,6 +58,9 @@ public class NewHomeActivity extends AppCompatActivity {
 
     // [مرحلة 1.2] ViewModel — المصدر الوحيد للحقيقة
     private HomeViewModel viewModel;
+
+    // [7.4] InAppUpdateManager
+    private InAppUpdateManager updateManager;
 
     @Override
     protected void attachBaseContext(android.content.Context ctx) {
@@ -106,6 +110,10 @@ public class NewHomeActivity extends AppCompatActivity {
         viewModel.init(uid, null); // governorate سيُحدَّث بعد الـ location
 
         getLocation();
+
+        // [7.4] فحص التحديثات
+        updateManager = new InAppUpdateManager(this);
+        updateManager.checkForUpdate(false);
     }
 
     private void initViews() {
@@ -690,8 +698,25 @@ public class NewHomeActivity extends AppCompatActivity {
         loadAmberAlerts();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (updateManager != null) updateManager.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == InAppUpdateManager.UPDATE_REQUEST_CODE
+                && resultCode != RESULT_OK
+                && updateManager != null) {
+            updateManager.onUpdateCancelled();
+        }
+    }
+
     @Override protected void onDestroy() {
         super.onDestroy();
+        if (updateManager != null) updateManager.unregister();
         // [مرحلة 1.2] ViewModel يتولى تنظيف الـ listeners في onCleared()
         // نبقّي الـ local cleanup للـ fallback القديم
         FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();

@@ -58,22 +58,17 @@ public class FaceEmbeddingManager {
     private static final String TAG = "FaceEmbeddingManager";
 
     // ── Versioning — لا تغيّر إلا بعد مراجعة Migration ─────
-    /** نسخة النموذج الحالي */
-    public static final String MODEL_VERSION     = "mobilefacenet_v1";
+    /** نسخة النموذج — V2: AdaFace IR18 512-dim */
+    public static final String MODEL_VERSION           = "adaface_ir18";
 
-    /**
-     * نسخة الـ embedding (preprocessing + alignment + normalization).
-     *
-     * ⚠️ متى تُزيدها؟
-     *   - عند تغيير النموذج
-     *   - عند تغيير الـ alignment
-     *   - عند تغيير الـ normalization
-     *   - عند تغيير INPUT_SIZE في TFLiteFaceRecognizer
-     *
-     * عند الزيادة: يجب إعادة توليد كل الـ embeddings في Firebase
-     * وإلا ستُقارن embeddings من نسختين مختلفتين = نتائج خاطئة.
-     */
-    public static final int EMBEDDING_VERSION    = 2;
+    /** نسخة الـ embedding الحالية — V2: AdaFace 512-dim */
+    public static final int    EMBEDDING_VERSION       = 3;
+
+    /** نسخة الـ preprocessing الحالية */
+    public static final int    PREPROCESSING_VERSION   = 2;
+
+    /** نسخة MobileFaceNet القديمة — 128-dim — لا تُطابق مع V3 */
+    public static final int    LEGACY_EMBEDDING_VERSION = 2;
 
     // ────────────────────────────────────────────────────────
     public static final float MATCH_THRESHOLD    = 0.82f;
