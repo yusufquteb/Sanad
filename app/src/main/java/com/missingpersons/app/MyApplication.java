@@ -234,7 +234,6 @@ public class MyApplication extends MultiDexApplication {
                 .directory(new File(getCacheDir(), "image_cache"))
                 .maxSizeBytes(150L * 1024 * 1024)
                 .build())
-            .crossfade(true)
             .crossfade(300)
             .respectCacheHeaders(false)
             .build();
