@@ -2,18 +2,32 @@
   "rules": {
 
     // ════════════════════════════════════════════════════════
-    //  REPORTS — قراءة للجميع المسجّلين، كتابة للصاحب/الأدمن
+    //  REPORTS
     // ════════════════════════════════════════════════════════
     "reports": {
       ".read": "auth != null",
+      ".indexOn": ["status", "timestamp", "reporterId", "approved", "type"],
       "$reportId": {
         ".write": "auth != null && (
-          !data.exists() ||
-          data.child('reporterId').val() === auth.uid ||
-          root.child('users').child(auth.uid).child('role').val() === 'admin' ||
-          root.child('users').child(auth.uid).child('role').val() === 'manager'
+          !data.exists() && (
+            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+            root.child('users').child(auth.uid).child('role').val() === 'manager' ||
+            root.child('users').child(auth.uid).child('approved').val() === true
+          ) ||
+          data.exists() && (
+            data.child('reporterId').val() === auth.uid ||
+            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+            root.child('users').child(auth.uid).child('role').val() === 'manager'
+          )
         )",
-        ".validate": "newData.hasChildren(['personName', 'reporterId', 'timestamp', 'type'])"
+        ".validate": "newData.hasChildren(['personName', 'reporterId', 'timestamp', 'type'])",
+        "status": {
+          ".write": "auth != null && (
+            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+            root.child('users').child(auth.uid).child('role').val() === 'manager' &&
+            root.child('users').child(auth.uid).child('permissions').child('canApproveReports').val() === true
+          )"
+        }
       }
     },
 
@@ -22,64 +36,146 @@
     // ════════════════════════════════════════════════════════
     "found_persons": {
       ".read": "auth != null",
+      ".indexOn": ["status", "timestamp", "reporterId"],
       "$id": {
         ".write": "auth != null && (
-          !data.exists() ||
-          data.child('reporterId').val() === auth.uid ||
-          root.child('users').child(auth.uid).child('role').val() === 'admin'
+          !data.exists() && (
+            root.child('users').child(auth.uid).child('approved').val() === true ||
+            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+            root.child('users').child(auth.uid).child('role').val() === 'manager'
+          ) ||
+          data.exists() && (
+            data.child('reporterId').val() === auth.uid ||
+            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+            root.child('users').child(auth.uid).child('role').val() === 'manager'
+          )
         )"
       }
     },
 
     // ════════════════════════════════════════════════════════
-    //  USERS — كل مستخدم يقرأ/يكتب ملفه فقط، الأدمن يقرأ الكل
+    //  SIGHTINGS — مشاهدات
     // ════════════════════════════════════════════════════════
-    "users": {
-      "$uid": {
-        ".read": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin')",
-        ".write": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin')"
+    "sightings": {
+      ".read": "auth != null",
+      ".indexOn": ["timestamp", "reporterId", "status"],
+      "$id": {
+        ".write": "auth != null"
       }
     },
 
     // ════════════════════════════════════════════════════════
-    //  NOTIFICATIONS — المستخدم يقرأ إشعاراته فقط
+    //  MATCHES
+    // ════════════════════════════════════════════════════════
+    "matches": {
+      ".read": "auth != null && (
+        root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+        root.child('users').child(auth.uid).child('role').val() === 'manager'
+      )",
+      ".write": "auth != null",
+      ".indexOn": ["status", "timestamp", "reportId", "similarity"]
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  HUMAN REVIEW QUEUE
+    // ════════════════════════════════════════════════════════
+    "review_queue": {
+      ".read": "auth != null && (
+        root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+        root.child('users').child(auth.uid).child('role').val() === 'manager'
+      )",
+      ".write": "auth != null",
+      ".indexOn": ["status", "timestamp", "similarity"]
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  USERS
+    // ════════════════════════════════════════════════════════
+    "users": {
+      ".read": "auth != null && (
+        root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+        root.child('users').child(auth.uid).child('role').val() === 'manager'
+      )",
+      "$uid": {
+        ".read": "auth != null && (
+          $uid === auth.uid ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+          root.child('users').child(auth.uid).child('role').val() === 'manager'
+        )",
+        ".write": "auth != null && (
+          $uid === auth.uid ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+          root.child('users').child(auth.uid).child('role').val() === 'manager' &&
+          root.child('users').child(auth.uid).child('permissions').child('canManageMembers').val() === true
+        )",
+        "role": {
+          ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"
+        },
+        "permissions": {
+          ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"
+        },
+        "banned": {
+          ".write": "auth != null && (
+            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+            root.child('users').child(auth.uid).child('role').val() === 'manager' &&
+            root.child('users').child(auth.uid).child('permissions').child('canBanUsers').val() === true
+          )"
+        },
+        "approved": {
+          ".write": "auth != null && (
+            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+            root.child('users').child(auth.uid).child('role').val() === 'manager' &&
+            root.child('users').child(auth.uid).child('permissions').child('canManageMembers').val() === true
+          )"
+        }
+      }
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  NOTIFICATIONS
     // ════════════════════════════════════════════════════════
     "notifications": {
       "$uid": {
-        ".read": "auth != null && auth.uid === $uid",
-        ".write": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin')"
+        ".read": "auth != null && (
+          $uid === auth.uid ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin'
+        )",
+        ".write": "auth != null && (
+          $uid === auth.uid ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+          root.child('users').child(auth.uid).child('role').val() === 'manager' &&
+          root.child('users').child(auth.uid).child('permissions').child('canSendNotifications').val() === true
+        )"
       }
     },
 
     // ════════════════════════════════════════════════════════
-    //  ADMIN NOTIFICATIONS — الأدمن فقط
+    //  ADMIN NOTIFICATIONS
     // ════════════════════════════════════════════════════════
     "admin_notifications": {
-      ".read": "root.child('users').child(auth.uid).child('role').val() === 'admin'",
+      ".read": "auth != null && (
+        root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+        root.child('users').child(auth.uid).child('role').val() === 'manager'
+      )",
       ".write": "auth != null"
     },
 
     // ════════════════════════════════════════════════════════
-    //  CHATS — المشاركون فقط
+    //  CHATS & MESSAGES
     // ════════════════════════════════════════════════════════
     "chats": {
       "$chatId": {
         ".read": "auth != null && (
-          data.child('user1').val() === auth.uid ||
-          data.child('user2').val() === auth.uid ||
-          root.child('users').child(auth.uid).child('role').val() === 'admin'
+          $chatId.contains(auth.uid) ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+          root.child('users').child(auth.uid).child('role').val() === 'manager'
         )",
         ".write": "auth != null && (
-          data.child('user1').val() === auth.uid ||
-          data.child('user2').val() === auth.uid ||
-          !data.exists()
+          $chatId.contains(auth.uid) ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin'
         )"
       }
     },
-
-    // ════════════════════════════════════════════════════════
-    //  MESSAGES — المشاركون في الـ chat
-    // ════════════════════════════════════════════════════════
     "messages": {
       "$chatId": {
         ".read": "auth != null && (
@@ -96,35 +192,13 @@
     },
 
     // ════════════════════════════════════════════════════════
-    //  SETTINGS — قراءة للجميع، كتابة للأدمن فقط
+    //  UNREAD COUNTS
     // ════════════════════════════════════════════════════════
-    "settings": {
-      ".read": "auth != null",
-      ".write": "root.child('users').child(auth.uid).child('role').val() === 'admin'"
-    },
-
-    // ════════════════════════════════════════════════════════
-    //  LEADERBOARD — قراءة للجميع، كتابة للنظام فقط
-    // ════════════════════════════════════════════════════════
-    "leaderboard": {
-      ".read": "auth != null",
-      ".write": "auth != null"
-    },
-
-    // ════════════════════════════════════════════════════════
-    //  SUCCESS STORIES — قراءة للجميع، كتابة للأدمن
-    // ════════════════════════════════════════════════════════
-    "success_stories": {
-      ".read": "auth != null",
-      ".write": "root.child('users').child(auth.uid).child('role').val() === 'admin'"
-    },
-
-    // ════════════════════════════════════════════════════════
-    //  ABUSE REPORTS
-    // ════════════════════════════════════════════════════════
-    "abuse_reports": {
-      ".read": "root.child('users').child(auth.uid).child('role').val() === 'admin'",
-      ".write": "auth != null"
+    "unread_counts": {
+      "$uid": {
+        ".read": "auth != null && $uid === auth.uid",
+        ".write": "auth != null && $uid === auth.uid"
+      }
     },
 
     // ════════════════════════════════════════════════════════
@@ -139,117 +213,75 @@
     },
 
     // ════════════════════════════════════════════════════════
-    //  AMBER ALERTS — قراءة للجميع، كتابة للأدمن
+    //  ABUSE REPORTS
     // ════════════════════════════════════════════════════════
-    "amber_alerts": {
-      ".read": "auth != null",
-      ".write": "root.child('users').child(auth.uid).child('role').val() === 'admin'"
-    }
-  }
-}
-
-
-{
-  "rules": {
-    "users": {
-      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
-      "$uid": {
-        ".read": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
-        ".write": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'manager' && root.child('users').child(auth.uid).child('permissions').child('canManageMembers').val() === true))",
-        "role": {
-          ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"
-        },
-        "permissions": {
-          ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"
-        },
-        "banned": {
-          ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'manager' && root.child('users').child(auth.uid).child('permissions').child('canBanUsers').val() === true))"
-        },
-        "approved": {
-          ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'manager' && root.child('users').child(auth.uid).child('permissions').child('canManageMembers').val() === true))"
-        }
-      }
-    },
-
-    "reports": {
-      ".indexOn": ["status", "timestamp", "reporterId", "approved", "role"],
-      ".read": "auth != null",
-      "$reportId": {
-        ".write": "auth != null && ((!data.exists() && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager' || root.child('users').child(auth.uid).child('approved').val() === true)) || (data.exists() && (data.child('reporterId').val() === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'manager' && (root.child('users').child(auth.uid).child('permissions').child('canEditReports').val() === true || root.child('users').child(auth.uid).child('permissions').child('canDeleteReports').val() === true || root.child('users').child(auth.uid).child('permissions').child('canApproveReports').val() === true)))))",
-        "status": {
-          ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'manager' && root.child('users').child(auth.uid).child('permissions').child('canApproveReports').val() === true))"
-        }
-      }
-    },
-
-    "found_persons": {
-      ".read": "auth != null",
-      ".indexOn": ["status", "timestamp", "reporterId"],
-      "$reportId": {
-        ".write": "auth != null && ((!data.exists() && (root.child('users').child(auth.uid).child('approved').val() === true || root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')) || (data.exists() && (data.child('reporterId').val() === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')))"
-      }
-    },
-
-    "matches": {
-      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
-      ".write": "auth != null"
-    },
-
-    "chats": {
-      "$chatId": {
-        ".read": "auth != null && ($chatId.contains(auth.uid) || root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
-        ".write": "auth != null && ($chatId.contains(auth.uid) || root.child('users').child(auth.uid).child('role').val() === 'admin')"
-      }
-    },
-
-    "notifications": {
-      "$uid": {
-        ".read": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin')",
-        ".write": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'manager' && root.child('users').child(auth.uid).child('permissions').child('canSendNotifications').val() === true))"
-      }
-    },
-
-    "admin_notifications": {
-      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
-      ".write": "auth != null"
-    },
-
-    "unread_counts": {
-      "$uid": {
-        ".read": "auth != null && $uid === auth.uid",
-        ".write": "auth != null && $uid === auth.uid"
-      }
-    },
-
     "abuse_reports": {
-      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
+      ".read": "auth != null && (
+        root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+        root.child('users').child(auth.uid).child('role').val() === 'manager'
+      )",
       ".write": "auth != null",
       ".indexOn": ["timestamp", "status"]
     },
 
+    // ════════════════════════════════════════════════════════
+    //  PENDING APPROVALS
+    // ════════════════════════════════════════════════════════
     "pending_approvals": {
-      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
+      ".read": "auth != null && (
+        root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+        root.child('users').child(auth.uid).child('role').val() === 'manager'
+      )",
       ".write": "auth != null"
     },
 
+    // ════════════════════════════════════════════════════════
+    //  AMBER ALERTS
+    // ════════════════════════════════════════════════════════
+    "amber_alerts": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"
+    },
+
+    // ════════════════════════════════════════════════════════
+    //  LEADERBOARD
+    // ════════════════════════════════════════════════════════
     "leaderboard": {
       ".read": "auth != null",
       ".write": "auth != null"
     },
 
+    // ════════════════════════════════════════════════════════
+    //  SUCCESS STORIES
+    // ════════════════════════════════════════════════════════
     "success_stories": {
       ".read": "auth != null",
-      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')"
+      ".write": "auth != null && (
+        root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+        root.child('users').child(auth.uid).child('role').val() === 'manager'
+      )"
     },
 
+    // ════════════════════════════════════════════════════════
+    //  APP SETTINGS / STATS
+    // ════════════════════════════════════════════════════════
     "app_settings": {
       ".read": "auth != null",
       ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"
     },
-
+    "settings": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"
+    },
     "stats_cache": {
-      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')",
-      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'manager')"
+      ".read": "auth != null && (
+        root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+        root.child('users').child(auth.uid).child('role').val() === 'manager'
+      )",
+      ".write": "auth != null && (
+        root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+        root.child('users').child(auth.uid).child('role').val() === 'manager'
+      )"
     }
   }
 }

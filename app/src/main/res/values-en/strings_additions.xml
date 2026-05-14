@@ -66,11 +66,8 @@
     <string name="share_via">Share via</string>
 
     <!-- ════ Phase 7.1 — Performance / Updates ════ -->
-    <string name="update_available_title">✅ Update Ready</string>
     <string name="update_available_message">Restart to apply the new update</string>
-    <string name="update_restart_action">Restart</string>
     <string name="update_flexible_toast">Downloading update in the background…</string>
-    <string name="update_failed">⚠️ Update failed, try again later</string>
 
     <!-- ════ Phase 7.4 — Play Store ════ -->
     <string name="rate_app_dialog_title">Enjoying the app? ⭐</string>

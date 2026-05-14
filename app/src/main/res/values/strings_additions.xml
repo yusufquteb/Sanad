@@ -87,11 +87,8 @@
     <!-- ════════════════════════════════════════════════
          المرحلة 7.1 — Performance
          ════════════════════════════════════════════════ -->
-    <string name="update_available_title">✅ تحديث جاهز</string>
     <string name="update_available_message">أعد التشغيل لتطبيق التحديث الجديد</string>
-    <string name="update_restart_action">إعادة التشغيل</string>
     <string name="update_flexible_toast">جاري تنزيل التحديث في الخلفية…</string>
-    <string name="update_failed">⚠️ فشل التحديث، حاول لاحقاً</string>
 
     <!-- ════════════════════════════════════════════════
          المرحلة 7.4 — Play Store

@@ -251,28 +251,51 @@ String[] govs = govsList.toArray(new String[0]);
                     StringBuilder matchInfo = new StringBuilder();
 
                     for (DataSnapshot c : snap.getChildren()) {
-                        String storedEmb = c.child("faceEmbedding").getValue(String.class);
-                        if (storedEmb == null || storedEmb.isEmpty()) continue;
-                        float[] reportVec = FaceEmbeddingManager.stringToEmbedding(storedEmb);
-                        if (reportVec == null) continue;
+                        float maxSim = 0f;
+                        float storedQuality = 0f;
 
-                        float sim = FaceEmbeddingManager.cosineSimilarity(sightingEmb, reportVec);
-                        if (sim >= FaceEmbeddingManager.MATCH_THRESHOLD) {
+                        // V3: embeddings array
+                        DataSnapshot embArr = c.child("embeddings");
+                        if (embArr.exists()) {
+                            for (DataSnapshot embSnap : embArr.getChildren()) {
+                                String vecStr = embSnap.child("vector").getValue(String.class);
+                                if (vecStr == null) continue;
+                                float[] vec = FaceEmbeddingManager.stringToEmbedding(vecStr);
+                                if (vec == null) continue;
+                                float sim = FaceEmbeddingManager.cosineSimilarity(sightingEmb, vec);
+                                if (sim > maxSim) maxSim = sim;
+                                Double q = embSnap.child("qualityScore").getValue(Double.class);
+                                if (q != null && q.floatValue() > storedQuality)
+                                    storedQuality = q.floatValue();
+                            }
+                        }
+
+                        // V2 fallback
+                        if (maxSim == 0f) {
+                            String legacyEmb = c.child("faceEmbedding").getValue(String.class);
+                            if (legacyEmb != null && !legacyEmb.isEmpty()) {
+                                float[] vec = FaceEmbeddingManager.stringToEmbedding(legacyEmb);
+                                if (vec != null)
+                                    maxSim = FaceEmbeddingManager.cosineSimilarity(sightingEmb, vec);
+                            }
+                        }
+
+                        if (maxSim < 0.55f) continue;
+
+                        float threshold = DynamicThresholdEngine.computeThreshold(0.5f, storedQuality);
+                        DynamicThresholdEngine.MatchStatus status =
+                            DynamicThresholdEngine.classify(maxSim, threshold, 0.5f);
+
+                        if (status == DynamicThresholdEngine.MatchStatus.AUTO_MATCH
+                                || status == DynamicThresholdEngine.MatchStatus.REVIEW_REQUIRED) {
                             matchCount++;
                             String personName = c.child("personName").getValue(String.class);
-                            String reporterUid = c.child("reporterId").getValue(String.class);
-                            int percent = (int)(sim * 100);
-
-                            matchInfo.append("✅ ")
+                            int percent = (int)(maxSim * 100);
+                            matchInfo.append(
+                                status == DynamicThresholdEngine.MatchStatus.AUTO_MATCH
+                                    ? "✅ " : "⚠️ ")
                                 .append(personName != null ? personName : "مجهول")
                                 .append(" — تطابق ").append(percent).append("%\n");
-
-                            if (reporterUid != null) {
-                                CrossMatchManager.notifySightingMatch(
-                                    reporterUid,
-                                    personName != null ? personName : "مجهول",
-                                    percent, c.getKey());
-                            }
                         }
                     }
 
@@ -410,6 +433,9 @@ String[] govs = govsList.toArray(new String[0]);
             .child(sightingId).setValue(data)
             .addOnSuccessListener(v -> {
                 PointsManager.addPoints(PointsManager.ACTION_SIGHTING_REPORTED, "رؤية جديدة");
+                if (!embedding.isEmpty()) {
+                    CrossMatchManager.matchSightingWithReports(sightingId, uid, embedding);
+                }
                 onUploadFinished(true, "✅ تم رفع البلاغ بنجاح! شكراً على مساعدتك.");
             })
             .addOnFailureListener(e ->

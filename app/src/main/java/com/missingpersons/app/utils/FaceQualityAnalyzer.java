@@ -1,16 +1,10 @@
 package com.missingpersons.app.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
 import com.google.mlkit.vision.face.Face;
-import com.google.mlkit.vision.face.FaceLandmark;
 
 /**
  * FaceQualityAnalyzer — تقييم جودة صورة الوجه بنتيجة عائمة (0.0 – 1.0).
