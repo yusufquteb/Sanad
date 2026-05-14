@@ -1,7 +1,6 @@
 package com.missingpersons.app.activities;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,13 +103,13 @@ public class ReviewQueueAdapter
         // Button listeners (use getAdapterPosition() to handle removals safely)
         h.btnApprove.setOnClickListener(v -> {
             int pos = h.getAdapterPosition();
-            if (pos != RecyclerView.NO_ID && listener != null)
+            if (pos != RecyclerView.NO_POSITION && listener != null)
                 listener.onApprove(item, pos);
         });
 
         h.btnReject.setOnClickListener(v -> {
             int pos = h.getAdapterPosition();
-            if (pos != RecyclerView.NO_ID && listener != null)
+            if (pos != RecyclerView.NO_POSITION && listener != null)
                 listener.onReject(item, pos);
         });
     }
