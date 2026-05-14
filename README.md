@@ -5,7 +5,8 @@
 > **الإصدار:** V2.1 — Production-Ready Reference (النسخة النهائية)  
 > **اللغة:** Java | Android | minSdk 24 / targetSdk 35  
 > **آخر تحديث:** مايو 2026  
-> **حالة المرحلة الأولى:** ✅ مكتملة
+> **حالة المرحلة الأولى:** ✅ مكتملة  
+> **حالة المرحلة الثانية:** ✅ مكتملة
 
 ---
 
@@ -48,10 +49,9 @@
 | الإصدار | 2.0.0 (versionCode 10) |
 | minSdk | 24 |
 | targetSdk | 35 |
-| **النموذج الحالي** | `mobilefacenet.tflite` (5.2MB) |
-| **النموذج المستهدف** | `adaface_ir18_112.tflite` (~3.5MB) |
-| Embedding Dim الحالي | 128-dim `float[]` |
-| Embedding Dim المستهدف | 512-dim `float[]` |
+| **النموذج الحالي** | `adaface_ir18_112.tflite` (44.6MB — الحقيقي) |
+| **النموذج القديم** | `mobilefacenet.tflite` (5.2MB — legacy) |
+| Embedding Dim | 512-dim `float[]` (auto-detected) |
 | خوارزمية المقارنة | Cosine Similarity |
 | Threshold الحالي | `0.82f` (ثابت) |
 | Threshold المستهدف | Dynamic (0.72 – 0.85) |
@@ -988,7 +988,7 @@ public static final int    LEGACY_EMBEDDING_VERSION = 2;   // MobileFaceNet 128-
 
 | المهمة | الأثر | الملفات المتأثرة | الحالة |
 |--------|-------|-----------------|--------|
-| إضافة `adaface_ir18_112.tflite` | +++ | `assets/models/` | ⚠️ Placeholder: MobileFaceNet 128-dim — يعمل الآن |
+| إضافة `adaface_ir18_112.tflite` | +++ | `assets/models/` | ✅ النموذج الحقيقي 44.6MB — 512-dim |
 | `FivePointAligner.java` | +++ | جديد | ✅ منتهي |
 | `FaceQualityAnalyzer.java` (float score) | ++ | يستبدل `ImageQualityEnhancer` | ✅ منتهي |
 | `AdaFaceRecognizer.java` | +++ | يستبدل `TFLiteFaceRecognizer` | ✅ منتهي |
@@ -998,22 +998,23 @@ public static final int    LEGACY_EMBEDDING_VERSION = 2;   // MobileFaceNet 128-
 | تحديث `ImagePreprocessor.java` — `preprocessFromUri` | + | إضافة دوال | ✅ منتهي |
 | Debug Snapshots في Room DB (Admin فقط) | ++ | جديد | 🟠 المرحلة الثانية |
 
-> **ملاحظة الـ Placeholder:**  
-> `adaface_ir18_112.tflite` الحالي هو نسخة من `mobilefacenet.tflite` (128-dim) — يعمل التطبيق به الآن.  
-> لرفع الدقة لـ 512-dim: استبدل الملف بـ AdaFace IR18 الحقيقي من https://github.com/mk-minchul/AdaFace  
-> الكود يكتشف أبعاد الإخراج تلقائياً — لا يحتاج تعديل عند الاستبدال.
+> **الحالة:** `adaface_ir18_112.tflite` الحقيقي (44.6MB) موجود في `assets/models/`.  
+> `AdaFaceRecognizer` يكتشف أبعاد الإخراج تلقائياً من `interp.getOutputTensor(0).shape()` — لا يحتاج تعديل عند تغيير النموذج.
 
 **النتيجة المتوقعة:** رفع الدقة الواقعية من ~55% إلى ~82%
 
-### 🟠 المرحلة الثانية — بعد الاستقرار
+### ✅ المرحلة الثانية — مكتملة
 
-| المهمة | الأثر |
-|--------|-------|
-| `DynamicThresholdEngine.java` | ++ |
-| Human Review Queue UI للإدارة | +++ |
-| `TopKCandidateRanker.java` + UI | +++ |
-| إصلاح `FoundSightingActivity` → `matchSightingWithReports()` | ++ |
-| Migration Tool للـ embeddings القديمة (V2→V3) | ++ |
+| المهمة | الأثر | الحالة |
+|--------|-------|--------|
+| `DynamicThresholdEngine.java` — عتبة ديناميكية (0.72–0.82) | ++ | ✅ منتهي |
+| `MultiEmbeddingIdentity.java` — هوية متعددة الصور | ++ | ✅ منتهي |
+| `TopKCandidateRanker.java` — ترتيب أفضل K مرشحين | +++ | ✅ منتهي |
+| `HumanReviewQueueManager.java` — إدارة قائمة المراجعة | +++ | ✅ منتهي |
+| `EmbeddingMigrationTool.java` — أداة رصد V2→V3 | ++ | ✅ منتهي |
+| إصلاح `FoundSightingActivity` → `matchSightingWithReports()` + V3 | ++ | ✅ منتهي |
+| إضافة `matchSightingWithReports()` في `CrossMatchManager` | ++ | ✅ منتهي |
+| `database.rules.json` — دمج وإصلاح + `.indexOn` للـ sightings | + | ✅ منتهي |
 
 ### 🟡 المرحلة الثالثة — لاحقاً
 

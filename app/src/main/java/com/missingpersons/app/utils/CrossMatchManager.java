@@ -244,6 +244,106 @@ public class CrossMatchManager {
     }
 
     // ════════════════════════════════════════════════════════
+    //  matchSightingWithReports (V2+V3 + DynamicThreshold)
+    // ════════════════════════════════════════════════════════
+
+    public static void matchSightingWithReports(String sightingId, String sighterUid,
+                                                 String embedding) {
+        Log.d(TAG, "matchSightingWithReports: sightingId=" + sightingId);
+
+        if (embedding == null || embedding.isEmpty()) {
+            Log.w(TAG, "⚠️ embedding فارغة");
+            return;
+        }
+
+        float[] sightingVec = FaceEmbeddingManager.stringToEmbedding(embedding);
+        if (sightingVec == null || sightingVec.length < MIN_EMBEDDING_DIM) {
+            Log.w(TAG, "⚠️ embedding غير صالح dim="
+                + (sightingVec != null ? sightingVec.length : 0));
+            return;
+        }
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("reports");
+        ref.orderByChild("status").equalTo("approved")
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int compared = 0, matched = 0;
+
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        float maxSim = 0f;
+                        float storedQuality = 0f;
+
+                        // V3: embeddings array
+                        DataSnapshot embArr = child.child("embeddings");
+                        if (embArr.exists()) {
+                            for (DataSnapshot embSnap : embArr.getChildren()) {
+                                String vecStr = embSnap.child("vector").getValue(String.class);
+                                if (vecStr == null) continue;
+                                float[] vec = FaceEmbeddingManager.stringToEmbedding(vecStr);
+                                if (vec == null || vec.length < MIN_EMBEDDING_DIM) continue;
+                                float sim = FaceEmbeddingManager.cosineSimilarity(sightingVec, vec);
+                                if (sim > maxSim) maxSim = sim;
+                                Double q = embSnap.child("qualityScore").getValue(Double.class);
+                                if (q != null && q.floatValue() > storedQuality)
+                                    storedQuality = q.floatValue();
+                            }
+                        }
+
+                        // V2 fallback
+                        if (maxSim == 0f) {
+                            String legacyEmb = child.child("faceEmbedding").getValue(String.class);
+                            if (legacyEmb != null && !legacyEmb.isEmpty()) {
+                                float[] vec = FaceEmbeddingManager.stringToEmbedding(legacyEmb);
+                                if (vec != null && vec.length >= MIN_EMBEDDING_DIM)
+                                    maxSim = FaceEmbeddingManager.cosineSimilarity(sightingVec, vec);
+                            }
+                        }
+
+                        if (maxSim < 0.55f) continue;
+                        compared++;
+
+                        float threshold = DynamicThresholdEngine.computeThreshold(0.5f, storedQuality);
+                        DynamicThresholdEngine.MatchStatus status =
+                            DynamicThresholdEngine.classify(maxSim, threshold, 0.5f);
+
+                        if (status == DynamicThresholdEngine.MatchStatus.INSUFFICIENT_QUALITY
+                                || status == DynamicThresholdEngine.MatchStatus.AUTO_NO_MATCH) continue;
+
+                        String reporterUid = child.child("reporterId").getValue(String.class);
+                        String reportId    = child.getKey();
+                        String personName  = strVal(child, "personName");
+                        if (personName.isEmpty()) personName = "مجهول";
+                        int percent = (int)(maxSim * 100);
+                        matched++;
+
+                        if (status == DynamicThresholdEngine.MatchStatus.AUTO_MATCH) {
+                            Log.i(TAG, "🎉 sighting AUTO_MATCH: " + sightingId
+                                + " ↔ " + reportId + " = " + percent + "%");
+                            if (reporterUid != null)
+                                notifySightingMatch(reporterUid, personName, percent, reportId);
+                            saveSightingMatchRecord(sightingId, reportId, maxSim,
+                                sighterUid, reporterUid, "confirmed");
+                        } else {
+                            Log.i(TAG, "⚠️ sighting REVIEW_REQUIRED: " + sightingId
+                                + " ↔ " + reportId + " = " + percent + "%");
+                            saveSightingMatchRecord(sightingId, reportId, maxSim,
+                                sighterUid, reporterUid, "pending_verification");
+                            saveToReviewQueue(sightingId, reportId, maxSim, personName);
+                        }
+                    }
+                    Log.d(TAG, "matchSightingWithReports done: compared="
+                        + compared + " matched=" + matched);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError e) {
+                    Log.e(TAG, "matchSightingWithReports cancelled: " + e.getMessage());
+                }
+            });
+    }
+
+    // ════════════════════════════════════════════════════════
     //  notifySightingMatch
     // ════════════════════════════════════════════════════════
 
@@ -390,6 +490,49 @@ public class CrossMatchManager {
         n.put("read",       false);
         FirebaseDatabase.getInstance()
                 .getReference("notifications").child(uid).push().setValue(n);
+    }
+
+    private static void saveSightingMatchRecord(String sightingId, String reportId,
+                                                 float similarity, String sighterUid,
+                                                 String reporterUid, String status) {
+        Map<String, Object> match = new HashMap<>();
+        match.put("type",        "sighting");
+        match.put("sightingId",  sightingId);
+        match.put("reportId",    reportId);
+        match.put("similarity",  similarity);
+        match.put("sighterUid",  sighterUid != null ? sighterUid : "");
+        match.put("reporterUid", reporterUid != null ? reporterUid : "");
+        match.put("status",      status);
+        match.put("timestamp",   System.currentTimeMillis());
+
+        String key = FirebaseDatabase.getInstance()
+            .getReference("matches").push().getKey();
+        if (key != null) {
+            FirebaseDatabase.getInstance()
+                .getReference("matches").child(key)
+                .setValue(match)
+                .addOnSuccessListener(v -> Log.d(TAG, "✅ sighting match record: " + key))
+                .addOnFailureListener(e -> Log.e(TAG,
+                    "sighting match record failed: " + e.getMessage()));
+        }
+    }
+
+    private static void saveToReviewQueue(String sightingId, String reportId,
+                                           float similarity, String personName) {
+        Map<String, Object> review = new HashMap<>();
+        review.put("type",       "sighting_review");
+        review.put("sightingId", sightingId);
+        review.put("reportId",   reportId);
+        review.put("similarity", similarity);
+        review.put("personName", personName);
+        review.put("status",     "pending");
+        review.put("timestamp",  System.currentTimeMillis());
+
+        FirebaseDatabase.getInstance()
+            .getReference("review_queue").push().setValue(review)
+            .addOnSuccessListener(v -> Log.d(TAG, "✅ review queue entry added"))
+            .addOnFailureListener(e -> Log.e(TAG,
+                "review queue failed: " + e.getMessage()));
     }
 
     private static void sendAdminMatchNotif(String personName, int percent,
