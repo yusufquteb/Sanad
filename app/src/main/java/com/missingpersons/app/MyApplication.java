@@ -24,7 +24,6 @@ import com.missingpersons.app.utils.FaceEmbeddingManager;
 import com.missingpersons.app.utils.RateLimiter;
 import com.missingpersons.app.utils.RoleManager;
 import com.missingpersons.app.utils.AdaFaceRecognizer;
-import com.missingpersons.app.utils.TFLiteFaceRecognizer;
 import com.missingpersons.app.workers.BackgroundMatchWorker;
 import com.missingpersons.app.workers.ProximityCheckWorker;
 import com.missingpersons.app.workers.ChatCleanupWorker;

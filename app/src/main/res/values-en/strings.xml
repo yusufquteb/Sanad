@@ -164,4 +164,22 @@
 
     <!-- Phase 2 — Duplicate detection -->
     <string name="similar_report_found">A similar report found with %1$s%% match\nReport ID: %2$s\nDo you want to continue?</string>
+
+    <!-- Settings sections -->
+    <string name="settings_notifications_section">Notifications</string>
+    <string name="settings_master_notif">Enable Notifications</string>
+    <string name="settings_match_notif">Match Notifications</string>
+    <string name="settings_amber_notif">Missing Child Alerts</string>
+    <string name="settings_app_section">App</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_clear_cache">Clear Cache</string>
+    <string name="settings_clear_cache_done">Cache cleared ✓</string>
+    <string name="settings_privacy_section">Privacy</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_terms">Terms of Use</string>
+    <string name="settings_about_section">About</string>
+    <string name="settings_contact">Contact Us</string>
+    <string name="settings_app_nonprofit">Non-profit — Ad-free</string>
+    <string name="privacy_policy_url">https://sanad-app.com/privacy</string>
+    <string name="terms_url">https://sanad-app.com/terms</string>
 </resources>
