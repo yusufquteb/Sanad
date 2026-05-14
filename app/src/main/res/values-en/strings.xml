@@ -149,4 +149,19 @@
     <string name="update_restart_action">Restart</string>
     <string name="update_failed">Update download failed. Please try again later.</string>
     <string name="settings_title">Settings</string>
+
+    <!-- Phase 4.3 — Contextual empty states -->
+    <string name="empty_browse_offline">📵 You\'re offline\nShowing last cached data</string>
+    <string name="empty_browse_filter">🔍 No results for the selected filters\nTry changing or resetting the filters</string>
+    <string name="empty_browse_default">No reports yet\nBe the first to contribute!</string>
+    <string name="empty_my_reports">You haven\'t submitted any reports yet\nTap ＋ to submit your first report and help find someone</string>
+    <string name="empty_notifications">No new notifications\nYou\'ll be notified when a match is found</string>
+    <string name="empty_leaderboard">Be the first on the leaderboard!\nSubmit reports and help find missing persons</string>
+
+    <!-- Phase 4.4 — Onboarding slide 4: AI Matching -->
+    <string name="onboard_title_4">How AI Matching Works</string>
+    <string name="onboard_desc_4">When a report is submitted, the system automatically analyses facial features\nand compares them against thousands of other reports\nto find any possible match in seconds</string>
+
+    <!-- Phase 2 — Duplicate detection -->
+    <string name="similar_report_found">A similar report found with %1$s%% match\nReport ID: %2$s\nDo you want to continue?</string>
 </resources>
