@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- layout_animation_fall_down.xml: تطبق item_fall_down على الـ RecyclerView عند تغيير البيانات -->
-<layoutAnimation
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:animation="@anim/item_fall_down"
-    android:animationOrder="normal"
-    android:delay="0.1"/>
