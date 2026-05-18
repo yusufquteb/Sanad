@@ -3,10 +3,10 @@ package com.missingpersons.app.utils;
 /**
  * DynamicThresholdEngine — عتبة مطابقة ديناميكية بناءً على جودة الصورة.
  *
- * بدلاً من عتبة ثابتة (0.82f)، تتكيف العتبة مع جودة الصورتين:
- *   - جودة عالية (≥0.70) → عتبة صارمة  0.82f
- *   - جودة متوسطة (≥0.55)→ عتبة مرنة   0.77f
- *   - جودة منخفضة (≥0.45)→ عتبة مرنة   0.72f + Human Review إلزامي
+ * بدلاً من عتبة ثابتة، تتكيف العتبة مع جودة الصورتين (AdaFace IR18):
+ *   - جودة عالية (≥0.70) → عتبة صارمة  0.77f
+ *   - جودة متوسطة (≥0.55)→ عتبة مرنة   0.72f
+ *   - جودة منخفضة (≥0.45)→ عتبة مرنة   0.68f + Human Review إلزامي
  *   - أقل من 0.45         → رفض (INSUFFICIENT_QUALITY)
  */
 public final class DynamicThresholdEngine {
@@ -20,13 +20,13 @@ public final class DynamicThresholdEngine {
      *
      * @param queryQuality  جودة صورة الاستعلام (0.0–1.0)
      * @param storedQuality جودة الصورة المخزنة (0.0–1.0)
-     * @return العتبة المناسبة (0.72 – 0.82)
+     * @return العتبة المناسبة (0.68 – 0.77)
      */
     public static float computeThreshold(float queryQuality, float storedQuality) {
         float minQuality = Math.min(queryQuality, storedQuality);
-        if (minQuality >= 0.70f) return 0.82f;
-        if (minQuality >= 0.55f) return 0.77f;
-        return 0.72f;
+        if (minQuality >= 0.70f) return 0.77f;
+        if (minQuality >= 0.55f) return 0.72f;
+        return 0.68f;
     }
 
     /**

@@ -48,14 +48,17 @@ public class TFLiteFaceRecognizer {
     private static final float  IMAGE_STD    = 128f;
 
     /**
-     * عتبة التطابق — 0.82f
+     * عتبة التطابق — 0.72f
      *
-     * تم رفعها من 0.75f بعد اكتشاف أن القيمة القديمة كانت تتيح
-     * تطابقاً بين وجوه مختلفة تماماً (عجوز مع طفل، رجل مع امرأة).
+     * خُفِّضت من 0.82f لأن الصور الواقعية (إضاءة مختلفة، زوايا، جودة منخفضة)
+     * تُعطي cosine similarity بين 0.60–0.78 لنفس الشخص.
+     * 0.82 كانت عالية جداً وتمنع أي تطابق حقيقي.
      *
-     * لا تُخفِّض هذه القيمة إلا بعد اختبار دقيق على بيانات حقيقية.
+     * النطاق الواقعي بعد L2-normalize:
+     *   نفس الشخص (صور متنوعة): 0.60 – 0.85
+     *   0.72 = توازن بين التحقق والمرونة لتطبيق المفقودين.
      */
-    public static final float MATCH_THRESHOLD = 0.82f;
+    public static final float MATCH_THRESHOLD = 0.72f;
 
     private static TFLiteFaceRecognizer instance;
     private Interpreter interpreter;
@@ -152,13 +155,13 @@ public class TFLiteFaceRecognizer {
     }
 
     private MappedByteBuffer loadModelFile(Context ctx) throws IOException {
-        try (FileInputStream fis = new FileInputStream(
-                ctx.getAssets().openFd(MODEL_FILE).getFileDescriptor())) {
-            FileChannel fc = fis.getChannel();
-            long offset = ctx.getAssets().openFd(MODEL_FILE).getStartOffset();
-            long length = ctx.getAssets().openFd(MODEL_FILE).getDeclaredLength();
-            return fc.map(FileChannel.MapMode.READ_ONLY, offset, length);
-        }
+        android.content.res.AssetFileDescriptor fd = ctx.getAssets().openFd(MODEL_FILE);
+        FileInputStream fis = new FileInputStream(fd.getFileDescriptor());
+        MappedByteBuffer buf = fis.getChannel().map(
+            FileChannel.MapMode.READ_ONLY, fd.getStartOffset(), fd.getDeclaredLength());
+        fis.close();
+        fd.close();
+        return buf;
     }
 
     public void close() {

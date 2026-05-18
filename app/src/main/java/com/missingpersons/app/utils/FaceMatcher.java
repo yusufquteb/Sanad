@@ -27,7 +27,7 @@ import android.util.Log;
 public class FaceMatcher {
 
     private static final String TAG = "FaceMatcher";
-    private TFLiteFaceRecognizer tfliteFaceRecognizer;
+    private final AdaFaceRecognizer adaFaceRecognizer;
     private final Context context;
 
     public interface MatchCallback {
@@ -36,7 +36,7 @@ public class FaceMatcher {
 
     public FaceMatcher(Context context) {
         this.context = context;
-        this.tfliteFaceRecognizer = TFLiteFaceRecognizer.getInstance(context);
+        this.adaFaceRecognizer = AdaFaceRecognizer.getInstance(context);
     }
 
     /**
@@ -58,8 +58,8 @@ public class FaceMatcher {
             return;
         }
 
-        if (tfliteFaceRecognizer == null || !tfliteFaceRecognizer.isAvailable()) {
-            Log.e(TAG, "❌ TFLite غير متاح — لا يمكن إجراء مقارنة موثوقة");
+        if (adaFaceRecognizer == null || !adaFaceRecognizer.isAvailable()) {
+            Log.e(TAG, "❌ AdaFace غير متاح — لا يمكن إجراء مقارنة موثوقة");
             new Handler(Looper.getMainLooper()).post(() ->
                 callback.onResult(false, 0f,
                     "نموذج التعرف على الوجوه غير متاح — لا يمكن المقارنة"));
@@ -91,27 +91,27 @@ public class FaceMatcher {
 
                         Bitmap croppedFace2 = result2.croppedFaces.get(0);
 
-                        float[] embedding1 = tfliteFaceRecognizer.recognize(croppedFace1);
-                        float[] embedding2 = tfliteFaceRecognizer.recognize(croppedFace2);
+                        float[] embedding1 = adaFaceRecognizer.embed(croppedFace1);
+                        float[] embedding2 = adaFaceRecognizer.embed(croppedFace2);
 
                         if (embedding1 == null || embedding2 == null) {
-                            Log.e(TAG, "❌ فشل استخراج embedding من TFLite");
+                            Log.e(TAG, "❌ فشل استخراج embedding من AdaFace");
                             new Handler(Looper.getMainLooper()).post(() ->
                                 callback.onResult(false, 0f,
                                     "فشل استخراج بصمة الوجه — حاول بصورة أوضح"));
                             return;
                         }
 
-                        float similarity = TFLiteFaceRecognizer.cosineSimilarity(embedding1, embedding2);
-                        boolean isMatch = similarity >= TFLiteFaceRecognizer.MATCH_THRESHOLD;
+                        float similarity = AdaFaceRecognizer.cosineSimilarity(embedding1, embedding2);
+                        boolean isMatch = similarity >= FaceEmbeddingManager.MATCH_THRESHOLD;
 
                         Log.d(TAG, "similarity=" + String.format("%.3f", similarity)
-                                + " threshold=" + TFLiteFaceRecognizer.MATCH_THRESHOLD
+                                + " threshold=" + FaceEmbeddingManager.MATCH_THRESHOLD
                                 + " isMatch=" + isMatch);
 
                         String message = isMatch
                                 ? "✅ تطابق بنسبة " + (int)(similarity * 100) + "%"
-                                : "❌ لا تطابق — نسبة التشابه " + (int)(similarity * 100) + "% (الحد الأدنى 82%)";
+                                : "❌ لا تطابق — نسبة التشابه " + (int)(similarity * 100) + "% (الحد الأدنى 72%)";
 
                         new Handler(Looper.getMainLooper()).post(() ->
                                 callback.onResult(isMatch, similarity, message));
@@ -145,18 +145,18 @@ public class FaceMatcher {
      *   float sim = FaceEmbeddingManager.cosineSimilarity(emb1, emb2);
      */
     public float compareFacesSync(Bitmap bitmap1, Bitmap bitmap2) {
-        // لا pixel fallback — نُعيد 0f إذا لم يكن TFLite متاحاً
-        if (tfliteFaceRecognizer == null || !tfliteFaceRecognizer.isAvailable()) {
-            Log.e(TAG, "compareFacesSync: TFLite غير متاح");
+        // لا pixel fallback — نُعيد 0f إذا لم يكن AdaFace متاحاً
+        if (adaFaceRecognizer == null || !adaFaceRecognizer.isAvailable()) {
+            Log.e(TAG, "compareFacesSync: AdaFace غير متاح");
             return 0f;
         }
         if (bitmap1 == null || bitmap2 == null) return 0f;
 
-        float[] emb1 = tfliteFaceRecognizer.recognize(bitmap1);
-        float[] emb2 = tfliteFaceRecognizer.recognize(bitmap2);
+        float[] emb1 = adaFaceRecognizer.embed(bitmap1);
+        float[] emb2 = adaFaceRecognizer.embed(bitmap2);
         if (emb1 == null || emb2 == null) return 0f;
 
-        return TFLiteFaceRecognizer.cosineSimilarity(emb1, emb2);
+        return AdaFaceRecognizer.cosineSimilarity(emb1, emb2);
     }
 
     /**
@@ -164,12 +164,10 @@ public class FaceMatcher {
      * يستخدم نفس العتبة كـ TFLiteFaceRecognizer (0.82f)
      */
     public boolean isMatch(float similarity) {
-        return similarity >= TFLiteFaceRecognizer.MATCH_THRESHOLD;
+        return similarity >= FaceEmbeddingManager.MATCH_THRESHOLD;
     }
 
     public void release() {
-        if (tfliteFaceRecognizer != null) {
-            tfliteFaceRecognizer.close();
-        }
+        // AdaFaceRecognizer is a singleton — no explicit close needed
     }
 }

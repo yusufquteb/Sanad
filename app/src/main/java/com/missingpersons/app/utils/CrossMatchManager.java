@@ -29,11 +29,10 @@ public class CrossMatchManager {
     private static final String TAG = "CrossMatchManager";
 
     /**
-     * عتبة المطابقة الموحدة — مرتبطة بـ TFLiteFaceRecognizer
-     * لا تُغيَّر هنا، غيِّرها في TFLiteFaceRecognizer.MATCH_THRESHOLD فقط.
+     * عتبة المطابقة الموحدة — مصدر الحقيقة الوحيد هو FaceEmbeddingManager
      */
     private static float getMatchThreshold() {
-        return TFLiteFaceRecognizer.MATCH_THRESHOLD; // 0.82f
+        return FaceEmbeddingManager.MATCH_THRESHOLD; // 0.72f
     }
 
     /**
