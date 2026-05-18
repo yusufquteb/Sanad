@@ -75,8 +75,7 @@
     <string name="rate_app_positive">Rate Now</string>
     <string name="rate_app_later">Maybe Later</string>
     <string name="rate_app_never">No Thanks</string>
-    <string name="privacy_policy_url">https://sanad-app.web.app/privacy</string>
-    <string name="terms_url">https://sanad-app.web.app/terms</string>
+    
     <string name="app_short_description">Free platform to find missing persons and reunite families</string>
 
     <!-- ════ Phase 7.2 — Accessibility ════ -->
