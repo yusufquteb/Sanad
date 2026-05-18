@@ -57,7 +57,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:navigationBarColor">#1B2F7A</item>
-        <item name="android:windowLightNavigationBar">false</item>
+        
 
         <item name="android:layoutDirection">rtl</item>
         <item name="elevationOverlayEnabled">false</item>
