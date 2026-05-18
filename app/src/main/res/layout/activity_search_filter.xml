@@ -167,6 +167,14 @@
 
                 </HorizontalScrollView>
 
+                <!-- Reset button added to match your Java code -->
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_reset_filters"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="إعادة تعيين"
+    style="@style/Widget.Material3.Button.TextButton"
+    android:layout_marginBottom="8dp"/>
                 <!-- Search button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_filter_search"

@@ -221,8 +221,8 @@ public class EnhancedAdminDashboardActivity extends AppCompatActivity {
                 ? item.personName : "غير معروف";
         new AlertDialog.Builder(this)
                 .setTitle("تأكيد الرفض")
-                .setMessage("هل تريد رفض تطابق الشخص "" + name + ""؟\n"
-                        + "نسبة التشابه: " + item.getPercent() + "%")
+                .setMessage("هل تريد رفض تطابق الشخص \"" + name + "\"\n"
+        + "نسبة التشابه: " + item.getPercent() + "%")
                 .setPositiveButton("رفض", (d, w) -> handleReject(item, position))
                 .setNegativeButton("إلغاء", null)
                 .show();
