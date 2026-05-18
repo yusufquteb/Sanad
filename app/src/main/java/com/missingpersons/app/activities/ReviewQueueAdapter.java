@@ -102,13 +102,13 @@ public class ReviewQueueAdapter
 
         // Button listeners (use getAdapterPosition() to handle removals safely)
         h.btnApprove.setOnClickListener(v -> {
-            int pos = h.getAdapterPosition();
+            int pos = h.getBindingAdapterPosition();
             if (pos != RecyclerView.NO_POSITION && listener != null)
                 listener.onApprove(item, pos);
         });
 
         h.btnReject.setOnClickListener(v -> {
-            int pos = h.getAdapterPosition();
+            int pos = h.getBindingAdapterPosition();
             if (pos != RecyclerView.NO_POSITION && listener != null)
                 listener.onReject(item, pos);
         });
