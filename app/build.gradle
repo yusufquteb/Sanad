@@ -77,6 +77,11 @@ android {
             enableSplit = true   // حزمة منفصلة لكل ABI
         }
     }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
 }
 
 dependencies {

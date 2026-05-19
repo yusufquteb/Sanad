@@ -9,7 +9,7 @@ import androidx.work.*;
 import com.google.firebase.database.*;
 import com.missingpersons.app.utils.FaceEmbeddingManager;
 import com.missingpersons.app.utils.NotificationHelper;
-import com.missingpersons.app.utils.TFLiteFaceRecognizer;
+
 
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
@@ -39,10 +39,10 @@ public class BackgroundMatchWorker extends Worker {
     private static final long   TIMEOUT = 30L; // ثواني
 
     /**
-     * العتبة الموحدة — مصدر الحقيقة الوحيد هو TFLiteFaceRecognizer
+     * العتبة الموحدة — مصدر الحقيقة الوحيد هو FaceEmbeddingManager
      */
     private static float getThreshold() {
-        return TFLiteFaceRecognizer.MATCH_THRESHOLD; // 0.82f
+        return FaceEmbeddingManager.MATCH_THRESHOLD; // 0.72f
     }
 
     /**

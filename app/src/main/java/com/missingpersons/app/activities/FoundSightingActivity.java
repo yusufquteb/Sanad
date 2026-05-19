@@ -25,7 +25,6 @@ import com.google.firebase.database.*;
 import com.google.firebase.storage.*;
 
 import com.missingpersons.app.R;
-import com.google.android.material.card.MaterialCardView;
 import com.missingpersons.app.utils.*;
 
 import java.io.*;
@@ -205,12 +204,10 @@ String[] govs = govsList.toArray(new String[0]);
         if (res != RESULT_OK) return;
         try {
             if (req == REQ_CAMERA && photoUri != null) {
-                photoBitmap = MediaStore.Images.Media.getBitmap(
-                    getContentResolver(), photoUri);
+                photoBitmap = loadBitmap(photoUri);
             } else if (req == REQ_GALLERY && data != null && data.getData() != null) {
                 photoUri    = data.getData();
-                photoBitmap = MediaStore.Images.Media.getBitmap(
-                    getContentResolver(), photoUri);
+                photoBitmap = loadBitmap(photoUri);
             }
             if (photoBitmap != null) {
                 ivPhoto.setImageBitmap(photoBitmap);
@@ -478,4 +475,13 @@ String[] govs = govsList.toArray(new String[0]);
 
     @Override
     public boolean onSupportNavigateUp() { finish(); return true; }
+
+    private Bitmap loadBitmap(Uri uri) throws java.io.IOException {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            return android.graphics.ImageDecoder.decodeBitmap(
+                android.graphics.ImageDecoder.createSource(getContentResolver(), uri));
+        }
+        //noinspection deprecation
+        return MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+    }
 }

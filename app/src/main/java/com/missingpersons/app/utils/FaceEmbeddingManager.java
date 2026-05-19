@@ -71,7 +71,7 @@ public class FaceEmbeddingManager {
     public static final int    LEGACY_EMBEDDING_VERSION = 2;
 
     // ────────────────────────────────────────────────────────
-    public static final float MATCH_THRESHOLD    = 0.82f;
+    public static final float MATCH_THRESHOLD    = 0.72f;
 
     private static Context       appContext;
     private static final ExecutorService executor     = Executors.newFixedThreadPool(2);
@@ -93,14 +93,15 @@ public class FaceEmbeddingManager {
     public static void init(Context ctx) {
         appContext = ctx.getApplicationContext();
         executor.execute(() -> {
-            TFLiteFaceRecognizer rec = TFLiteFaceRecognizer.getInstance(appContext);
-            if (rec.isAvailable()) {
-                Log.i(TAG, "✅ TFLite جاهز — model=" + MODEL_VERSION
+            AdaFaceRecognizer rec = AdaFaceRecognizer.getInstance(appContext);
+            if (rec != null && rec.isAvailable()) {
+                Log.i(TAG, "✅ AdaFace جاهز — model=" + MODEL_VERSION
+                    + " dim=" + rec.getEmbeddingDim()
                     + " embeddingVersion=" + EMBEDDING_VERSION
                     + " threshold=" + MATCH_THRESHOLD);
             } else {
                 AiError.logAll(TAG, AiError.MODEL_NOT_LOADED,
-                    "FaceEmbeddingManager.init()", null);
+                    "FaceEmbeddingManager.init(): AdaFaceRecognizer unavailable", null);
             }
         });
     }
@@ -126,11 +127,11 @@ public class FaceEmbeddingManager {
         }
 
         executor.execute(() -> {
-            // 1. تحقق من TFLite
-            TFLiteFaceRecognizer rec = TFLiteFaceRecognizer.getInstance(appContext);
-            if (!rec.isAvailable()) {
+            // 1. تحقق من AdaFaceRecognizer
+            AdaFaceRecognizer rec = AdaFaceRecognizer.getInstance(appContext);
+            if (rec == null || !rec.isAvailable()) {
                 AiError.logAll(TAG, AiError.MODEL_NOT_LOADED,
-                    "extractEmbedding: TFLite unavailable", null);
+                    "extractEmbedding: AdaFaceRecognizer unavailable", null);
                 mainHandler.post(() -> callback.onError(AiError.MODEL_NOT_LOADED));
                 return;
             }
@@ -174,11 +175,11 @@ public class FaceEmbeddingManager {
                     return;
                 }
 
-                // 6. TFLite → Embedding
-                float[] emb = rec.recognize(cropped);
+                // 6. AdaFace → Embedding
+                float[] emb = rec.embed(cropped);
                 if (emb == null) {
                     AiError.logAll(TAG, AiError.EMBEDDING_EXTRACTION_FAILED,
-                        "TFLite.recognize() → null", null);
+                        "AdaFace.embed() → null", null);
                     mainHandler.post(() -> callback.onError(AiError.EMBEDDING_EXTRACTION_FAILED));
                     return;
                 }
@@ -213,9 +214,9 @@ public class FaceEmbeddingManager {
         if (bitmap == null) return null;
 
         Context context = (ctx != null) ? ctx : appContext;
-        TFLiteFaceRecognizer rec = TFLiteFaceRecognizer.getInstance(context);
-        if (!rec.isAvailable()) {
-            AiError.log(TAG, AiError.MODEL_NOT_LOADED, "extractEmbeddingSync");
+        AdaFaceRecognizer rec = AdaFaceRecognizer.getInstance(context);
+        if (rec == null || !rec.isAvailable()) {
+            AiError.log(TAG, AiError.MODEL_NOT_LOADED, "extractEmbeddingSync: AdaFace unavailable");
             return null;
         }
 
@@ -246,7 +247,7 @@ public class FaceEmbeddingManager {
                 return null;
             }
 
-            float[] emb = rec.recognize(cropped);
+            float[] emb = rec.embed(cropped);
             if (emb != null)
                 Log.d(TAG, "✅ sync embedding dim=" + emb.length);
             return emb;

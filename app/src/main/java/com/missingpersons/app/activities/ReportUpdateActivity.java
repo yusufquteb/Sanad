@@ -210,7 +210,14 @@ public class ReportUpdateActivity extends AppCompatActivity {
         new Thread(() -> {
             try {
                 // 1. تحميل الصورة
-                Bitmap raw = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                Bitmap raw;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                    raw = android.graphics.ImageDecoder.decodeBitmap(
+                        android.graphics.ImageDecoder.createSource(getContentResolver(), uri));
+                } else {
+                    //noinspection deprecation
+                    raw = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                }
                 if (raw == null) { postPhotoError(AiError.NULL_BITMAP); return; }
 
                 // 2. Preprocess — الدالة الصحيحة الموجودة في ImagePreprocessor

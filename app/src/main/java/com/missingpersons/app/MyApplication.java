@@ -9,10 +9,6 @@ import android.os.Build;
 import android.util.Log;
 import androidx.multidex.MultiDexApplication;
 import androidx.work.*;
-import coil.Coil;
-import coil.ImageLoader;
-import coil.disk.DiskCache;
-import coil.memory.MemoryCache;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -29,7 +25,6 @@ import com.missingpersons.app.workers.ProximityCheckWorker;
 import com.missingpersons.app.workers.ChatCleanupWorker;
 import com.missingpersons.app.workers.DailyReportWorker;
 import java.util.Arrays;
-import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -223,22 +218,6 @@ public class MyApplication extends MultiDexApplication {
         } catch (Exception e) {
             Log.e(TAG, "App Check init error (non-fatal): " + e.getMessage());
         }
-    }
-
-    private void initCoilImageLoader() {
-        ImageLoader imageLoader = new ImageLoader.Builder(this)
-            .memoryCache(new MemoryCache.Builder(this)
-                .maxSizePercent(0.20)
-                .build())
-            .diskCache(new DiskCache.Builder()
-                .directory(new File(getCacheDir(), "image_cache"))
-                .maxSizeBytes(150L * 1024 * 1024)
-                .build())
-            .crossfade(300)
-            .respectCacheHeaders(false)
-            .build();
-        Coil.setImageLoader(imageLoader);
-        Log.d(TAG, "✅ Coil ImageLoader initialized");
     }
 
     private void initAdMob() {

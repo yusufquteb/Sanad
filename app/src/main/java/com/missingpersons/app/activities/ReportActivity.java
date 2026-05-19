@@ -1062,7 +1062,14 @@ public class ReportActivity extends AppCompatActivity {
 
     private void processImage(Uri uri) {
         try {
-            Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            Bitmap bmp;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                bmp = android.graphics.ImageDecoder.decodeBitmap(
+                    android.graphics.ImageDecoder.createSource(getContentResolver(), uri));
+            } else {
+                //noinspection deprecation
+                bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            }
             // ── ExifInterface rotation fix ──────────────────────────────
             bmp = fixExifRotation(bmp, uri);
             // ───────────────────────────────────────────────────────────

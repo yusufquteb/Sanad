@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.*;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
-import androidx.annotation.NonNull;
 import com.missingpersons.app.R;
 import com.missingpersons.app.utils.*;
 import java.text.SimpleDateFormat;
