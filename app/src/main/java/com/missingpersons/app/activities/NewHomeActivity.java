@@ -701,6 +701,13 @@ public class NewHomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // إذا انتهت جلسة المستخدم (process death / token revoked) → إعادة التوجيه
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(this, SplashActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            finish();
+            return;
+        }
         if (updateManager != null) updateManager.onResume();
     }
 

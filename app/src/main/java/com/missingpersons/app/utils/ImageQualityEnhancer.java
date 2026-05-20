@@ -16,10 +16,10 @@ public final class ImageQualityEnhancer {
     private static final String TAG = "ImageQualityEnhancer";
 
     // ── Thresholds ────────────────────────────────────────────────────────
-    private static final int   MIN_SIZE         = 48;    // أصغر حجم مقبول (px)
-    private static final float BLUR_THRESHOLD   = 80f;   // variance of Laplacian
-    private static final float DARK_THRESHOLD   = 30f;   // متوسط السطوع الأدنى (0-255)
-    private static final float BRIGHT_THRESHOLD = 240f;  // متوسط السطوع الأعلى
+    private static final int   MIN_SIZE         = 32;    // أصغر حجم مقبول (px)
+    private static final float BLUR_THRESHOLD   = 35f;   // variance of Laplacian — خُفِّضت من 80 لقبول صور الهاتف الواقعية
+    private static final float DARK_THRESHOLD   = 20f;   // متوسط السطوع الأدنى (0-255)
+    private static final float BRIGHT_THRESHOLD = 245f;  // متوسط السطوع الأعلى
 
     private ImageQualityEnhancer() {}
 

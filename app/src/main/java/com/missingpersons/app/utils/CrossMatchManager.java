@@ -243,6 +243,89 @@ public class CrossMatchManager {
     }
 
     // ════════════════════════════════════════════════════════
+    //  matchReportWithOtherReports — MISSING vs MISSING
+    //  يكتشف نفس الشخص المُبلَّغ عنه من أكثر من مستخدم
+    // ════════════════════════════════════════════════════════
+
+    public static void matchReportWithOtherReports(String newReportId, String reporterUid,
+                                                    String personName, String embedding) {
+        Log.d(TAG, "matchReportWithOtherReports: newReportId=" + newReportId);
+
+        if (embedding == null || embedding.isEmpty()) return;
+
+        float[] newVec = FaceEmbeddingManager.stringToEmbedding(embedding);
+        if (newVec == null || newVec.length < MIN_EMBEDDING_DIM) {
+            Log.w(TAG, "⚠️ embedding غير صالح — لن يحدث match");
+            return;
+        }
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("reports");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int compared = 0, matched = 0;
+
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    String otherId = child.getKey();
+                    // لا تقارن البلاغ مع نفسه
+                    if (newReportId.equals(otherId)) continue;
+
+                    String storedEmb = child.child("faceEmbedding").getValue(String.class);
+                    if (storedEmb == null || storedEmb.isEmpty()) continue;
+
+                    float[] storedVec = FaceEmbeddingManager.stringToEmbedding(storedEmb);
+                    if (storedVec == null || storedVec.length < MIN_EMBEDDING_DIM) continue;
+
+                    float sim = FaceEmbeddingManager.cosineSimilarity(newVec, storedVec);
+                    compared++;
+                    Log.d(TAG, "  [" + otherId + "] score="
+                            + String.format("%.3f", sim)
+                            + (sim >= getMatchThreshold() ? " ✅ DUPLICATE" : " ❌"));
+
+                    if (sim >= getMatchThreshold()) {
+                        matched++;
+                        String otherReporterId = child.child("reporterId").getValue(String.class);
+                        String otherPersonName = child.child("personName").getValue(String.class);
+                        if (otherPersonName == null || otherPersonName.isEmpty())
+                            otherPersonName = personName;
+                        int percent = (int)(sim * 100);
+
+                        Log.i(TAG, "🔁 DUPLICATE REPORT! " + newReportId
+                                + " ↔ " + otherId + " = " + percent + "%");
+
+                        // إشعار مُقدِّم البلاغ الجديد
+                        if (reporterUid != null)
+                            sendMatchNotif(reporterUid,
+                                "🔁 يوجد بلاغ مشابه لنفس الشخص!",
+                                otherPersonName, percent, newReportId, otherId,
+                                "duplicate_report");
+
+                        // إشعار مُقدِّم البلاغ القديم
+                        if (otherReporterId != null && !otherReporterId.equals(reporterUid))
+                            sendMatchNotif(otherReporterId,
+                                "🔁 مستخدم آخر أبلغ عن نفس الشخص الذي أبلغت عنه!",
+                                otherPersonName, percent, otherId, newReportId,
+                                "duplicate_report");
+
+                        sendAdminMatchNotif(otherPersonName, percent, newReportId, otherId,
+                                "duplicate_reports");
+                        saveDuplicateRecord(newReportId, otherId, sim,
+                                reporterUid, otherReporterId);
+                    }
+                }
+                Log.d(TAG, "matchReportWithOtherReports done: compared="
+                        + compared + " matched=" + matched);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError e) {
+                Log.e(TAG, "matchReportWithOtherReports cancelled: " + e.getMessage());
+            }
+        });
+    }
+
+    // ════════════════════════════════════════════════════════
     //  matchSightingWithReports (V2+V3 + DynamicThreshold)
     // ════════════════════════════════════════════════════════
 
@@ -532,6 +615,30 @@ public class CrossMatchManager {
             .addOnSuccessListener(v -> Log.d(TAG, "✅ review queue entry added"))
             .addOnFailureListener(e -> Log.e(TAG,
                 "review queue failed: " + e.getMessage()));
+    }
+
+    private static void saveDuplicateRecord(String reportId1, String reportId2,
+                                              float similarity, String uid1, String uid2) {
+        Map<String, Object> dup = new HashMap<>();
+        dup.put("type",       "duplicate");
+        dup.put("reportId1",  reportId1);
+        dup.put("reportId2",  reportId2);
+        dup.put("similarity", similarity);
+        dup.put("uid1",       uid1 != null ? uid1 : "");
+        dup.put("uid2",       uid2 != null ? uid2 : "");
+        dup.put("status",     "pending_review");
+        dup.put("timestamp",  System.currentTimeMillis());
+
+        String key = FirebaseDatabase.getInstance()
+            .getReference("duplicate_reports").push().getKey();
+        if (key != null) {
+            FirebaseDatabase.getInstance()
+                .getReference("duplicate_reports").child(key)
+                .setValue(dup)
+                .addOnSuccessListener(v -> Log.d(TAG, "✅ duplicate record: " + key))
+                .addOnFailureListener(e -> Log.w(TAG,
+                    "duplicate record failed: " + e.getMessage()));
+        }
     }
 
     private static void sendAdminMatchNotif(String personName, int percent,

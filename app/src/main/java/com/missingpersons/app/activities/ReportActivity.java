@@ -1443,10 +1443,13 @@ public class ReportActivity extends AppCompatActivity {
                     PointsManager.addPoints(PointsManager.ACTION_REPORT_SUBMITTED, pName);
                 if (emb != null) {
                     String embStr = FaceEmbeddingManager.embeddingToString(emb);
-                    if (TYPE_FOUND.equals(currentType))
+                    if (TYPE_FOUND.equals(currentType)) {
                         CrossMatchManager.matchFoundPersonWithReports(reportId, uid, embStr);
-                    else if (TYPE_MISSING.equals(currentType))
+                    } else if (TYPE_MISSING.equals(currentType)) {
                         CrossMatchManager.matchReportWithFoundPersons(reportId, uid, pName, embStr);
+                        // مقارنة مع بلاغات مفقودين أخرى (اكتشاف التكرار)
+                        CrossMatchManager.matchReportWithOtherReports(reportId, uid, pName, embStr);
+                    }
                 }
                 notifyAdminNewReport(reportId, pName, report);
                 showSuccessScreen();
