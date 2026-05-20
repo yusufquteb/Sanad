@@ -61,6 +61,7 @@ public class BackgroundMatchWorker extends Worker {
         try {
             List<Map<String, String>> newReports   = fetchNewReports();
             List<Map<String, String>> foundPersons = fetchFoundPersons();
+            List<Map<String, String>> allReports   = fetchAllReports();
 
             if (newReports.isEmpty()) {
                 Log.i(TAG, "لا توجد بلاغات جديدة للمقارنة.");
@@ -83,6 +84,7 @@ public class BackgroundMatchWorker extends Worker {
                     continue;
                 }
 
+                // ── مقارنة مع بلاغات المعثور عليهم (MISSING → FOUND) ──
                 for (Map<String, String> found : foundPersons) {
                     String foundEmb = found.get("faceEmbedding");
                     if (foundEmb == null || foundEmb.isEmpty()) continue;
@@ -104,7 +106,7 @@ public class BackgroundMatchWorker extends Worker {
                         String personName = report.get("personName");
                         if (personName == null) personName = "مفقود";
 
-                        Log.i(TAG, "🎉 تطابق: " + reportId + " = " + percent + "%");
+                        Log.i(TAG, "🎉 تطابق MISSING↔FOUND: " + reportId + " = " + percent + "%");
 
                         NotificationHelper.showMatchNotification(
                             getApplicationContext(),
@@ -114,6 +116,38 @@ public class BackgroundMatchWorker extends Worker {
 
                         saveMatchRecord(reportId, found.get("id"), sim,
                             report.get("reporterId"), found.get("reporterId"));
+
+                        matchCount++;
+                    }
+                }
+
+                // ── مقارنة مع بلاغات مفقودين أخرى (MISSING → MISSING) ──
+                String currentId = report.get("id");
+                for (Map<String, String> other : allReports) {
+                    String otherId = other.get("id");
+                    if (currentId != null && currentId.equals(otherId)) continue;
+
+                    String otherEmb = other.get("faceEmbedding");
+                    if (otherEmb == null || otherEmb.isEmpty()) continue;
+
+                    float[] otherVec = FaceEmbeddingManager.stringToEmbedding(otherEmb);
+                    if (otherVec == null || otherVec.length < MIN_EMBEDDING_DIM) continue;
+
+                    float sim = FaceEmbeddingManager.cosineSimilarity(reportVec, otherVec);
+                    Log.d(TAG, "  report[" + currentId + "] ↔ report["
+                            + otherId + "] sim=" + String.format("%.3f", sim)
+                            + (sim >= threshold ? " 🔁 DUPLICATE" : " ❌"));
+
+                    if (sim >= threshold) {
+                        int    percent    = (int)(sim * 100);
+                        String personName = report.get("personName");
+                        if (personName == null) personName = "مفقود";
+
+                        Log.i(TAG, "🔁 تكرار MISSING↔MISSING: " + currentId
+                                + " ↔ " + otherId + " = " + percent + "%");
+
+                        saveDuplicateRecord(currentId, otherId, sim,
+                            report.get("reporterId"), other.get("reporterId"));
 
                         matchCount++;
                     }
@@ -186,6 +220,51 @@ public class BackgroundMatchWorker extends Worker {
 
         latch.await(TIMEOUT, TimeUnit.SECONDS);
         return list;
+    }
+
+    private List<Map<String, String>> fetchAllReports() throws InterruptedException {
+        List<Map<String, String>> list = new ArrayList<>();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        FirebaseDatabase.getInstance().getReference("reports")
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override public void onDataChange(@NonNull DataSnapshot snap) {
+                    for (DataSnapshot c : snap.getChildren()) {
+                        String status = c.child("status").getValue(String.class);
+                        if (!"approved".equals(status)) continue;
+                        Map<String, String> m = new HashMap<>();
+                        m.put("id",            c.getKey());
+                        m.put("faceEmbedding", safeStr(c, "faceEmbedding"));
+                        m.put("personName",    safeStr(c, "personName"));
+                        m.put("reporterId",    safeStr(c, "reporterId"));
+                        list.add(m);
+                    }
+                    latch.countDown();
+                }
+                @Override public void onCancelled(@NonNull DatabaseError e) {
+                    latch.countDown();
+                }
+            });
+
+        latch.await(TIMEOUT, TimeUnit.SECONDS);
+        return list;
+    }
+
+    private void saveDuplicateRecord(String reportId1, String reportId2, float sim,
+                                      String uid1, String uid2) {
+        if (reportId1 == null || reportId2 == null) return;
+        Map<String, Object> data = new HashMap<>();
+        data.put("type",       "duplicate");
+        data.put("reportId1",  reportId1);
+        data.put("reportId2",  reportId2);
+        data.put("similarity", sim);
+        data.put("uid1",       uid1 != null ? uid1 : "");
+        data.put("uid2",       uid2 != null ? uid2 : "");
+        data.put("status",     "pending_review");
+        data.put("timestamp",  System.currentTimeMillis());
+        data.put("source",     "background_worker");
+        FirebaseDatabase.getInstance().getReference("duplicate_reports")
+            .push().setValue(data);
     }
 
     private void saveMatchRecord(String reportId, String foundId, float sim,
