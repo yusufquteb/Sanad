@@ -139,12 +139,9 @@ public class BackgroundMatchWorker extends Worker {
                             + (sim >= threshold ? " 🔁 DUPLICATE" : " ❌"));
 
                     if (sim >= threshold) {
-                        int    percent    = (int)(sim * 100);
-                        String personName = report.get("personName");
-                        if (personName == null) personName = "مفقود";
-
                         Log.i(TAG, "🔁 تكرار MISSING↔MISSING: " + currentId
-                                + " ↔ " + otherId + " = " + percent + "%");
+                                + " ↔ " + otherId
+                                + " = " + (int)(sim * 100) + "%");
 
                         saveDuplicateRecord(currentId, otherId, sim,
                             report.get("reporterId"), other.get("reporterId"));
