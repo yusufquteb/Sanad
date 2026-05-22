@@ -60,18 +60,20 @@ public class LanguageHelper {
             AppCompatDelegate.setApplicationLocales(locales);
         } catch (Exception ignored) {}
 
-        // 3. إعادة تشغيل Activity الحالية مع مسح الـ back stack
-        //    هذا يضمن تطبيق اللغة فوراً على كل الـ Activities
-        Intent intent = activity.getIntent();
-        if (intent == null) intent = new Intent(activity, activity.getClass());
-        intent.addFlags(
-            Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        // 3. إعادة تشغيل التطبيق من الشاشة الرئيسية (Launcher Activity)
+        //    نستخدم getLaunchIntentForPackage لتجنب الاستيراد الدائري
+        Intent restartIntent = activity.getPackageManager()
+            .getLaunchIntentForPackage(activity.getPackageName());
+        if (restartIntent == null) {
+            // fallback: أعد تشغيل الـ Activity الحالية
+            restartIntent = new Intent(activity, activity.getClass());
+        }
+        restartIntent.addFlags(
             Intent.FLAG_ACTIVITY_NEW_TASK  |
             Intent.FLAG_ACTIVITY_CLEAR_TASK
         );
-        activity.startActivity(intent);
+        activity.startActivity(restartIntent);
         activity.finish();
-        // إلغاء animation للتبديل السلس
         activity.overridePendingTransition(0, 0);
     }
 

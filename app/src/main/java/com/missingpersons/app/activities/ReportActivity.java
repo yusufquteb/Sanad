@@ -1423,13 +1423,20 @@ public class ReportActivity extends AppCompatActivity {
             .addOnSuccessListener(v -> {
                 // كتابة مرجع في المسار الثانوي (mirror) إن وجد
                 if (finalMirrorPath != null) {
-                    // نحفظ مرجع خفيف بدون صور لتوفير الفضاء
                     Map<String, Object> mirror = new HashMap<>();
                     mirror.put("reportId",   reportId);
                     mirror.put("reportType", currentType);
                     mirror.put("status",     "pending");
                     mirror.put("timestamp",  report.get("timestamp"));
                     mirror.put("personName", report.get("personName"));
+                    mirror.put("reporterId", report.get("reporterId"));
+                    mirror.put("gender",     report.get("gender"));
+                    mirror.put("personAge",  report.get("personAge"));
+                    mirror.put("location",   report.get("location"));
+                    mirror.put("photoUrl",   report.get("photoUrl"));
+                    // faceEmbedding ضروري لعمل المطابقة التلقائية عبر CrossMatchManager
+                    if (emb != null)
+                        mirror.put("faceEmbedding", FaceEmbeddingManager.embeddingToString(emb));
                     FirebaseDatabase.getInstance().getReference(finalMirrorPath)
                         .child(reportId).setValue(mirror);
                 }

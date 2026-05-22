@@ -291,7 +291,7 @@ exports.onFoundPersonCreated = functions
     try {
       const foundEmb    = found.faceEmbedding || null;
       const foundGov    = (found.location     || "").split(" ")[0];
-      const foundAge    = parseInt(found.estimatedAge) || 0;
+      const foundAge    = parseInt(found.estimatedAge || found.personAge) || 0;
       const foundGender = found.gender        || "";
 
       // جلب البلاغات المعتمدة
@@ -671,8 +671,9 @@ function chooseChannel(type) {
  */
 function cosineSimilarityFromStrings(embA, embB) {
   try {
-    const a = typeof embA === "string" ? JSON.parse(embA) : embA;
-    const b = typeof embB === "string" ? JSON.parse(embB) : embB;
+    // embeddings مخزنة كـ CSV ("0.1,0.2,...") وليس JSON array
+    const a = typeof embA === "string" ? embA.split(",").map(Number) : embA;
+    const b = typeof embB === "string" ? embB.split(",").map(Number) : embB;
 
     if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return 0;
 

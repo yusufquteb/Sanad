@@ -193,9 +193,15 @@ public class PointsManager {
                                    DataSnapshot snap) {
                 if (committed) {
                     saveHistory(uid, action, points, note);
-                    // [إصلاح خطأ-05] حفظ displayName حتى يظهر في Leaderboard
                     saveDisplayName(uid, userPointsRef);
-                    Log.i(TAG, points + " نقطة → " + uid + " (" + action + ")");
+                    // مزامنة النقاط إلى users/{uid}/points حتى تظهر في صفحة الملف الشخصي
+                    Integer newTotal = snap.getValue(Integer.class);
+                    if (newTotal != null) {
+                        FirebaseDatabase.getInstance()
+                            .getReference("users").child(uid).child("points")
+                            .setValue(newTotal);
+                    }
+                    Log.i(TAG, points + " نقطة → " + uid + " (" + action + ") total=" + newTotal);
                 } else if (error != null) {
                     Log.e(TAG, "Transaction failed: " + error.getMessage());
                 }
