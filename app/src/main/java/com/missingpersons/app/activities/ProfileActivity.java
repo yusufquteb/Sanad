@@ -119,10 +119,17 @@ public class ProfileActivity extends AppCompatActivity {
         initViews();
         observeViewModel();
         viewModel.loadProfile(currentUser.getUid());
-        // [إصلاح] لا نعرض الدور من cache — ننتظر Firebase لتجنب "مبتدئ ← مدير النظام"
-        // applyCachedRole() يُستخدم فقط لإبقاء cardAdmin مخفياً حتى التأكيد
         applyCachedRole();
         setupActions();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // إعادة تحميل النقاط والبيانات عند العودة للصفحة
+        if (currentUser != null && !currentUser.isAnonymous()) {
+            viewModel.loadProfile(currentUser.getUid());
+        }
     }
 
     // ════════════════════════════════════════════════════
