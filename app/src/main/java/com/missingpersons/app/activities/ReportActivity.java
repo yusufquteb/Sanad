@@ -1000,7 +1000,10 @@ public class ReportActivity extends AppCompatActivity {
     private void openCamera() {
         if (photoFiles.size() >= MAX_PHOTOS) { showError("وصلت للحد الأقصى (" + MAX_PHOTOS + " صور)"); return; }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQ_PERM);
+            PermissionHelper.ensureBiometricConsent(this, accepted -> {
+                if (accepted) ActivityCompat.requestPermissions(
+                    this, new String[]{Manifest.permission.CAMERA}, REQ_PERM);
+            });
             return;
         }
         try {
@@ -1016,7 +1019,10 @@ public class ReportActivity extends AppCompatActivity {
 
     private void openGallery() {
         if (photoFiles.size() >= MAX_PHOTOS) { showError("وصلت للحد الأقصى (" + MAX_PHOTOS + " صور)"); return; }
-        startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQ_GALLERY);
+        PermissionHelper.ensureBiometricConsent(this, accepted -> {
+            if (accepted) startActivityForResult(
+                new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQ_GALLERY);
+        });
     }
 
     @Override
@@ -1404,8 +1410,17 @@ public class ReportActivity extends AppCompatActivity {
         }
 
         String uid = (String) report.get("reporterId");
-        int shortId = (int)(System.currentTimeMillis() % 10000);
-        String reportId = "SND-" + String.format("%04d", shortId);
+        // [إصلاح أمني حرج] كان المعرّف القديم = آخر 4 أرقام من الوقت بالمللي ثانية
+        // (System.currentTimeMillis() % 10000)، وهي دورة تتكرر كل 10 ثوانٍ فقط.
+        // هذا يعني أن بلاغين مختلفين (لشخصين مختلفين تماماً) يمكن أن يحصلا على
+        // نفس reportId، فيُكتب الثاني فوق الأول في Firebase (نفس المفتاح
+        // reports/{reportId})، مما يُفقد صورة/embedding البلاغ الأول ويجعله
+        // يعرض بيانات شخص آخر تماماً — وهو ما يفسّر عدم تطابق الصور مع البلاغ
+        // الصحيح. الحل: استخدام مفتاح فريد فعلياً (Firebase push key) كمعرّف
+        // حقيقي، مع اشتقاق رقم قصير للعرض فقط (نفس أسلوب shortReportId في
+        // CrossMatchManager/AdminActivity) دون أي احتمال تصادم حقيقي.
+        String pushedKey = FirebaseDatabase.getInstance().getReference(dbPath).push().getKey();
+        final String reportId = (pushedKey != null) ? pushedKey : java.util.UUID.randomUUID().toString();
         savedReportId = reportId;
         report.put("reportId", reportId);
 
@@ -1482,9 +1497,12 @@ public class ReportActivity extends AppCompatActivity {
             if (layoutSuccess   != null) layoutSuccess.setVisibility(View.VISIBLE);
             // Set report ID
             if (tvReportId != null) {
+                // رقم قصير للعرض فقط (مُشتق من المعرّف الحقيقي الفريد) — لا يُستخدم كمفتاح
                 String displayId = savedReportId.isEmpty()
-                    ? "#SND-" + String.format("%04d", (int)(System.currentTimeMillis() % 10000))
-                    : "#" + savedReportId;
+                    ? "#SND-????"
+                    : "#SND-" + savedReportId
+                          .substring(Math.max(0, savedReportId.length() - 4))
+                          .toUpperCase();
                 tvReportId.setText(displayId);
             }
         });

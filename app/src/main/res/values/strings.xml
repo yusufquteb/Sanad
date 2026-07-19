@@ -172,6 +172,12 @@
     <string name="settings_privacy_section">الخصوصية</string>
     <string name="settings_privacy_policy">سياسة الخصوصية</string>
     <string name="settings_terms">شروط الاستخدام</string>
+    <string name="settings_delete_account">حذف الحساب والبيانات</string>
+    <string name="settings_delete_account_title">حذف الحساب والبيانات نهائياً</string>
+    <string name="settings_delete_account_message">سيتم إرسال طلب لحذف حسابك وجميع بياناتك المرتبطة (البلاغات، الصور، بصمة الوجه) خلال فترة قصيرة. لن تتمكن من التراجع عن هذا الإجراء بعد التأكيد. هل تريد المتابعة؟</string>
+    <string name="settings_delete_account_confirm">تأكيد الحذف</string>
+    <string name="settings_delete_account_sent">✅ تم إرسال طلب الحذف — سيتم حذف بياناتك خلال أيام قليلة</string>
+    <string name="settings_delete_account_error">تعذّر إرسال الطلب — حاول لاحقاً أو راسلنا على البريد الإلكتروني</string>
     <string name="settings_about_section">عن التطبيق</string>
     <string name="settings_contact">تواصل معنا</string>
     <string name="settings_app_nonprofit">غير ربحي — بدون إعلانات مدفوعة</string>

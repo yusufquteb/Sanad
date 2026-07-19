@@ -35,6 +35,7 @@ import com.missingpersons.app.utils.FaceAnalyzer;
 import com.missingpersons.app.utils.FaceEmbeddingManager;
 import com.missingpersons.app.utils.FaceSelectionDialog;
 import com.missingpersons.app.utils.AdsManager;
+import com.missingpersons.app.utils.PermissionHelper;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -155,28 +156,34 @@ public class FoundPersonActivity extends AppCompatActivity {
     }
 
     private void openCamera() {
-        try {
-            File dir = new File(getFilesDir(), "found");
-            if (!dir.exists()) dir.mkdirs();
-            String ts = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-            tempCameraFile = new File(dir, "found_" + ts + ".jpg");
-            tempCameraUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", tempCameraFile);
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, tempCameraUri);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            if (intent.resolveActivity(getPackageManager()) != null)
-                startActivityForResult(intent, REQUEST_CAMERA);
-            else
-                showStatus("❌ لا يوجد تطبيق كاميرا");
-        } catch (Exception e) {
-            showStatus("❌ خطأ في الكاميرا: " + e.getMessage());
-        }
+        PermissionHelper.ensureBiometricConsent(this, accepted -> {
+            if (!accepted) return;
+            try {
+                File dir = new File(getFilesDir(), "found");
+                if (!dir.exists()) dir.mkdirs();
+                String ts = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+                tempCameraFile = new File(dir, "found_" + ts + ".jpg");
+                tempCameraUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", tempCameraFile);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, tempCameraUri);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                if (intent.resolveActivity(getPackageManager()) != null)
+                    startActivityForResult(intent, REQUEST_CAMERA);
+                else
+                    showStatus("❌ لا يوجد تطبيق كاميرا");
+            } catch (Exception e) {
+                showStatus("❌ خطأ في الكاميرا: " + e.getMessage());
+            }
+        });
     }
 
     private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(intent, REQUEST_GALLERY);
+        PermissionHelper.ensureBiometricConsent(this, accepted -> {
+            if (!accepted) return;
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
+            startActivityForResult(intent, REQUEST_GALLERY);
+        });
     }
 
     private void openMapPicker() {

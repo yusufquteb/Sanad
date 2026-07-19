@@ -110,7 +110,9 @@ public class SearchActivity extends AppCompatActivity {
     // ─── فتح الكاميرا بـ FileProvider (إصلاح) ───
     private void openCamera() {
         if (!PermissionHelper.hasCameraPermission(this)) {
-            PermissionHelper.requestCameraPermission(this);
+            PermissionHelper.ensureBiometricConsent(this, accepted -> {
+                if (accepted) PermissionHelper.requestCameraPermission(this);
+            });
             return;
         }
         try {
@@ -142,7 +144,9 @@ public class SearchActivity extends AppCompatActivity {
 
     private void openGallery() {
         if (!PermissionHelper.hasStoragePermission(this)) {
-            PermissionHelper.requestStoragePermission(this);
+            PermissionHelper.ensureBiometricConsent(this, accepted -> {
+                if (accepted) PermissionHelper.requestStoragePermission(this);
+            });
             return;
         }
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
