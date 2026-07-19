@@ -177,6 +177,12 @@
     <string name="settings_privacy_section">Privacy</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_terms">Terms of Use</string>
+    <string name="settings_delete_account">Delete Account &amp; Data</string>
+    <string name="settings_delete_account_title">Permanently Delete Account &amp; Data</string>
+    <string name="settings_delete_account_message">A request to delete your account and all associated data (reports, photos, face embedding) will be submitted and processed within a few days. This cannot be undone once confirmed. Continue?</string>
+    <string name="settings_delete_account_confirm">Confirm Deletion</string>
+    <string name="settings_delete_account_sent">✅ Deletion request sent — your data will be removed within a few days</string>
+    <string name="settings_delete_account_error">Could not send the request — try again later or email us</string>
     <string name="settings_about_section">About</string>
     <string name="settings_contact">Contact Us</string>
     <string name="settings_app_nonprofit">Non-profit — Ad-free</string>

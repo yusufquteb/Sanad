@@ -15,10 +15,16 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import com.missingpersons.app.R;
 import com.missingpersons.app.utils.CoilImageLoader;
 import com.missingpersons.app.utils.LanguageHelper;
+import com.missingpersons.app.utils.RoleManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * SettingsActivity — إعدادات التطبيق
@@ -222,8 +228,9 @@ public class SettingsActivity extends AppCompatActivity {
     // ════════════════════════════════════════════════════
 
     private void bindPrivacySection() {
-        setClick(R.id.row_privacy_policy, () -> openUrl(getString(R.string.privacy_policy_url)));
-        setClick(R.id.row_terms,          () -> openUrl(getString(R.string.terms_url)));
+        setClick(R.id.row_privacy_policy,  () -> openUrl(getString(R.string.privacy_policy_url)));
+        setClick(R.id.row_terms,           () -> openUrl(getString(R.string.terms_url)));
+        setClick(R.id.row_delete_account,  this::confirmDeleteAccount);
     }
 
     private void openUrl(String url) {
@@ -233,6 +240,49 @@ public class SettingsActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, url, Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * حذف الحساب والبيانات — مطلوب من Google Play (User Data policy:
+     * Account deletion) لأي تطبيق يتيح إنشاء حساب. يسجّل طلب الحذف في
+     * Firebase (يعالجه فريق الإدارة يدوياً/عبر Cloud Function لاحقاً
+     * لضمان حذف آمن للبلاغات والمطابقات المرتبطة)، ثم يسجّل خروج
+     * المستخدم فوراً.
+     */
+    private void confirmDeleteAccount() {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            openEmailContact();
+            return;
+        }
+        new AlertDialog.Builder(this)
+            .setTitle(R.string.settings_delete_account_title)
+            .setMessage(R.string.settings_delete_account_message)
+            .setPositiveButton(R.string.settings_delete_account_confirm, (d, w) -> requestAccountDeletion())
+            .setNegativeButton(R.string.cancel, null)
+            .show();
+    }
+
+    private void requestAccountDeletion() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser() != null
+            ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
+        if (uid == null) return;
+
+        Map<String, Object> update = new HashMap<>();
+        update.put("deletionRequested",   true);
+        update.put("deletionRequestedAt", System.currentTimeMillis());
+
+        FirebaseDatabase.getInstance().getReference("users").child(uid)
+            .updateChildren(update)
+            .addOnSuccessListener(v -> {
+                Toast.makeText(this, R.string.settings_delete_account_sent, Toast.LENGTH_LONG).show();
+                RoleManager.reset();
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, LoginActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                finish();
+            })
+            .addOnFailureListener(e ->
+                Toast.makeText(this, R.string.settings_delete_account_error, Toast.LENGTH_LONG).show());
     }
 
     // ════════════════════════════════════════════════════

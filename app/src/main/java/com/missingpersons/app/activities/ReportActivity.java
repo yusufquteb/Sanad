@@ -1000,7 +1000,10 @@ public class ReportActivity extends AppCompatActivity {
     private void openCamera() {
         if (photoFiles.size() >= MAX_PHOTOS) { showError("وصلت للحد الأقصى (" + MAX_PHOTOS + " صور)"); return; }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQ_PERM);
+            PermissionHelper.ensureBiometricConsent(this, accepted -> {
+                if (accepted) ActivityCompat.requestPermissions(
+                    this, new String[]{Manifest.permission.CAMERA}, REQ_PERM);
+            });
             return;
         }
         try {
@@ -1016,7 +1019,10 @@ public class ReportActivity extends AppCompatActivity {
 
     private void openGallery() {
         if (photoFiles.size() >= MAX_PHOTOS) { showError("وصلت للحد الأقصى (" + MAX_PHOTOS + " صور)"); return; }
-        startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQ_GALLERY);
+        PermissionHelper.ensureBiometricConsent(this, accepted -> {
+            if (accepted) startActivityForResult(
+                new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQ_GALLERY);
+        });
     }
 
     @Override
