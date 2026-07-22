@@ -215,12 +215,10 @@ exports.onReportApproved = functions
         }
 
         // 4. مقارنة الـ face embedding — الأهم (+65)
-        if (reportEmb && found.faceEmbedding) {
-          const sim = cosineSimilarityFromStrings(reportEmb, found.faceEmbedding);
-          if (sim >= 0.6) {
-            score += Math.round(sim * 65);
-            reasons.push(`face_sim_${Math.round(sim * 100)}`);
-          }
+        const sim = bestSimilarityAgainstRecord(reportEmb, found);
+        if (sim >= 0.6) {
+          score += Math.round(sim * 65);
+          reasons.push(`face_sim_${Math.round(sim * 100)}`);
         }
 
         // فقط المرشحون فوق 40%
@@ -321,12 +319,10 @@ exports.onFoundPersonCreated = functions
           reasons.push("age_match");
         }
 
-        if (foundEmb && report.faceEmbedding) {
-          const sim = cosineSimilarityFromStrings(foundEmb, report.faceEmbedding);
-          if (sim >= 0.6) {
-            score += Math.round(sim * 65);
-            reasons.push(`face_sim_${Math.round(sim * 100)}`);
-          }
+        const sim = bestSimilarityAgainstRecord(foundEmb, report);
+        if (sim >= 0.6) {
+          score += Math.round(sim * 65);
+          reasons.push(`face_sim_${Math.round(sim * 100)}`);
         }
 
         if (score >= 40) {
@@ -664,6 +660,36 @@ function chooseChannel(type) {
   if (type === "match_confirmed" || type === "found_matches_report") return "matches_channel";
   if (type === "admin" || type === "admin_face_match") return "admin_channel";
   return "general_channel";
+}
+
+/**
+ * أعلى تشابه بين embedding البحث وأي بصمة مخزّنة في سجل (بلاغ/معثور).
+ *
+ * يفحص كِلا مخططَي التخزين الموجودين في قاعدة البيانات: الحقل الفردي
+ * القديم "faceEmbedding" (المسار الذي يكتبه التطبيق فعلياً اليوم عند
+ * إنشاء البلاغ) ومصفوفة "embeddings/*\/vector" (V3، تكتبها
+ * FaceEmbeddingWorker في التطبيق إن استُخدمت مستقبلاً). بدون هذا الفحص
+ * المزدوج، أي سجل تُخزَّن بصمته حصرياً في "embeddings" يبدو بلا بصمة
+ * إطلاقاً لهذه الدالة السحابية فتُستبعد من المطابقة بصمت.
+ */
+function bestSimilarityAgainstRecord(queryEmb, record) {
+  if (!queryEmb || !record) return 0;
+  let best = 0;
+
+  if (record.faceEmbedding) {
+    best = Math.max(best, cosineSimilarityFromStrings(queryEmb, record.faceEmbedding));
+  }
+
+  if (record.embeddings && typeof record.embeddings === "object") {
+    for (const key of Object.keys(record.embeddings)) {
+      const entry = record.embeddings[key];
+      const vec = entry && entry.vector;
+      if (!vec) continue;
+      best = Math.max(best, cosineSimilarityFromStrings(queryEmb, vec));
+    }
+  }
+
+  return best;
 }
 
 /**

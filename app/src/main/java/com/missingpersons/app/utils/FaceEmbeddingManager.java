@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -155,10 +156,11 @@ public class FaceEmbeddingManager {
                 Face face = faces.get(0);
 
                 // 3. Face Alignment (قبل الـ crop)
-                Bitmap aligned = alignFace(bitmap, face);
+                AlignResult alignResult = alignFace(bitmap, face);
 
-                // 4. Crop الوجه
-                Bitmap cropped = safeCrop(aligned, face.getBoundingBox());
+                // 4. Crop الوجه — باستخدام صندوق الوجه المُحوَّل لنظام
+                // إحداثيات الصورة بعد الدوران (وليس الصندوق الأصلي قبل الدوران)
+                Bitmap cropped = safeCrop(alignResult.bitmap, alignResult.box);
                 if (cropped == null) {
                     AiError.log(TAG, AiError.CROP_FAILED, "safeCrop returned null");
                     mainHandler.post(() -> callback.onError(AiError.CROP_FAILED));
@@ -234,9 +236,9 @@ public class FaceEmbeddingManager {
                 return null;
             }
 
-            Face   face    = faces.get(0);
-            Bitmap aligned = alignFace(bitmap, face);
-            Bitmap cropped = safeCrop(aligned, face.getBoundingBox());
+            Face        face        = faces.get(0);
+            AlignResult alignResult = alignFace(bitmap, face);
+            Bitmap      cropped     = safeCrop(alignResult.bitmap, alignResult.box);
             if (cropped == null) return null;
 
             // Quality Gate
@@ -263,25 +265,38 @@ public class FaceEmbeddingManager {
     //  Face Alignment — التحسين الأهم في المرحلة 2
     // ════════════════════════════════════════════════════════
 
+    /** نتيجة المحاذاة: الصورة (رُبما مُدارة) + صندوق الوجه في نظام إحداثياتها. */
+    private static final class AlignResult {
+        final Bitmap bitmap;
+        final Rect   box;
+        AlignResult(Bitmap bitmap, Rect box) { this.bitmap = bitmap; this.box = box; }
+    }
+
     /**
      * محاذاة الوجه باستخدام مواضع العينين من ML Kit.
      *
      * الخطوات:
      * 1. احسب الزاوية بين العينين (atan2)
      * 2. أدر الصورة كاملة بالزاوية المعاكسة
-     * 3. الـ crop سيحصل على وجه مستقيم دائماً
+     * 3. حوّل صندوق الوجه بنفس مصفوفة الدوران حتى يبقى صحيحاً على
+     *    الصورة بعد الدوران (bitmap.getBoundingBox() الأصلي محسوب على
+     *    الصورة *قبل* الدوران، فيصبح خاطئاً إن استُخدم كما هو بعد تدوير
+     *    الصورة — وهذا كان يُنتج قصّاً خاطئاً واستخراج بصمة من منطقة لا
+     *    تطابق الوجه الفعلي لأي صورة غير مستوية تماماً)
+     * 4. الـ crop سيحصل على وجه مستقيم وصحيح الموضع دائماً
      *
-     * إذا لم تُوجد Landmarks → يُرجع الصورة الأصلية بدون تغيير
+     * إذا لم تُوجد Landmarks → يُرجع الصورة والصندوق الأصليين بدون تغيير
      * (لا يُوقف العملية — فقط يُحذّر)
      */
-    private static Bitmap alignFace(Bitmap bitmap, Face face) {
+    private static AlignResult alignFace(Bitmap bitmap, Face face) {
+        Rect originalBox = face.getBoundingBox();
         try {
             FaceLandmark leftEyeLM  = face.getLandmark(FaceLandmark.LEFT_EYE);
             FaceLandmark rightEyeLM = face.getLandmark(FaceLandmark.RIGHT_EYE);
 
             if (leftEyeLM == null || rightEyeLM == null) {
                 Log.w(TAG, "⚠️ Alignment: Landmarks غير متاحة — يُكمل بدون alignment");
-                return bitmap;
+                return new AlignResult(bitmap, originalBox);
             }
 
             PointF leftEye  = leftEyeLM.getPosition();
@@ -293,21 +308,51 @@ public class FaceEmbeddingManager {
 
             // إذا الزاوية صغيرة جداً → لا داعي للتدوير (تحسين الأداء)
             if (Math.abs(angle) < 2.0f) {
-                return bitmap;
+                return new AlignResult(bitmap, originalBox);
             }
 
             Matrix matrix = new Matrix();
             matrix.postRotate(-angle, bitmap.getWidth() / 2f, bitmap.getHeight() / 2f);
 
+            // نفس الحساب الذي يستخدمه Bitmap.createBitmap(..., matrix, true)
+            // داخلياً لتحديد إزاحة الصورة الناتجة — لازم لتحويل صندوق
+            // الوجه لنفس نظام إحداثيات الصورة الجديدة
+            RectF deviceRect = new RectF();
+            matrix.mapRect(deviceRect, new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight()));
+
             Bitmap aligned = Bitmap.createBitmap(
                 bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
+            float[] corners = {
+                originalBox.left,  originalBox.top,
+                originalBox.right, originalBox.top,
+                originalBox.right, originalBox.bottom,
+                originalBox.left,  originalBox.bottom
+            };
+            matrix.mapPoints(corners);
+
+            float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE;
+            float maxX = -Float.MAX_VALUE, maxY = -Float.MAX_VALUE;
+            for (int i = 0; i < corners.length; i += 2) {
+                float px = corners[i]     - deviceRect.left;
+                float py = corners[i + 1] - deviceRect.top;
+                minX = Math.min(minX, px);
+                maxX = Math.max(maxX, px);
+                minY = Math.min(minY, py);
+                maxY = Math.max(maxY, py);
+            }
+            Rect rotatedBox = new Rect(
+                Math.max(0, Math.round(minX)),
+                Math.max(0, Math.round(minY)),
+                Math.min(aligned.getWidth(),  Math.round(maxX)),
+                Math.min(aligned.getHeight(), Math.round(maxY)));
+
             Log.d(TAG, "↻ Face alignment: angle=" + String.format("%.1f°", angle));
-            return aligned;
+            return new AlignResult(aligned, rotatedBox);
 
         } catch (Exception e) {
             Log.w(TAG, "⚠️ Alignment فشل — يُكمل بدون تدوير: " + e.getMessage());
-            return bitmap; // fallback آمن
+            return new AlignResult(bitmap, originalBox); // fallback آمن
         }
     }
 

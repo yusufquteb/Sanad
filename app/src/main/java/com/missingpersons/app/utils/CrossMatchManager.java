@@ -47,6 +47,45 @@ public class CrossMatchManager {
     private static final CopyOnWriteArrayList<ValueEventListener> activeListeners =
         new CopyOnWriteArrayList<>();
 
+    /**
+     * أعلى نسبة تشابه بين شعاع البحث وأي embedding مخزّن لهذا السجل.
+     *
+     * يفحص كِلا مخططَي التخزين الموجودين في الكود حالياً حتى لا تُفوَّت
+     * مطابقات بسبب اختلاف المسار الذي كتب به التطبيق (أو أي أداة مستقبلية)
+     * بصمة الوجه:
+     *   - الحقل الفردي القديم "faceEmbedding" (المسار الذي تكتبه فعلياً
+     *     ReportActivity/FoundPersonActivity اليوم).
+     *   - مصفوفة "embeddings/*\/vector" (V3 — تكتبها FaceEmbeddingWorker
+     *     إن استُخدمت).
+     *
+     * @return أعلى تشابه وُجد، أو -1f إذا لم يوجد أي embedding صالح إطلاقاً
+     *         (يُستخدم للتمييز بين "لا بيانات" و"تشابه صفري حقيقي")
+     */
+    private static float bestSimilarityAgainst(float[] queryVec, DataSnapshot child) {
+        float best = -1f;
+
+        String legacyEmb = child.child("faceEmbedding").getValue(String.class);
+        if (legacyEmb != null && !legacyEmb.isEmpty()) {
+            float[] vec = FaceEmbeddingManager.stringToEmbedding(legacyEmb);
+            if (vec != null && vec.length >= MIN_EMBEDDING_DIM) {
+                best = Math.max(best, FaceEmbeddingManager.cosineSimilarity(queryVec, vec));
+            }
+        }
+
+        DataSnapshot embArr = child.child("embeddings");
+        if (embArr.exists()) {
+            for (DataSnapshot embSnap : embArr.getChildren()) {
+                String vecStr = embSnap.child("vector").getValue(String.class);
+                if (vecStr == null) continue;
+                float[] vec = FaceEmbeddingManager.stringToEmbedding(vecStr);
+                if (vec == null || vec.length < MIN_EMBEDDING_DIM) continue;
+                best = Math.max(best, FaceEmbeddingManager.cosineSimilarity(queryVec, vec));
+            }
+        }
+
+        return best;
+    }
+
     public interface MatchFoundCallback {
         void onMatchFound(String matchedId, String personName, float similarity);
     }
@@ -90,21 +129,8 @@ public class CrossMatchManager {
 
                 int compared = 0, skipped = 0, matched = 0;
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    String storedEmb = child.child("faceEmbedding").getValue(String.class);
-                    if (storedEmb == null || storedEmb.isEmpty()) { skipped++; continue; }
-
-                    float[] storedVec = FaceEmbeddingManager.stringToEmbedding(storedEmb);
-                    if (storedVec == null) { skipped++; continue; }
-
-                    // ← الإصلاح الجذري: رفض embeddings الوهمية القديمة
-                    if (storedVec.length < MIN_EMBEDDING_DIM) {
-                        Log.w(TAG, "  [" + child.getKey() + "] dim=" + storedVec.length
-                                + " < " + MIN_EMBEDDING_DIM + " → مُتجاهَل (embedding وهمي)");
-                        skipped++;
-                        continue;
-                    }
-
-                    float sim = FaceEmbeddingManager.cosineSimilarity(reportVec, storedVec);
+                    float sim = bestSimilarityAgainst(reportVec, child);
+                    if (sim < 0) { skipped++; continue; }
                     compared++;
                     Log.d(TAG, "  [" + child.getKey() + "] score="
                             + String.format("%.3f", sim)
@@ -185,21 +211,8 @@ public class CrossMatchManager {
 
                 int compared = 0, skipped = 0, matched = 0;
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    String storedEmb = child.child("faceEmbedding").getValue(String.class);
-                    if (storedEmb == null || storedEmb.isEmpty()) { skipped++; continue; }
-
-                    float[] storedVec = FaceEmbeddingManager.stringToEmbedding(storedEmb);
-                    if (storedVec == null) { skipped++; continue; }
-
-                    // ← الإصلاح الجذري: رفض embeddings الوهمية القديمة
-                    if (storedVec.length < MIN_EMBEDDING_DIM) {
-                        Log.w(TAG, "  [" + child.getKey() + "] dim=" + storedVec.length
-                                + " < " + MIN_EMBEDDING_DIM + " → مُتجاهَل");
-                        skipped++;
-                        continue;
-                    }
-
-                    float sim = FaceEmbeddingManager.cosineSimilarity(foundVec, storedVec);
+                    float sim = bestSimilarityAgainst(foundVec, child);
+                    if (sim < 0) { skipped++; continue; }
                     compared++;
                     Log.d(TAG, "  [" + child.getKey() + "] score="
                             + String.format("%.3f", sim)
@@ -271,13 +284,8 @@ public class CrossMatchManager {
                     // لا تقارن البلاغ مع نفسه
                     if (newReportId.equals(otherId)) continue;
 
-                    String storedEmb = child.child("faceEmbedding").getValue(String.class);
-                    if (storedEmb == null || storedEmb.isEmpty()) continue;
-
-                    float[] storedVec = FaceEmbeddingManager.stringToEmbedding(storedEmb);
-                    if (storedVec == null || storedVec.length < MIN_EMBEDDING_DIM) continue;
-
-                    float sim = FaceEmbeddingManager.cosineSimilarity(newVec, storedVec);
+                    float sim = bestSimilarityAgainst(newVec, child);
+                    if (sim < 0) continue;
                     compared++;
                     Log.d(TAG, "  [" + otherId + "] score="
                             + String.format("%.3f", sim)
