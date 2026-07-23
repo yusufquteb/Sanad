@@ -477,11 +477,15 @@ String[] govs = govsList.toArray(new String[0]);
     public boolean onSupportNavigateUp() { finish(); return true; }
 
     private Bitmap loadBitmap(Uri uri) throws java.io.IOException {
+        // ImageDecoder (Android 9+) يُصحّح دوران EXIF تلقائياً لصور JPEG/HEIC —
+        // لا حاجة لتصحيح إضافي هنا (وتطبيقه كان سيُدوّر الصورة مرتين).
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
             return android.graphics.ImageDecoder.decodeBitmap(
                 android.graphics.ImageDecoder.createSource(getContentResolver(), uri));
         }
         //noinspection deprecation
-        return MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+        Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+        // المسار القديم (Android 8 وأقل) لا يُصحّح EXIF تلقائياً
+        return ImagePreprocessor.fixExifRotation(bmp, this, uri);
     }
 }

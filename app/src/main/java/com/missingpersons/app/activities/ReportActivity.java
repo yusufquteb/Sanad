@@ -1070,15 +1070,19 @@ public class ReportActivity extends AppCompatActivity {
         try {
             Bitmap bmp;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                // [إصلاح] ImageDecoder يُصحّح دوران EXIF تلقائياً لصور JPEG/HEIC
+                // (وهي كل صور الكاميرا/المعرض هنا عملياً). استدعاء fixExifRotation()
+                // بعدها كان يُدوّر الصورة مرة ثانية فوق تصحيح ImageDecoder، فتخرج
+                // مقلوبة 90°/180° بدل مستقيمة — على أغلب الأجهزة الحديثة (Android 9+)
+                // وهي الغالبية العظمى اليوم. لا تُطبَّق fixExifRotation هنا إطلاقاً.
                 bmp = android.graphics.ImageDecoder.decodeBitmap(
                     android.graphics.ImageDecoder.createSource(getContentResolver(), uri));
             } else {
                 //noinspection deprecation
                 bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                // المسار القديم (Android 8 وأقل) لا يُصحّح EXIF تلقائياً
+                bmp = fixExifRotation(bmp, uri);
             }
-            // ── ExifInterface rotation fix ──────────────────────────────
-            bmp = fixExifRotation(bmp, uri);
-            // ───────────────────────────────────────────────────────────
             bmp = scaleBitmap(bmp, MAX_IMAGE_DIM);
             final Bitmap fb = bmp;
             if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
