@@ -59,20 +59,26 @@ public class FaceEmbeddingManager {
     private static final String TAG = "FaceEmbeddingManager";
 
     // ── Versioning — لا تغيّر إلا بعد مراجعة Migration ─────
-    /** نسخة النموذج — V2: AdaFace IR18 512-dim */
-    public static final String MODEL_VERSION           = "adaface_ir18";
+    /** نسخة النموذج — V4: MobileFaceNet 192-dim (كان adaface_ir18 512-dim معطوباً — راجع AdaFaceRecognizer) */
+    public static final String MODEL_VERSION           = "mobilefacenet_192";
 
-    /** نسخة الـ embedding الحالية — V2: AdaFace 512-dim */
-    public static final int    EMBEDDING_VERSION       = 3;
+    /** نسخة الـ embedding الحالية — V4: MobileFaceNet 192-dim */
+    public static final int    EMBEDDING_VERSION       = 4;
 
     /** نسخة الـ preprocessing الحالية */
     public static final int    PREPROCESSING_VERSION   = 2;
 
-    /** نسخة MobileFaceNet القديمة — 128-dim — لا تُطابق مع V3 */
-    public static final int    LEGACY_EMBEDDING_VERSION = 2;
+    /** نسخة embeddings V3 السابقة (512-dim من نموذج adaface_ir18 المعطوب) — غير صالحة، تحتاج reembedLegacy */
+    public static final int    LEGACY_EMBEDDING_VERSION = 3;
 
     // ────────────────────────────────────────────────────────
-    public static final float MATCH_THRESHOLD    = 0.72f;
+    // [إصلاح 2026-07-23] كانت 0.72f مُعايَرة على مقياس النموذج المعطوب
+    // (حيث كل شيء تقريباً ≥0.97). على مقياس mobilefacenet.tflite الحقيقي،
+    // 3 صور حقيقية لنفس الشخص أعطت 0.5554–0.7531 بينما وجه مقابل خلفية
+    // أعطى 0.24–0.32. عُدِّلت العتبة إلى 0.55 بناءً على هذا القياس المحدود
+    // (شخص واحد فقط، بلا أزواج "أشخاص مختلفين" حقيقية) — تحتاج معايرة
+    // فعلية على بيانات أوسع قبل الاعتماد الكامل عليها في الإنتاج.
+    public static final float MATCH_THRESHOLD    = 0.55f;
 
     private static Context       appContext;
     private static final ExecutorService executor     = Executors.newFixedThreadPool(2);
