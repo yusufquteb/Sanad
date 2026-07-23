@@ -184,6 +184,9 @@
     <string name="settings_delete_account_sent">✅ Deletion request sent — your data will be removed within a few days</string>
     <string name="settings_delete_account_error">Could not send the request — try again later or email us</string>
     <string name="settings_about_section">About</string>
+    <string name="settings_oss_licenses">Open Source Licenses</string>
+    <string name="settings_oss_licenses_title">Open Source Licenses</string>
+    <string name="settings_oss_licenses_body">Face recognition model (mobilefacenet.tflite)\n\nSource: github.com/MCarlomagno/FaceRecognitionAuth\n\nBSD 3-Clause License\nCopyright (c) 2020, Marcos Carlomagno\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.</string>
     <string name="settings_contact">Contact Us</string>
     <string name="settings_app_nonprofit">Non-profit — Ad-free</string>
     <string name="privacy_policy_url">https://sanad-app.com/privacy</string>
