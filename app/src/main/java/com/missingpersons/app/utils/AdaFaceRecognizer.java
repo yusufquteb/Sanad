@@ -43,10 +43,25 @@ import java.nio.channels.FileChannel;
  * (قيود شبكة بيئة الاختبار) — MATCH_THRESHOLD في FaceEmbeddingManager عُدِّل
  * تقديرياً بناءً على هذه القياسة المحدودة ويحتاج معايرة حقيقية على بيانات
  * أوسع (أزواج تطابق وعدم تطابق فعلية) قبل الاعتماد الكامل عليه في الإنتاج.
- * للترقية لدقة أعلى مستقبلاً: نماذج ArcFace/AdaFace TFLite حقيقية (مثل
- * github.com/mobilesec/arcface-tensorflowlite، ~96.9% على LFW) — لم تُختبر
- * هنا (تعذّر تحميلها من بيئة الجلسة)، ويجب التحقق منها بنفس أسلوب
- * selfTestDiscriminative + صور حقيقية قبل اعتمادها.
+ *
+ * ✅ [توثيق المصدر والترخيص 2026-07-23] لم يكن مصدر mobilefacenet.tflite
+ * موثَّقاً في المشروع. تحقّقنا منه عبر مطابقة SHA-256 (be4bc7cf...5354854)
+ * مع الملف المنشور في github.com/MCarlomagno/FaceRecognitionAuth
+ * (assets/mobilefacenet.tflite) — تطابق تام (نفس الملف حرفياً). ذلك المشروع
+ * مرخَّص بـ BSD-3-Clause (يسمح بالاستخدام التجاري، يتطلب فقط الإبقاء على
+ * إشعار حقوق النشر: Copyright (c) 2020, Marcos Carlomagno). يُنصَح بإضافة
+ * هذا الإشعار في صفحة/ملف تراخيص الطرف الثالث الخاص بالتطبيق.
+ *
+ * للترقية لدقة أعلى مستقبلاً: نماذج ArcFace/AdaFace TFLite حقيقية، مثل:
+ *   - github.com/mobilesec/arcface-tensorflowlite (ArcFace R50، ~96.9% LFW،
+ *     ترخيص EUPL 1.2 — مفتوح تجارياً) — الوزن الفعلي يُحمَّل من رابط خارجي
+ *     منفصل، لم يُختبر بعد.
+ *   - نماذج InsightFace الجاهزة (buffalo_l/buffalo_sc، أعلى دقة، 99.7%+ LFW)
+ *     — ⚠️ مرخَّصة "لأغراض البحث غير التجاري فقط" صراحةً، تتطلب تواصلاً
+ *     وإذناً مباشراً من InsightFace (recognition-oss-pack@insightface.ai)
+ *     قبل أي استخدام في تطبيق مُوزَّع فعلياً، حتى لو غير ربحي.
+ * أي نموذج بديل يجب التحقق منه بنفس أسلوب selfTestDiscriminative + صور
+ * حقيقية، والتأكد من ترخيصه، قبل اعتماده.
  */
 public final class AdaFaceRecognizer {
 

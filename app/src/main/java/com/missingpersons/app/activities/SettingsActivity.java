@@ -295,6 +295,15 @@ public class SettingsActivity extends AppCompatActivity {
             tvVersion.setText(getString(R.string.version_full));
         }
         setClick(R.id.row_contact, this::openEmailContact);
+        setClick(R.id.row_oss_licenses, this::showOssLicenses);
+    }
+
+    private void showOssLicenses() {
+        new AlertDialog.Builder(this)
+            .setTitle(R.string.settings_oss_licenses_title)
+            .setMessage(R.string.settings_oss_licenses_body)
+            .setPositiveButton(android.R.string.ok, null)
+            .show();
     }
 
     private void openEmailContact() {
