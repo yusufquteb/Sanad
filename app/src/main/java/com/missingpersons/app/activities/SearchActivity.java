@@ -24,6 +24,7 @@ import com.missingpersons.app.models.ReportModel;
 import com.missingpersons.app.utils.CoilImageLoader;
 import com.missingpersons.app.utils.FaceMatcher;
 import com.missingpersons.app.utils.FaceSelectionDialog;
+import com.missingpersons.app.utils.ImagePreprocessor;
 import com.missingpersons.app.utils.PermissionHelper;
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -165,6 +166,11 @@ public class SearchActivity extends AppCompatActivity {
             try {
                 InputStream is = getContentResolver().openInputStream(selectedImageUri);
                 selectedBitmap = BitmapFactory.decodeStream(is);
+                // [إصلاح] بدون هذا، صورة بحقل EXIF Orientation (شائع جداً) تصل
+                // مائلة لكاشف الوجه — أهم مسار في التطبيق لأنه البحث بالوجه نفسه
+                if (selectedBitmap != null)
+                    selectedBitmap = ImagePreprocessor.fixExifRotation(
+                        selectedBitmap, this, selectedImageUri);
                 setSearchEnabled(selectedBitmap != null);
                 setStatus("تم اختيار الصورة — اضغط 'ابدأ البحث'");
             } catch (IOException e) {
@@ -177,6 +183,9 @@ public class SearchActivity extends AppCompatActivity {
                 BitmapFactory.Options opts = new BitmapFactory.Options();
                 opts.inSampleSize = 2;
                 selectedBitmap = BitmapFactory.decodeFile(tempCameraFile.getAbsolutePath(), opts);
+                if (selectedBitmap != null)
+                    selectedBitmap = ImagePreprocessor.fixExifRotation(
+                        selectedBitmap, tempCameraFile.getAbsolutePath());
                 selectedImageUri = tempCameraUri;
                 ivSearchPhoto.setImageURI(tempCameraUri);
                 setSearchEnabled(selectedBitmap != null);

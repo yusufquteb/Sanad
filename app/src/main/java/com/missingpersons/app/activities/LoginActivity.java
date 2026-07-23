@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
         viewModel.checkInitialState();
         initViews();
         setupGoogleSignIn();
-        showLegalWarning();
     }
 
     // ════════════════════════════════════════════════════════
@@ -183,26 +182,6 @@ public class LoginActivity extends AppCompatActivity {
                       + "🔒 إضافة بلاغ جديد\n🔒 التواصل مع الأسر")
             .setPositiveButton("تصفح كزائر", (d, w) -> viewModel.signInAsGuest())
             .setNegativeButton("تسجيل الدخول", null)
-            .show();
-    }
-
-    // ════════════════════════════════════════════════════════
-    //  Legal Warning
-    // ════════════════════════════════════════════════════════
-
-    private void showLegalWarning() {
-        new AlertDialog.Builder(this)
-            .setTitle("⚠️ شروط الاستخدام")
-            .setMessage("هذا التطبيق منصة خدمية مجانية للبحث عن المفقودين.\n\n"
-                      + "بالاستخدام تقر بـ:\n"
-                      + "• عدم دفع أي مبالغ مالية\n"
-                      + "• الإبلاغ عن أي ابتزاز للشرطة فوراً\n"
-                      + "• أن التطبيق غير مسؤول قانونياً عن سوء الاستخدام")
-            .setCancelable(false)
-            .setPositiveButton("أوافق وأتابع", null)
-            .setNeutralButton("📋 الحقوق والشروط",
-                (d, w) -> startActivity(new Intent(this, DisclaimerActivity.class)))
-            .setNegativeButton("خروج", (d, w) -> finish())
             .show();
     }
 

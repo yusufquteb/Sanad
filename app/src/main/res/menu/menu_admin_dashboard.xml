@@ -2,7 +2,8 @@
 <!--
   menu_admin_dashboard.xml
   مطلوب بواسطة AdminDashboardActivity.onCreateOptionsMenu()
-  يظهر فقط للأدمن الكامل (RoleManager.get().isAdmin())
+  action_reembed_faces: أدمن كامل فقط (RoleManager.get().isAdmin())
+  action_review_queue: أدمن أو مشرف (RoleManager.get().isAdminOrManager())
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -12,6 +13,20 @@
         android:title="إعادة استخراج بصمات الوجه القديمة"
         android:icon="@drawable/ic_refresh"
         android:contentDescription="أدوات صيانة بصمة الوجه"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_review_queue"
+        android:title="قائمة المراجعة البشرية"
+        android:icon="@drawable/ic_result"
+        android:contentDescription="مراجعة التطابقات التي تحتاج قراراً بشرياً"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_abuse_reports"
+        android:title="بلاغات الإساءة"
+        android:icon="@drawable/ic_warning_outline"
+        android:contentDescription="مراجعة بلاغات الإساءة المُقدَّمة من المستخدمين"
         app:showAsAction="never"/>
 
 </menu>

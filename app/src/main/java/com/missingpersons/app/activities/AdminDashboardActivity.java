@@ -897,6 +897,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
         if (reembedItem != null) {
             reembedItem.setVisible(RoleManager.get().isAdmin());
         }
+        MenuItem reviewQueueItem = menu.findItem(R.id.action_review_queue);
+        if (reviewQueueItem != null) {
+            reviewQueueItem.setVisible(RoleManager.get().isAdminOrManager());
+        }
+        MenuItem abuseReportsItem = menu.findItem(R.id.action_abuse_reports);
+        if (abuseReportsItem != null) {
+            abuseReportsItem.setVisible(RoleManager.get().isAdminOrManager());
+        }
         return true;
     }
 
@@ -904,6 +912,19 @@ public class AdminDashboardActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_reembed_faces) {
             showReembedDialog();
+            return true;
+        }
+        // [إصلاح] EnhancedAdminDashboardActivity (قائمة مراجعة التطابقات
+        // المُبهَمة REVIEW_REQUIRED) كانت شاشة كاملة وجاهزة (قبول/رفض) لكن
+        // بلا أي نقطة دخول من أي مكان في التطبيق — لا يوجد أي زر يفتحها
+        if (item.getItemId() == R.id.action_review_queue) {
+            startActivity(new Intent(this, EnhancedAdminDashboardActivity.class));
+            return true;
+        }
+        // [إصلاح] AbuseReportsActivity كانت أيضاً بلا أي نقطة دخول رغم أن
+        // المستخدمين يقدّمون بلاغات إساءة فعلياً عبر AbuseReportHelper
+        if (item.getItemId() == R.id.action_abuse_reports) {
+            startActivity(new Intent(this, AbuseReportsActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

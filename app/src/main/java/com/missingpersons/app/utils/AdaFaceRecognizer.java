@@ -25,10 +25,24 @@ import java.nio.channels.FileChannel;
  *   - Output: float[N] L2-normalized — N يُكتشف تلقائياً من النموذج
  *   - Threads: 2
  *
- * ⚠️ PLACEHOLDER: الملف الحالي هو MobileFaceNet (128-dim).
- *    لرفع الدقة، ضع ملف AdaFace IR18 الحقيقي (~3.5MB) في:
- *    app/src/main/assets/models/adaface_ir18_112.tflite
- *    المصدر: https://github.com/mk-minchul/AdaFace — اختر IR18 TFLite
+ * 🔴🔴🔴 [تحقّق فعلي 2026-07-23] الملف الحالي app/src/main/assets/models/
+ * adaface_ir18_112.tflite (46.7MB) **ليس نموذج تعرّف على وجوه صالحاً**:
+ *   - إخراجه [1, 1000] — يطابق عدد فئات ImageNet تماماً، وليس embedding
+ *     بأبعاد 512 كما تفترض EMBEDDING_DIM أدناه.
+ *   - اختُبر فعلياً بصور حقيقية + ضوضاء عشوائية + صور خلفية عبر تشغيل
+ *     الملف مباشرة بنفس المعالجة المستخدمة هنا (TFLite، (px-127.5)/128):
+ *     تشابه جيب التمام بين **أي محتويين عشوائيين تماماً غير متعلقين**
+ *     (ضوضاء مقابل ضوضاء، حائط مقابل وجه، أسود مقابل أبيض) خرج بين
+ *     0.97–0.99 — أعلى من كل عتبات المطابقة المستخدمة في التطبيق
+ *     (0.72–0.90). أي الملف لا يُميّز أي شيء عن أي شيء؛ "المطابقة" حالياً
+ *     كانت ستُطابق كل صورة مع كل صورة أخرى بغض النظر عن الشخص.
+ *   - selfTestDiscriminative() أدناه يكتشف هذا تلقائياً عند تحميل النموذج
+ *     ويُعطّل isAvailable() إن فشل الفحص — حتى لا تُنتَج مطابقات وهمية.
+ *   - **المطلوب**: استبدال الملف بنموذج تعرّف وجوه حقيقي ومُتحقَّق منه
+ *     (AdaFace/ArcFace/MobileFaceNet مُصدَّر بشكل صحيح إلى TFLite بمخرج
+ *     embedding فعلي 128/256/512-dim)، والتحقق منه بنفس أسلوب الفحص
+ *     أعلاه (تشابه منخفض بين محتويين عشوائيين، وعالٍ بين صورتين لنفس
+ *     الشخص) قبل تضمينه.
  */
 public final class AdaFaceRecognizer {
 
@@ -61,6 +75,26 @@ public final class AdaFaceRecognizer {
             ok = true;
             Log.i(TAG, "✅ model loaded — embedding_dim=" + embDim
                 + (embDim < 512 ? " [placeholder — replace with AdaFace IR18 for 512-dim]" : ""));
+
+            // ── فحص تمييزي (self-test) ───────────────────────────────
+            // نموذج تعرّف على الوجوه سليم يجب أن يُنتج بصمات مختلفة تماماً
+            // لصورتين عشوائيتين مختلفتين (تشابه منخفض جداً). لو أعطى تشابهاً
+            // عالياً حتى بين صورتين عشوائيتين لا علاقة بينهما، فهذا يعني أن
+            // الملف المحمَّل ليس نموذج تعرّف على وجوه فعلياً (أو أن preprocessing
+            // خاطئ تماماً) — وسيُطابق أي صورتين ببعضهما دائماً مهما اختلف
+            // الشخصان، مما يجعل ميزة المطابقة كلها عديمة الفائدة (بل ضارة:
+            // إشعارات "تطابق" وهمية على كل بلاغ جديد).
+            if (!selfTestDiscriminative(interp, embDim)) {
+                ok = false;
+                Log.e(TAG, "❌❌❌ فشل الفحص التمييزي — النموذج لا يُميّز بين "
+                    + "محتويات مختلفة تماماً (نفس البصمة تقريباً لصورتين عشوائيتين). "
+                    + "غالباً هذا الملف ليس نموذج AdaFace حقيقياً، أو مُصدَّر بشكل خاطئ. "
+                    + "تعطيل المطابقة بالذكاء الاصطناعي حتى يُستبدَل الملف بنموذج تعرّف "
+                    + "وجوه صحيح ومُتحقَّق منه.");
+                AiError.logAll(TAG, AiError.MODEL_NOT_LOADED,
+                    "AdaFaceRecognizer: model failed discriminative self-test — "
+                        + "not a valid face embedding model", null);
+            }
         } catch (IOException e) {
             Log.e(TAG, "❌ فشل تحميل النموذج من assets/models/");
             AiError.logAll(TAG, AiError.MODEL_NOT_LOADED,
@@ -72,6 +106,62 @@ public final class AdaFaceRecognizer {
         this.interpreter        = interp;
         this.available          = ok;
         this.actualEmbeddingDim = embDim;
+    }
+
+    /**
+     * يُشغّل النموذج على نمطين اصطناعيين مختلفين تماماً ويتحقق أن البصمتين
+     * الناتجتين ليستا شبه متطابقتين. عتبة 0.9 متحفّظة عمداً (أعلى من أي عتبة
+     * مطابقة مستخدمة في التطبيق) — أي تشابه فوقها بين محتويين عشوائيين
+     * تماماً يعني قطعاً أن النموذج معطوب أو غير مناسب لهذه المهمة.
+     */
+    private static boolean selfTestDiscriminative(Interpreter interp, int embDim) {
+        try {
+            float[] a = runRaw(interp, embDim, syntheticPattern(0));
+            float[] b = runRaw(interp, embDim, syntheticPattern(1));
+            float sim = cosineSimilarity(l2NormalizeStatic(a), l2NormalizeStatic(b));
+            Log.i(TAG, "🔎 self-test: similarity(pattern_A, pattern_B)=" + sim);
+            return sim < 0.9f;
+        } catch (Exception e) {
+            Log.w(TAG, "selfTestDiscriminative: تعذّر التنفيذ — " + e.getMessage());
+            return true; // لا نُعطّل النموذج بسبب فشل الفحص نفسه، فقط بسبب نتيجته
+        }
+    }
+
+    private static int[] syntheticPattern(int seed) {
+        int[] pixels = new int[INPUT_SIZE * INPUT_SIZE];
+        for (int y = 0; y < INPUT_SIZE; y++) {
+            for (int x = 0; x < INPUT_SIZE; x++) {
+                int r = (x * 7  + y * 13 + seed * 97)  % 256;
+                int g = (x * 31 + y * 3  + seed * 61)  % 256;
+                int b = (x * 17 + y * 23 + seed * 131) % 256;
+                pixels[y * INPUT_SIZE + x] = (0xFF << 24) | (r << 16) | (g << 8) | b;
+            }
+        }
+        return pixels;
+    }
+
+    private static float[] runRaw(Interpreter interp, int embDim, int[] pixels) {
+        ByteBuffer inputBuffer = ByteBuffer.allocateDirect(pixels.length * 3 * 4);
+        inputBuffer.order(ByteOrder.nativeOrder());
+        for (int px : pixels) {
+            inputBuffer.putFloat(((px >> 16 & 0xFF) - 127.5f) / 128.0f);
+            inputBuffer.putFloat(((px >>  8 & 0xFF) - 127.5f) / 128.0f);
+            inputBuffer.putFloat(((px       & 0xFF) - 127.5f) / 128.0f);
+        }
+        inputBuffer.rewind();
+        float[][] output = new float[1][embDim];
+        interp.run(inputBuffer, output);
+        return output[0];
+    }
+
+    private static float[] l2NormalizeStatic(float[] v) {
+        double norm = 0.0;
+        for (float x : v) norm += (double) x * x;
+        norm = Math.sqrt(norm);
+        if (norm < 1e-10) return v;
+        float[] result = new float[v.length];
+        for (int i = 0; i < v.length; i++) result[i] = (float) (v[i] / norm);
+        return result;
     }
 
     public static AdaFaceRecognizer getInstance(Context ctx) {

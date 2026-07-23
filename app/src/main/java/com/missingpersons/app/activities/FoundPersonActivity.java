@@ -35,6 +35,7 @@ import com.missingpersons.app.utils.FaceAnalyzer;
 import com.missingpersons.app.utils.FaceEmbeddingManager;
 import com.missingpersons.app.utils.FaceSelectionDialog;
 import com.missingpersons.app.utils.AdsManager;
+import com.missingpersons.app.utils.ImagePreprocessor;
 import com.missingpersons.app.utils.PermissionHelper;
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -215,6 +216,12 @@ public class FoundPersonActivity extends AppCompatActivity {
                 BitmapFactory.Options opts = new BitmapFactory.Options();
                 opts.inSampleSize = 2;
                 originalBitmap = BitmapFactory.decodeFile(tempCameraFile.getAbsolutePath(), opts);
+                // [إصلاح] بدون هذا، صورة بحقل EXIF Orientation (شائع جداً من
+                // كاميرات الهواتف/واتساب) تصل مائلة 90°/180° لكاشف الوجه فيفشل
+                // اكتشاف الوجه من الأساس
+                if (originalBitmap != null)
+                    originalBitmap = ImagePreprocessor.fixExifRotation(
+                        originalBitmap, tempCameraFile.getAbsolutePath());
                 if (originalBitmap != null) processSelectedPhoto(originalBitmap);
             } else {
                 showStatus("❌ فشل التقاط الصورة");
@@ -225,6 +232,9 @@ public class FoundPersonActivity extends AppCompatActivity {
                 opts.inSampleSize = 2;
                 originalBitmap = BitmapFactory.decodeStream(
                     getContentResolver().openInputStream(data.getData()), null, opts);
+                if (originalBitmap != null)
+                    originalBitmap = ImagePreprocessor.fixExifRotation(
+                        originalBitmap, this, data.getData());
                 if (originalBitmap != null) processSelectedPhoto(originalBitmap);
             } catch (IOException e) {
                 showStatus("❌ خطأ في تحميل الصورة");
