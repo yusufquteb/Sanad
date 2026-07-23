@@ -292,9 +292,12 @@ exports.onFoundPersonCreated = functions
       const foundAge    = parseInt(found.estimatedAge || found.personAge) || 0;
       const foundGender = found.gender        || "";
 
-      // جلب البلاغات المعتمدة
+      // [إصلاح] كانت تُقارن فقط مع البلاغات "approved"، بينما
+      // onReportApproved (الاتجاه المعاكس) يقارن مع found_persons بلا
+      // فلترة اعتماد مماثلة — أي أن شخصاً مُعثوراً عليه حديثاً لن يُطابَق
+      // مع بلاغ مفقود ما زال قيد المراجعة الإدارية. الآن تُقارَن كل
+      // البلاغات بلا فلترة حالة، اتساقاً مع الاتجاه المعاكس.
       const reportsSnap = await db.ref("reports")
-        .orderByChild("status").equalTo("approved")
         .limitToLast(500)
         .once("value");
 

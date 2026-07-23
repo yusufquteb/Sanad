@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  menu_admin_dashboard.xml
+  مطلوب بواسطة AdminDashboardActivity.onCreateOptionsMenu()
+  يظهر فقط للأدمن الكامل (RoleManager.get().isAdmin())
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_reembed_faces"
+        android:title="إعادة استخراج بصمات الوجه القديمة"
+        android:icon="@drawable/ic_refresh"
+        android:contentDescription="أدوات صيانة بصمة الوجه"
+        app:showAsAction="never"/>
+
+</menu>

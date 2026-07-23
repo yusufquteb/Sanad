@@ -68,7 +68,16 @@ public class CrossMatchManager {
         if (legacyEmb != null && !legacyEmb.isEmpty()) {
             float[] vec = FaceEmbeddingManager.stringToEmbedding(legacyEmb);
             if (vec != null && vec.length >= MIN_EMBEDDING_DIM) {
-                best = Math.max(best, FaceEmbeddingManager.cosineSimilarity(queryVec, vec));
+                if (vec.length != queryVec.length) {
+                    // ⚠️ أبعاد مختلفة (مثال: 128 قديم مقابل 512 حالي) → تشابه
+                    // صفري إجباري مهما تشابه الشخص فعلياً. السجل يحتاج إعادة
+                    // استخراج (راجع EmbeddingMigrationTool.reembedLegacy).
+                    Log.w(TAG, "  [" + child.getKey() + "] ⚠️ اختلاف أبعاد البصمة: "
+                        + "مخزّن=" + vec.length + " مقابل حالي=" + queryVec.length
+                        + " → لا يمكن المقارنة، يحتاج إعادة استخراج");
+                } else {
+                    best = Math.max(best, FaceEmbeddingManager.cosineSimilarity(queryVec, vec));
+                }
             }
         }
 
@@ -79,6 +88,7 @@ public class CrossMatchManager {
                 if (vecStr == null) continue;
                 float[] vec = FaceEmbeddingManager.stringToEmbedding(vecStr);
                 if (vec == null || vec.length < MIN_EMBEDDING_DIM) continue;
+                if (vec.length != queryVec.length) continue; // نفس التحذير أعلاه
                 best = Math.max(best, FaceEmbeddingManager.cosineSimilarity(queryVec, vec));
             }
         }
@@ -198,15 +208,20 @@ public class CrossMatchManager {
         Log.d(TAG, "✅ foundVec dim=" + foundVec.length
                 + " threshold=" + getMatchThreshold());
 
+        // [إصلاح] كان يقارن فقط مع reports بحالة "approved"، بينما
+        // matchReportWithFoundPersons (الاتجاه المعاكس) يقارن مع كل
+        // found_persons بلا أي فلترة حالة — أي أن بلاغ عثور جديد لن
+        // يتطابق مع بلاغ مفقود ما زال "pending" حتى يعتمده الأدمن، رغم
+        // أن العكس يعمل فوراً بلا قيد. الآن تُقارَن كل البلاغات بلا فلترة
+        // حالة، اتساقاً مع الاتجاه المعاكس.
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("reports");
-        Query query = ref.orderByChild("status").equalTo("approved");
 
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 removeTracked(ref, this);
                 long total = snapshot.getChildrenCount();
-                Log.d(TAG, "🔍 approved reports candidates: " + total);
+                Log.d(TAG, "🔍 reports candidates: " + total);
                 if (total == 0) { Log.w(TAG, "⚠️ لا candidates"); return; }
 
                 int compared = 0, skipped = 0, matched = 0;
@@ -252,7 +267,7 @@ public class CrossMatchManager {
                 Log.e(TAG, "matchFoundPersonWithReports cancelled: " + e.getMessage());
             }
         };
-        query.addListenerForSingleValueEvent(listener);
+        trackAndListen(ref, listener);
     }
 
     // ════════════════════════════════════════════════════════
