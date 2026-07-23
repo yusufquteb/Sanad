@@ -7,6 +7,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.*;
@@ -25,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
 import com.missingpersons.app.R;
+import com.missingpersons.app.utils.EmbeddingMigrationTool;
 import com.missingpersons.app.utils.LanguageHelper;
 import com.missingpersons.app.utils.NotificationHelper;
 import com.missingpersons.app.utils.RateLimiter;
@@ -137,6 +140,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                     setupRecyclerView();
                     startRealtimeListener();
                     listenForAdminNotifications();
+                    invalidateOptionsMenu(); // يُعيد تقييم ظهور عنصر "إعادة الاستخراج" بعد تأكيد الدور
                 });
             }
 
@@ -875,4 +879,105 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() { finish(); return true; }
+
+    // ════════════════════════════════════════════════════
+    //  أداة صيانة: إعادة استخراج بصمات الوجه القديمة
+    //
+    //  بصمة قديمة (MobileFaceNet 128-dim) وأخرى حديثة (AdaFace 512-dim)
+    //  لنفس الشخص لا تتطابقان أبداً — cosineSimilarity ترفض المقارنة
+    //  فوراً عند اختلاف الأبعاد. هذه الأداة تُعيد استخراج البصمة من
+    //  الصورة المحفوظة بالنموذج الحالي لأي سجل قديم، فعلياً وليس فقط
+    //  بوضع علامة عليه.
+    // ════════════════════════════════════════════════════
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_admin_dashboard, menu);
+        MenuItem reembedItem = menu.findItem(R.id.action_reembed_faces);
+        if (reembedItem != null) {
+            reembedItem.setVisible(RoleManager.get().isAdmin());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_reembed_faces) {
+            showReembedDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showReembedDialog() {
+        new AlertDialog.Builder(this)
+            .setTitle("🔄 إعادة استخراج بصمات الوجه القديمة")
+            .setMessage("تبحث هذه الأداة عن بلاغات ببصمة وجه من نموذج قديم "
+                + "(128 بُعد) لا يمكنها التطابق مع البلاغات الحديثة (512 بُعد)، "
+                + "وتُعيد استخراج بصمتها من الصورة المحفوظة بالنموذج الحالي.\n\n"
+                + "قد تستغرق العملية عدة دقائق حسب عدد البلاغات القديمة، وتحتاج اتصالاً بالإنترنت. "
+                + "لا تُغلق التطبيق أثناء التنفيذ.\n\n"
+                + "متابعة؟")
+            .setPositiveButton("بدء الفحص", (d, w) -> runReembedFlow())
+            .setNegativeButton("إلغاء", null)
+            .show();
+    }
+
+    private void runReembedFlow() {
+        AlertDialog progressDialog = new AlertDialog.Builder(this)
+            .setTitle("🔄 جارٍ إعادة الاستخراج...")
+            .setMessage("جارٍ فحص البلاغات...")
+            .setCancelable(false)
+            .create();
+        progressDialog.show();
+
+        EmbeddingMigrationTool.reembedLegacy(this, "reports",
+            new EmbeddingMigrationTool.MigrationCallback() {
+                @Override
+                public void onProgress(int processed, int total, int migrated) {
+                    progressDialog.setMessage("البلاغات: " + processed + "/" + total
+                        + " — نجح: " + migrated);
+                }
+
+                @Override
+                public void onComplete(EmbeddingMigrationTool.MigrationResult reportsResult) {
+                    progressDialog.setMessage("جارٍ فحص المعثور عليهم...");
+                    EmbeddingMigrationTool.reembedLegacy(AdminDashboardActivity.this, "found_persons",
+                        new EmbeddingMigrationTool.MigrationCallback() {
+                            @Override
+                            public void onProgress(int processed, int total, int migrated) {
+                                progressDialog.setMessage("المعثور عليهم: " + processed + "/" + total
+                                    + " — نجح: " + migrated);
+                            }
+
+                            @Override
+                            public void onComplete(EmbeddingMigrationTool.MigrationResult foundResult) {
+                                progressDialog.dismiss();
+                                new AlertDialog.Builder(AdminDashboardActivity.this)
+                                    .setTitle("✅ انتهت إعادة الاستخراج")
+                                    .setMessage("البلاغات: أُعيد استخراج " + reportsResult.needsMigration
+                                        + " من أصل " + reportsResult.totalRecords + " سجلاً قديماً\n"
+                                        + "المعثور عليهم: أُعيد استخراج " + foundResult.needsMigration
+                                        + " من أصل " + foundResult.totalRecords + " سجلاً قديماً")
+                                    .setPositiveButton("حسناً", null)
+                                    .show();
+                            }
+
+                            @Override
+                            public void onError(String reason) {
+                                progressDialog.dismiss();
+                                Toast.makeText(AdminDashboardActivity.this,
+                                    "خطأ في فحص المعثور عليهم: " + reason, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                }
+
+                @Override
+                public void onError(String reason) {
+                    progressDialog.dismiss();
+                    Toast.makeText(AdminDashboardActivity.this,
+                        "خطأ في فحص البلاغات: " + reason, Toast.LENGTH_LONG).show();
+                }
+            });
+    }
 }

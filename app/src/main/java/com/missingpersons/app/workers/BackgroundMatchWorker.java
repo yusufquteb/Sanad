@@ -168,14 +168,16 @@ public class BackgroundMatchWorker extends Worker {
         CountDownLatch latch = new CountDownLatch(1);
         long since = System.currentTimeMillis() - TimeUnit.HOURS.toMillis(24);
 
+        // [إصلاح] كان يتجاهل أي بلاغ لم يُعتمد بعد (status != "approved")،
+        // بينما fetchFoundPersons() تحته لا تُطبّق أي فلترة حالة — أي أن
+        // بلاغ مفقود ما زال "pending" لن تتم مطابقته اليومية أبداً حتى
+        // يعتمده الأدمن. أُزيلت الفلترة اتساقاً مع found_persons.
         FirebaseDatabase.getInstance().getReference("reports")
             .orderByChild("timestamp")
             .startAt(since)
             .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override public void onDataChange(@NonNull DataSnapshot snap) {
                     for (DataSnapshot c : snap.getChildren()) {
-                        String status = c.child("status").getValue(String.class);
-                        if (!"approved".equals(status)) continue;
                         Map<String, String> m = new HashMap<>();
                         m.put("id",            c.getKey());
                         m.put("faceEmbedding", safeStr(c, "faceEmbedding"));
@@ -227,8 +229,6 @@ public class BackgroundMatchWorker extends Worker {
             .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override public void onDataChange(@NonNull DataSnapshot snap) {
                     for (DataSnapshot c : snap.getChildren()) {
-                        String status = c.child("status").getValue(String.class);
-                        if (!"approved".equals(status)) continue;
                         Map<String, String> m = new HashMap<>();
                         m.put("id",            c.getKey());
                         m.put("faceEmbedding", safeStr(c, "faceEmbedding"));
