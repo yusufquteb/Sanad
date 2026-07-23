@@ -17,8 +17,14 @@ public class DuplicateDetector {
     private static final String TAG = "DuplicateDetector";
 
     // عتبات
-    private static final float  FACE_DUPLICATE_THRESHOLD  = 0.90f;
-    private static final float  FACE_SIMILAR_THRESHOLD    = 0.80f;
+    // [إصلاح 2026-07-23] كانت 0.90/0.80 مُعايَرة على مقياس نموذج الوجه
+    // المعطوب سابقاً (adaface_ir18، حيث كل شيء تقريباً ≥0.97). بعد التحول
+    // لـ mobilefacenet.tflite الحقيقي، نفس الشخص فعلياً يُعطي 0.55–0.75 —
+    // العتبتان القديمتان لن تتحققا أبداً على هذا المقياس. عُدِّلتا تقديرياً
+    // (بيانات محدودة: شخص واحد فقط، بلا أزواج "مختلفين" حقيقية) وتحتاجان
+    // معايرة فعلية قبل الاعتماد الكامل عليهما — راجع AdaFaceRecognizer.java
+    private static final float  FACE_DUPLICATE_THRESHOLD  = 0.72f;
+    private static final float  FACE_SIMILAR_THRESHOLD    = 0.55f;
     private static final double NAME_SIMILARITY_THRESHOLD  = 0.75;
     private static final int    AGE_TOLERANCE              = 3;
 

@@ -405,7 +405,10 @@ public class CrossMatchManager {
                             }
                         }
 
-                        if (maxSim < 0.55f) continue;
+                        // [إصلاح 2026-07-23] كانت 0.55f — عُدِّلت لتتسق مع منطقة
+                        // الرمادي الجديدة في DynamicThresholdEngine (0.40f) بعد
+                        // التحول لمقياس mobilefacenet.tflite الواقعي
+                        if (maxSim < 0.40f) continue;
                         compared++;
 
                         float threshold = DynamicThresholdEngine.computeThreshold(0.5f, storedQuality);

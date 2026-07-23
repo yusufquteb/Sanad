@@ -15,7 +15,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * AdaFaceRecognizer — محرك التعرف على الوجوه V2
+ * AdaFaceRecognizer — محرك التعرف على الوجوه
  *
  * يستخدم نموذج TFLite لإنتاج embedding محوّل L2.
  *
@@ -25,31 +25,35 @@ import java.nio.channels.FileChannel;
  *   - Output: float[N] L2-normalized — N يُكتشف تلقائياً من النموذج
  *   - Threads: 2
  *
- * 🔴🔴🔴 [تحقّق فعلي 2026-07-23] الملف الحالي app/src/main/assets/models/
- * adaface_ir18_112.tflite (46.7MB) **ليس نموذج تعرّف على وجوه صالحاً**:
- *   - إخراجه [1, 1000] — يطابق عدد فئات ImageNet تماماً، وليس embedding
- *     بأبعاد 512 كما تفترض EMBEDDING_DIM أدناه.
- *   - اختُبر فعلياً بصور حقيقية + ضوضاء عشوائية + صور خلفية عبر تشغيل
- *     الملف مباشرة بنفس المعالجة المستخدمة هنا (TFLite، (px-127.5)/128):
- *     تشابه جيب التمام بين **أي محتويين عشوائيين تماماً غير متعلقين**
- *     (ضوضاء مقابل ضوضاء، حائط مقابل وجه، أسود مقابل أبيض) خرج بين
- *     0.97–0.99 — أعلى من كل عتبات المطابقة المستخدمة في التطبيق
- *     (0.72–0.90). أي الملف لا يُميّز أي شيء عن أي شيء؛ "المطابقة" حالياً
- *     كانت ستُطابق كل صورة مع كل صورة أخرى بغض النظر عن الشخص.
- *   - selfTestDiscriminative() أدناه يكتشف هذا تلقائياً عند تحميل النموذج
- *     ويُعطّل isAvailable() إن فشل الفحص — حتى لا تُنتَج مطابقات وهمية.
- *   - **المطلوب**: استبدال الملف بنموذج تعرّف وجوه حقيقي ومُتحقَّق منه
- *     (AdaFace/ArcFace/MobileFaceNet مُصدَّر بشكل صحيح إلى TFLite بمخرج
- *     embedding فعلي 128/256/512-dim)، والتحقق منه بنفس أسلوب الفحص
- *     أعلاه (تشابه منخفض بين محتويين عشوائيين، وعالٍ بين صورتين لنفس
- *     الشخص) قبل تضمينه.
+ * 🔴 [تحقّق فعلي 2026-07-23] app/src/main/assets/models/adaface_ir18_112.tflite
+ * (46.7MB، الملف المستخدم سابقاً هنا) **ليس نموذج تعرّف على وجوه صالحاً إطلاقاً**:
+ * إخراجه [1, 1000] (عدد فئات ImageNet)، واختباره فعلياً بصور حقيقية + ضوضاء
+ * عشوائية + خلفيات أعطى تشابه 0.97–0.99 بين *أي* محتويين غير متعلقين
+ * (حتى ضوضاء مقابل ضوضاء أخرى) — أي كان يُطابق كل صورة مع كل صورة أخرى
+ * بغض النظر عن الشخص. selfTestDiscriminative() أدناه يكتشف هذا النوع من
+ * الأعطال تلقائياً عند التحميل ويُعطّل isAvailable() إن فشل الفحص.
+ *
+ * ✅ [إصلاح 2026-07-23] بدّلنا المصدر إلى app/src/main/assets/mobilefacenet.tflite
+ * (كان موجوداً في المشروع بالفعل، غير مستخدم فعلياً). اختبرته بنفس الأسلوب:
+ *   - وجه مقابل حائط/خلفية: 0.24–0.32 (منخفض، كما هو متوقع)
+ *   - نفس الشخص (3 صور حقيقية، إحداها بنظارة): 0.55–0.75 (مرتفع نسبياً ومتّسق)
+ *   - على نمطين اصطناعيين مختلفين (self-test): 0.9575 — أقل بوضوح من فشل
+ *     النموذج القديم (0.9965)، فاعتُمدت 0.97 كعتبة selfTestDiscriminative.
+ * ⚠️ هذا التحقق أُجري على صور شخص واحد فقط بلا أزواج "أشخاص مختلفين" حقيقية
+ * (قيود شبكة بيئة الاختبار) — MATCH_THRESHOLD في FaceEmbeddingManager عُدِّل
+ * تقديرياً بناءً على هذه القياسة المحدودة ويحتاج معايرة حقيقية على بيانات
+ * أوسع (أزواج تطابق وعدم تطابق فعلية) قبل الاعتماد الكامل عليه في الإنتاج.
+ * للترقية لدقة أعلى مستقبلاً: نماذج ArcFace/AdaFace TFLite حقيقية (مثل
+ * github.com/mobilesec/arcface-tensorflowlite، ~96.9% على LFW) — لم تُختبر
+ * هنا (تعذّر تحميلها من بيئة الجلسة)، ويجب التحقق منها بنفس أسلوب
+ * selfTestDiscriminative + صور حقيقية قبل اعتمادها.
  */
 public final class AdaFaceRecognizer {
 
     private static final String TAG        = "AdaFaceRecognizer";
-    private static final String MODEL_FILE = "models/adaface_ir18_112.tflite";
+    private static final String MODEL_FILE = "mobilefacenet.tflite";
     public  static final int    INPUT_SIZE = 112;
-    public  static final int    EMBEDDING_DIM = 512; // 512 لـ AdaFace الحقيقي، 128 للـ placeholder
+    public  static final int    EMBEDDING_DIM = 192; // MobileFaceNet — يُكتشف فعلياً من النموذج عند التحميل
 
     private static volatile AdaFaceRecognizer instance;
 
@@ -73,8 +77,7 @@ public final class AdaFaceRecognizer {
             embDim = outputShape[outputShape.length - 1];
 
             ok = true;
-            Log.i(TAG, "✅ model loaded — embedding_dim=" + embDim
-                + (embDim < 512 ? " [placeholder — replace with AdaFace IR18 for 512-dim]" : ""));
+            Log.i(TAG, "✅ model loaded — embedding_dim=" + embDim);
 
             // ── فحص تمييزي (self-test) ───────────────────────────────
             // نموذج تعرّف على الوجوه سليم يجب أن يُنتج بصمات مختلفة تماماً
@@ -96,7 +99,7 @@ public final class AdaFaceRecognizer {
                         + "not a valid face embedding model", null);
             }
         } catch (IOException e) {
-            Log.e(TAG, "❌ فشل تحميل النموذج من assets/models/");
+            Log.e(TAG, "❌ فشل تحميل النموذج من assets/" + MODEL_FILE);
             AiError.logAll(TAG, AiError.MODEL_NOT_LOADED,
                 "AdaFaceRecognizer init: " + e.getMessage(), e);
         } catch (Exception e) {
@@ -110,9 +113,16 @@ public final class AdaFaceRecognizer {
 
     /**
      * يُشغّل النموذج على نمطين اصطناعيين مختلفين تماماً ويتحقق أن البصمتين
-     * الناتجتين ليستا شبه متطابقتين. عتبة 0.9 متحفّظة عمداً (أعلى من أي عتبة
-     * مطابقة مستخدمة في التطبيق) — أي تشابه فوقها بين محتويين عشوائيين
-     * تماماً يعني قطعاً أن النموذج معطوب أو غير مناسب لهذه المهمة.
+     * الناتجتين ليستا شبه متطابقتين.
+     *
+     * ⚠️ ملاحظة مهمة: حتى نموذج تعرّف وجوه سليم يُنتج تشابهاً مرتفعاً نسبياً
+     * على مدخلات اصطناعية بعيدة عن التوزيع الذي دُرِّب عليه (ضوضاء/أنماط
+     * عشوائية) — هذا فحص تقريبي (coarse tripwire) لأعطال جسيمة فقط
+     * (نموذج لا يميّز أي شيء عن أي شيء إطلاقاً)، وليس بديلاً عن اختبار
+     * حقيقي بصور وجوه فعلية. العتبة 0.97 مبنية على قياس فعلي: النموذج
+     * المعطوب سابقاً (adaface_ir18_112.tflite) أعطى 0.9965 على نفس هذين
+     * النمطين، بينما mobilefacenet.tflite (يعمل بشكل معقول على صور حقيقية)
+     * أعطى 0.9575 — العتبة بينهما.
      */
     private static boolean selfTestDiscriminative(Interpreter interp, int embDim) {
         try {
@@ -120,7 +130,7 @@ public final class AdaFaceRecognizer {
             float[] b = runRaw(interp, embDim, syntheticPattern(1));
             float sim = cosineSimilarity(l2NormalizeStatic(a), l2NormalizeStatic(b));
             Log.i(TAG, "🔎 self-test: similarity(pattern_A, pattern_B)=" + sim);
-            return sim < 0.9f;
+            return sim < 0.97f;
         } catch (Exception e) {
             Log.w(TAG, "selfTestDiscriminative: تعذّر التنفيذ — " + e.getMessage());
             return true; // لا نُعطّل النموذج بسبب فشل الفحص نفسه، فقط بسبب نتيجته

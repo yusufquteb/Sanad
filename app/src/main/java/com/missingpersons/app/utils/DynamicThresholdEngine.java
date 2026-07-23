@@ -3,10 +3,19 @@ package com.missingpersons.app.utils;
 /**
  * DynamicThresholdEngine — عتبة مطابقة ديناميكية بناءً على جودة الصورة.
  *
- * بدلاً من عتبة ثابتة، تتكيف العتبة مع جودة الصورتين (AdaFace IR18):
- *   - جودة عالية (≥0.70) → عتبة صارمة  0.77f
- *   - جودة متوسطة (≥0.55)→ عتبة مرنة   0.72f
- *   - جودة منخفضة (≥0.45)→ عتبة مرنة   0.68f + Human Review إلزامي
+ * بدلاً من عتبة ثابتة، تتكيف العتبة مع جودة الصورتين.
+ *
+ * [إصلاح 2026-07-23] كانت هذه العتبات (0.77/0.72/0.68) مُعايَرة على مقياس
+ * نموذج adaface_ir18 المعطوب (اختبار فعلي أثبت أنه لا يميّز أي شيء عن أي
+ * شيء — راجع AdaFaceRecognizer.java). بعد التحول لـ mobilefacenet.tflite
+ * الحقيقي، نفس الشخص فعلياً (3 صور حقيقية) أعطى 0.5554–0.7531 بينما وجه
+ * مقابل خلفية أعطى 0.24–0.32. عُدِّلت العتبات تناسبياً لتقع ضمن هذا
+ * النطاق الواقعي، لكنها تقديرية (بيانات محدودة: شخص واحد فقط، بلا أزواج
+ * "أشخاص مختلفين" حقيقية) وتحتاج معايرة فعلية قبل الاعتماد الكامل عليها.
+ *
+ *   - جودة عالية (≥0.70) → عتبة صارمة  0.62f
+ *   - جودة متوسطة (≥0.55)→ عتبة مرنة   0.55f
+ *   - جودة منخفضة (≥0.45)→ عتبة مرنة   0.48f + Human Review إلزامي
  *   - أقل من 0.45         → رفض (INSUFFICIENT_QUALITY)
  */
 public final class DynamicThresholdEngine {
@@ -20,13 +29,13 @@ public final class DynamicThresholdEngine {
      *
      * @param queryQuality  جودة صورة الاستعلام (0.0–1.0)
      * @param storedQuality جودة الصورة المخزنة (0.0–1.0)
-     * @return العتبة المناسبة (0.68 – 0.77)
+     * @return العتبة المناسبة (0.48 – 0.62)
      */
     public static float computeThreshold(float queryQuality, float storedQuality) {
         float minQuality = Math.min(queryQuality, storedQuality);
-        if (minQuality >= 0.70f) return 0.77f;
-        if (minQuality >= 0.55f) return 0.72f;
-        return 0.68f;
+        if (minQuality >= 0.70f) return 0.62f;
+        if (minQuality >= 0.55f) return 0.55f;
+        return 0.48f;
     }
 
     /**
@@ -54,7 +63,7 @@ public final class DynamicThresholdEngine {
         if (queryScore < 0.45f)           return MatchStatus.INSUFFICIENT_QUALITY;
         if (similarity >= threshold + 0.05f) return MatchStatus.AUTO_MATCH;
         if (similarity >= threshold)      return MatchStatus.REVIEW_REQUIRED;
-        if (similarity >= 0.60f)          return MatchStatus.REVIEW_REQUIRED; // منطقة رمادية
+        if (similarity >= 0.40f)          return MatchStatus.REVIEW_REQUIRED; // منطقة رمادية (مُعدَّلة لمقياس mobilefacenet)
         return MatchStatus.AUTO_NO_MATCH;
     }
 
