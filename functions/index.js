@@ -304,6 +304,11 @@ exports.onFoundPersonCreated = functions
       const candidates = [];
 
       reportsSnap.forEach(child => {
+        // البلاغ الحالي (نوع "معثور") يُكتب أولاً في عقدة "reports" (نفس
+        // المعرّف foundId) قبل أن يُنسخ مرجعه إلى found_persons ويُطلق هذا
+        // الـ trigger — فكان يظهر كمرشّح لمطابقة نفسه بتشابه 100%.
+        if (child.key === foundId) return;
+
         const report     = child.val();
         let   score      = 0;
         const reasons    = [];

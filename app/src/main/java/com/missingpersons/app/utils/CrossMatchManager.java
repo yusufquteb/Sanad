@@ -226,6 +226,12 @@ public class CrossMatchManager {
 
                 int compared = 0, skipped = 0, matched = 0;
                 for (DataSnapshot child : snapshot.getChildren()) {
+                    // [إصلاح] البلاغ نفسه (نوع "معثور") يُكتب في نفس عقدة
+                    // "reports" قبل استدعاء هذه الدالة مباشرة، فكان يظهر
+                    // كمرشّح لمطابقة نفسه (تشابه ~1.0) وينتج إشعار "تطابق"
+                    // وهمي للمُبلِّغ مع نفسه.
+                    if (foundId.equals(child.getKey())) continue;
+
                     float sim = bestSimilarityAgainst(foundVec, child);
                     if (sim < 0) { skipped++; continue; }
                     compared++;

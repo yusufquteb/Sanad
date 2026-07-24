@@ -4,21 +4,27 @@
     // ════════════════════════════════════════════════════════
     //  REPORTS
     // ════════════════════════════════════════════════════════
+    // [إصلاح حرج 2026-07-24] كانت قاعدة الكتابة تشترط
+    // users/{uid}/approved === true لإنشاء أي بلاغ جديد — لكن لا يوجد
+    // أي كود في التطبيق يضبط هذا الحقل تلقائياً لمستخدم جديد (فقط
+    // الأدمن يدوياً عبر MembersActivity)، ولا يوجد أي إشعار للأدمن
+    // بوجود أعضاء بانتظار الموافقة، ولا أي رسالة للمستخدم تشرح له
+    // سبب الرفض — فقط خطأ Firebase "Permission denied" غامض. النتيجة:
+    // أي حساب عادي جديد كان يفشل في نشر أول بلاغ له للأبد، وهذا سبب
+    // محتمل مباشر لعدم ظهور أي تطابق أثناء الاختبار (البلاغ لم يُحفظ
+    // في Firebase أصلاً). البلاغات أصلاً لها بوابة مراجعة خاصة بها
+    // (status: pending → admin يعتمدها) فلا داعي لبوابة إضافية على
+    // مستوى الحساب. الحل: أي مستخدم مسجّل دخول يمكنه إنشاء بلاغ جديد،
+    // وتعديله لاحقاً يقتصر على صاحبه أو الأدمن/المدير.
     "reports": {
       ".read": "auth != null",
       ".indexOn": ["status", "timestamp", "reporterId", "approved", "type"],
       "$reportId": {
         ".write": "auth != null && (
-          !data.exists() && (
-            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
-            root.child('users').child(auth.uid).child('role').val() === 'manager' ||
-            root.child('users').child(auth.uid).child('approved').val() === true
-          ) ||
-          data.exists() && (
-            data.child('reporterId').val() === auth.uid ||
-            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
-            root.child('users').child(auth.uid).child('role').val() === 'manager'
-          )
+          !data.exists() ||
+          data.child('reporterId').val() === auth.uid ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+          root.child('users').child(auth.uid).child('role').val() === 'manager'
         )",
         ".validate": "newData.hasChildren(['personName', 'reporterId', 'timestamp', 'type'])",
         "status": {
@@ -39,16 +45,10 @@
       ".indexOn": ["status", "timestamp", "reporterId"],
       "$id": {
         ".write": "auth != null && (
-          !data.exists() && (
-            root.child('users').child(auth.uid).child('approved').val() === true ||
-            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
-            root.child('users').child(auth.uid).child('role').val() === 'manager'
-          ) ||
-          data.exists() && (
-            data.child('reporterId').val() === auth.uid ||
-            root.child('users').child(auth.uid).child('role').val() === 'admin' ||
-            root.child('users').child(auth.uid).child('role').val() === 'manager'
-          )
+          !data.exists() ||
+          data.child('reporterId').val() === auth.uid ||
+          root.child('users').child(auth.uid).child('role').val() === 'admin' ||
+          root.child('users').child(auth.uid).child('role').val() === 'manager'
         )"
       }
     },
